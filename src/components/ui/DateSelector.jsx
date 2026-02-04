@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, CheckSquare, Square } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 const DateSelector = ({ 
   label, 
@@ -9,17 +9,21 @@ const DateSelector = ({
   allowPresent = false,
   placeholder = "YYYY",
   required = false,
-  presentLabel = "Trabajo aquí actualmente"
+  presentLabel = "Actualmente"
 }) => {
-  // Parse initial value
+  // Parse initial value to determine mode and dates
   const parseValue = (val) => {
-    if (!val) return { start: '', end: '', isPresent: false };
+    if (!val) return { start: '', end: '', mode: isRange ? 'range' : 'single' };
     
     if (typeof val === 'object') {
+      let mode = 'single';
+      if (val.isPresent) mode = 'present';
+      else if (isRange && (val.end || val.start)) mode = 'range'; // Default to range if object has structure
+      
       return {
         start: val.start || '',
         end: val.end || '',
-        isPresent: val.isPresent || false
+        mode
       };
     }
 
@@ -30,24 +34,28 @@ const DateSelector = ({
       return { 
         start: start || '', 
         end: isPresent ? '' : end, 
-        isPresent
+        mode: isPresent ? 'present' : 'range'
       };
     }
     
-    return { start: val, end: '', isPresent: false };
+    // If no separator but isRange is true, it might be a single date (Certificado)
+    // or just a start date. We assume 'single' if it doesn't have the separator structure
+    return { start: val, end: '', mode: 'single' };
   };
 
   const [dateState, setDateState] = useState(parseValue(value));
 
   useEffect(() => {
     setDateState(parseValue(value));
-  }, [value]);
+  }, [value, isRange]);
 
   const updateParent = (newState) => {
+    // Pass the full object with mode so parent can format
     onChange({
       start: newState.start,
       end: newState.end,
-      isPresent: newState.isPresent
+      isPresent: newState.mode === 'present',
+      mode: newState.mode
     });
   };
 
@@ -63,17 +71,38 @@ const DateSelector = ({
     updateParent(newState);
   };
 
-  const togglePresent = () => {
-    const newState = { ...dateState, isPresent: !dateState.isPresent, end: '' };
+  const handleModeChange = (e) => {
+    const newMode = e.target.value;
+    const newState = { ...dateState, mode: newMode };
+    
+    if (newMode === 'present') {
+      newState.end = '';
+    } else if (newMode === 'single') {
+      newState.end = '';
+    }
+    
     setDateState(newState);
     updateParent(newState);
   };
 
   return (
     <div className="w-full">
-      <label className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
+      <div className="flex justify-between items-center mb-1">
+        <label className="block text-sm font-medium text-slate-700">{label}</label>
+        {isRange && (
+          <select 
+            value={dateState.mode}
+            onChange={handleModeChange}
+            className="text-xs border-none bg-slate-100 rounded px-2 py-1 text-slate-700 focus:ring-0 cursor-pointer hover:bg-slate-200"
+          >
+            <option value="range">Rango (Inicio - Fin)</option>
+            {allowPresent && <option value="present">En curso / Actualidad</option>}
+            <option value="single">Fecha única / Certificado</option>
+          </select>
+        )}
+      </div>
       
-      <div className={`grid ${isRange ? 'grid-cols-2' : 'grid-cols-1'} gap-2`}>
+      <div className={`grid ${dateState.mode === 'range' ? 'grid-cols-2' : 'grid-cols-1'} gap-2`}>
         <div className="relative">
           <input
             type="date"
@@ -83,47 +112,19 @@ const DateSelector = ({
             placeholder={placeholder}
             required={required}
           />
-          {!dateState.start && (
-            <span className="absolute left-3 top-2.5 text-slate-400 text-sm pointer-events-none bg-white px-1">
-              {isRange ? 'Inicio' : 'Fecha'}
-            </span>
-          )}
         </div>
 
-        {isRange && (
+        {dateState.mode === 'range' && (
           <div className="relative">
             <input
               type="date"
               value={dateState.end}
               onChange={handleEndChange}
-              disabled={dateState.isPresent}
-              className={`w-full pl-3 pr-2 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm hover-input ${dateState.isPresent ? 'bg-slate-100 text-slate-400' : ''}`}
+              className="w-full pl-3 pr-2 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm hover-input"
             />
-             {!dateState.end && !dateState.isPresent && (
-              <span className="absolute left-3 top-2.5 text-slate-400 text-sm pointer-events-none bg-white px-1">
-                Fin
-              </span>
-            )}
           </div>
         )}
       </div>
-
-      {isRange && allowPresent && (
-        <div className="mt-2 flex items-center gap-2">
-          <button
-            type="button"
-            onClick={togglePresent}
-            className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 transition-colors hover-btn"
-          >
-            {dateState.isPresent ? (
-              <CheckSquare size={16} className="text-blue-600" />
-            ) : (
-              <Square size={16} className="text-slate-400" />
-            )}
-            <span>{presentLabel}</span>
-          </button>
-        </div>
-      )}
     </div>
   );
 };

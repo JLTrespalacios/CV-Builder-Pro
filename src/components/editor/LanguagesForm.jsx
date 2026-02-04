@@ -2,19 +2,39 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCVStore } from '../../store/cvStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Pencil } from 'lucide-react';
 
 const LanguagesForm = () => {
-  const { cvData, addLanguage, removeLanguage, language } = useCVStore();
+  const { cvData, addLanguage, removeLanguage, updateLanguage, language } = useCVStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
   const t = TRANSLATIONS[language];
   
   const { register, handleSubmit, reset } = useForm();
 
-  const onSubmit = (data) => {
-    addLanguage(data);
-    reset();
+  const handleEdit = (index) => {
+    const lang = cvData.languages[index];
+    setEditingIndex(index);
+    setIsAdding(true);
+    reset(lang);
+  };
+
+  const handleCancel = () => {
     setIsAdding(false);
+    setEditingIndex(null);
+    reset({
+        language: '',
+        level: ''
+    });
+  };
+
+  const onSubmit = (data) => {
+    if (editingIndex !== null) {
+      updateLanguage(editingIndex, data);
+    } else {
+      addLanguage(data);
+    }
+    handleCancel();
   };
 
   return (
@@ -22,13 +42,22 @@ const LanguagesForm = () => {
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold text-slate-800">{t.languages}</h3>
         <button 
-          onClick={() => setIsAdding(!isAdding)}
+          onClick={() => {
+            if (isAdding) {
+                handleCancel();
+            } else {
+                setIsAdding(true);
+                setEditingIndex(null);
+                reset({ language: '', level: '' });
+            }
+          }}
           className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-sm font-medium hover-btn"
         >
-          <Plus size={16} /> {t.add}
+          {isAdding ? 'Cancelar' : <><Plus size={16} /> {t.add}</>}
         </button>
       </div>
 
+      {!isAdding && (
       <div className="space-y-4 mb-4">
         {cvData.languages.map((lang, index) => (
           <div key={index} className="bg-slate-50 p-4 rounded border border-slate-200 relative group flex justify-between items-center hover-list-item">
@@ -36,15 +65,26 @@ const LanguagesForm = () => {
               <h4 className="font-bold text-slate-800">{lang.language}</h4>
               <p className="text-sm text-slate-600">{lang.level}</p>
             </div>
-            <button 
-              onClick={() => removeLanguage(index)}
-              className="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity hover-btn"
-            >
-              <Trash2 size={16} />
-            </button>
+            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                 <button 
+                  onClick={() => handleEdit(index)}
+                  className="text-blue-400 hover:text-blue-600 hover-btn"
+                  title="Editar"
+                >
+                  <Pencil size={16} />
+                </button>
+                <button 
+                  onClick={() => removeLanguage(index)}
+                  className="text-red-400 hover:text-red-600 hover-btn"
+                  title="Eliminar"
+                >
+                  <Trash2 size={16} />
+                </button>
+            </div>
           </div>
         ))}
       </div>
+      )}
 
       {isAdding && (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-slate-50 p-4 rounded border border-blue-100">
@@ -92,7 +132,7 @@ const LanguagesForm = () => {
           <div className="flex gap-2 justify-end">
             <button 
               type="button" 
-              onClick={() => setIsAdding(false)}
+              onClick={handleCancel}
               className="px-3 py-1 text-slate-600 hover:bg-slate-200 rounded text-sm hover-btn"
             >
               {t.cancel}
@@ -101,7 +141,7 @@ const LanguagesForm = () => {
               type="submit"
               className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 hover-btn"
             >
-              {t.save}
+              {editingIndex !== null ? 'Actualizar' : t.save}
             </button>
           </div>
         </form>

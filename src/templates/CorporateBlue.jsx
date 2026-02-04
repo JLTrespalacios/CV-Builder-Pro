@@ -57,25 +57,25 @@ const CorporateBlue = ({ data, color }) => {
               {personal.linkedin && (
                 <p className="flex flex-col">
                   <span className="font-semibold text-slate-800">LinkedIn</span>
-                  <span className="break-all text-xs underline" style={{ color: accentColor }}>
+                  <a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="break-all text-xs underline hover:text-blue-800" style={{ color: accentColor }}>
                     {personal.linkedin.replace(/^https?:\/\//, '')}
-                  </span>
+                  </a>
                 </p>
               )}
               {personal.github && (
                 <p className="flex flex-col">
                   <span className="font-semibold text-slate-800">GitHub</span>
-                  <span className="break-all text-xs underline" style={{ color: accentColor }}>
+                  <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="break-all text-xs underline hover:text-blue-800" style={{ color: accentColor }}>
                     {personal.github.replace(/^https?:\/\//, '')}
-                  </span>
+                  </a>
                 </p>
               )}
               {personal.website && (
                 <p className="flex flex-col">
                   <span className="font-semibold text-slate-800">{t.lblWebsite}</span>
-                  <span className="break-all text-xs underline" style={{ color: accentColor }}>
+                  <a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} target="_blank" rel="noopener noreferrer" className="break-all text-xs underline hover:text-blue-800" style={{ color: accentColor }}>
                     {personal.website.replace(/^https?:\/\//, '')}
-                  </span>
+                  </a>
                 </p>
               )}
             </div>
@@ -232,6 +232,7 @@ const CorporateBlue = ({ data, color }) => {
                   {references.map((ref, i) => (
                     <div key={i} className="bg-slate-50 p-4 rounded border border-slate-100">
                       <h4 className="font-bold text-slate-800">{ref.name}</h4>
+                      {ref.profession && <p className="text-sm font-medium text-slate-700">{ref.profession}</p>}
                       <p className="text-sm font-semibold" style={{ color: accentColor }}>{ref.role}</p>
                       <p className="text-xs text-slate-500 mb-2">{ref.company}</p>
                       <div className="text-xs text-slate-600 space-y-1 border-t border-slate-200 pt-2 mt-2">

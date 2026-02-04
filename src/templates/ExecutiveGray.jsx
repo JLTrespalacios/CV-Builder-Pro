@@ -36,10 +36,10 @@ const ExecutiveGray = ({ data, color }) => {
               <span className="font-bold text-gray-900 w-16">{t.lblLocation}</span>
               <span>{personal.location}</span>
             </div>
-             {personal.linkedin && (
+            {personal.linkedin && (
               <div className="flex items-center gap-3">
                 <span className="font-bold text-gray-900 w-16">LinkedIn</span>
-                <a href={personal.linkedin} target="_blank" rel="noopener noreferrer" className="truncate text-xs hover:underline text-blue-600">
+                <a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="truncate text-xs hover:underline text-blue-600">
                   {personal.linkedin.replace(/^https?:\/\//, '')}
                 </a>
               </div>
@@ -47,7 +47,7 @@ const ExecutiveGray = ({ data, color }) => {
             {personal.github && (
               <div className="flex items-center gap-3">
                 <span className="font-bold text-gray-900 w-16">GitHub</span>
-                <a href={personal.github} target="_blank" rel="noopener noreferrer" className="truncate text-xs hover:underline text-blue-600">
+                <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="truncate text-xs hover:underline text-blue-600">
                   {personal.github.replace(/^https?:\/\//, '')}
                 </a>
               </div>
@@ -55,7 +55,7 @@ const ExecutiveGray = ({ data, color }) => {
             {personal.website && (
               <div className="flex items-center gap-3">
                 <span className="font-bold text-gray-900 w-16">Web</span>
-                <a href={personal.website} target="_blank" rel="noopener noreferrer" className="truncate text-xs hover:underline text-blue-600">
+                <a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} target="_blank" rel="noopener noreferrer" className="truncate text-xs hover:underline text-blue-600">
                   {personal.website.replace(/^https?:\/\//, '')}
                 </a>
               </div>
@@ -252,6 +252,7 @@ const ExecutiveGray = ({ data, color }) => {
                 {references.map((ref, i) => (
                   <div key={i} className="min-w-[200px] break-inside-avoid">
                     <div className="font-bold text-gray-800">{ref.name}</div>
+                    {ref.profession && <div className="text-sm font-medium text-gray-700">{ref.profession}</div>}
                     <div className="text-sm text-gray-600">{ref.role}</div>
                     <div className="text-xs text-gray-400 mt-1">{ref.email || ref.phone}</div>
                   </div>

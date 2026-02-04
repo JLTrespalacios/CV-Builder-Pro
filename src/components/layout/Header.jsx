@@ -2,20 +2,76 @@ import React from 'react';
 import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { Globe, Trash2, PanelLeftOpen, FileText } from 'lucide-react';
+import { Globe, Trash2, PanelLeftOpen, FileText, Download, Upload, Languages } from 'lucide-react';
 import ThemeSwitcher from '../ui/ThemeSwitcher';
 import { generateWord } from '../../utils/wordGenerator';
 
 const Header = ({ onDownload }) => {
-  const { language, setLanguage, resetCVData, isSidebarOpen, toggleSidebar, cvData } = useCVStore();
+  const { language, setLanguage, resetCVData, isSidebarOpen, toggleSidebar, cvData, loadCVData } = useCVStore();
   const { addToast } = useUIStore();
   const t = TRANSLATIONS[language];
+  const fileInputRef = React.useRef(null);
 
   const handleReset = () => {
     if (window.confirm('WARNING: SYSTEM RESET. ¿Estás seguro de borrar todos los datos? Esta acción es irreversible.')) {
       resetCVData();
       addToast('Sistema reiniciado. Datos eliminados.', 'info');
     }
+  };
+
+  const handleExport = () => {
+    try {
+      const dataStr = JSON.stringify(cvData, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `cv-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      addToast('Copia de seguridad descargada', 'success');
+    } catch (error) {
+      console.error(error);
+      addToast('Error al exportar datos', 'error');
+    }
+  };
+
+  const handleImportClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const json = JSON.parse(e.target.result);
+        if (!json.personal) throw new Error("Formato inválido");
+        loadCVData(json);
+        addToast('Datos cargados exitosamente. Puedes seguir editando.', 'success');
+      } catch (error) {
+        console.error(error);
+        addToast('Error: Archivo inválido o corrupto', 'error');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  };
+
+  const handleTranslateAll = () => {
+    // Logic to toggle language or translate content
+    if (language === 'es') {
+      setLanguage('en');
+      addToast('Idioma cambiado a Inglés. Los encabezados se han traducido.', 'success');
+    } else {
+      setLanguage('es');
+      addToast('Idioma cambiado a Español.', 'success');
+    }
+    // Future: Call AI API to translate user content
   };
 
   const handleDownloadWord = async () => {

@@ -19,6 +19,8 @@ import LanguagesForm from '../components/editor/LanguagesForm';
 import ReferencesForm from '../components/editor/ReferencesForm';
 import ProTipsPanel from '../components/editor/ProTipsPanel';
 import TemplateSelector from '../components/editor/TemplateSelector';
+import SavedCVsPanel from '../components/editor/SavedCVsPanel';
+import AIAssistantPanel from '../components/editor/AIAssistantPanel';
 import CVPreview from '../components/preview/CVPreview';
 
 function App() {
@@ -235,6 +237,14 @@ function App() {
                 </div>
                 <TemplateSelector />
               </div>
+            )}
+
+            {activeTab === 'saved' && (
+              <SavedCVsPanel />
+            )}
+
+            {activeTab === 'ai-assistant' && (
+              <AIAssistantPanel />
             )}
           </section>
 

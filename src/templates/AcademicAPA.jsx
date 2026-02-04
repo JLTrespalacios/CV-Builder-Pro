@@ -24,13 +24,21 @@ const AcademicAPA = ({ data }) => {
             {personal.location} {personal.phone && `| ${personal.phone}`} {personal.email && `| ${personal.email}`}
           </p>
           {personal.linkedin && (
-             <p>{personal.linkedin.replace(/^https?:\/\//, '')}</p>
+             <p>
+               <a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-900">
+                 {personal.linkedin.replace(/^https?:\/\//, '')}
+               </a>
+             </p>
           )}
           {personal.github && (
-             <p>GitHub: {personal.github.replace(/^https?:\/\//, '')}</p>
+             <p>GitHub: <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-900">{personal.github.replace(/^https?:\/\//, '')}</a></p>
           )}
           {personal.website && (
-             <p>{personal.website.replace(/^https?:\/\//, '')}</p>
+             <p>
+               <a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-900">
+                 {personal.website.replace(/^https?:\/\//, '')}
+               </a>
+             </p>
           )}
         </div>
       </header>
@@ -154,6 +162,7 @@ const AcademicAPA = ({ data }) => {
               {references.map((ref, i) => (
                 <div key={i} className="break-inside-avoid">
                   <h3 className="font-bold">{ref.name}</h3>
+                  {ref.profession && <p className="text-sm font-semibold">{ref.profession}</p>}
                   <p className="italic">{ref.role} {ref.company && `- ${ref.company}`}</p>
                   <div className="text-sm mt-1">
                     {ref.phone && <p>{t.lblPhone}: {ref.phone}</p>}

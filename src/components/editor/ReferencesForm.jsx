@@ -2,19 +2,43 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCVStore } from '../../store/cvStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { Plus, Trash2, User, Phone, Mail, Building } from 'lucide-react';
+import { Plus, Trash2, User, Phone, Mail, Building, Pencil } from 'lucide-react';
 
 const ReferencesForm = () => {
-  const { cvData, addReference, removeReference, toggleReferencesOnRequest, language } = useCVStore();
+  const { cvData, addReference, removeReference, updateReference, toggleReferencesOnRequest, language } = useCVStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
   const t = TRANSLATIONS[language];
   
   const { register, handleSubmit, reset } = useForm();
 
-  const onSubmit = (data) => {
-    addReference(data);
-    reset();
+  const handleEdit = (index) => {
+    const ref = cvData.references[index];
+    setEditingIndex(index);
+    setIsAdding(true);
+    reset(ref);
+  };
+
+  const handleCancel = () => {
     setIsAdding(false);
+    setEditingIndex(null);
+    reset({
+      name: '',
+      profession: '',
+      role: '',
+      company: '',
+      phone: '',
+      email: ''
+    });
+  };
+
+  const onSubmit = (data) => {
+    if (editingIndex !== null) {
+      updateReference(editingIndex, data);
+    } else {
+      addReference(data);
+    }
+    handleCancel();
   };
 
   return (
@@ -22,10 +46,25 @@ const ReferencesForm = () => {
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold text-slate-800">{t.references}</h3>
         <button 
-          onClick={() => setIsAdding(!isAdding)}
+          onClick={() => {
+            if (isAdding) {
+              handleCancel();
+            } else {
+              setIsAdding(true);
+              setEditingIndex(null);
+              reset({
+                name: '',
+                profession: '',
+                role: '',
+                company: '',
+                phone: '',
+                email: ''
+              });
+            }
+          }}
           className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-sm font-medium hover-btn"
         >
-          <Plus size={16} /> {t.add}
+          {isAdding ? 'Cancelar' : <><Plus size={16} /> {t.add}</>}
         </button>
       </div>
 
@@ -42,24 +81,37 @@ const ReferencesForm = () => {
         </label>
       </div>
 
-      <div className="space-y-4 mb-4">
-        {cvData.references.map((ref, index) => (
-          <div key={index} className="bg-slate-50 p-4 rounded border border-slate-200 relative group hover-list-item">
-            <button 
-              onClick={() => removeReference(index)}
-              className="absolute top-2 right-2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity hover-btn"
-            >
-              <Trash2 size={16} />
-            </button>
-            <h4 className="font-bold text-slate-800">{ref.name}</h4>
-            <p className="text-sm text-slate-600">{ref.role} {ref.company && `at ${ref.company}`}</p>
-            <div className="text-xs text-slate-500 mt-1 flex gap-2">
-              {ref.phone && <span className="flex items-center gap-1"><Phone size={10} /> {ref.phone}</span>}
-              {ref.email && <span className="flex items-center gap-1"><Mail size={10} /> {ref.email}</span>}
+      {!isAdding && (
+        <div className="space-y-4 mb-4">
+          {cvData.references.map((ref, index) => (
+            <div key={index} className="bg-slate-50 p-4 rounded border border-slate-200 relative group hover-list-item">
+              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button 
+                  onClick={() => handleEdit(index)}
+                  className="text-blue-400 hover:text-blue-600 hover-btn"
+                  title="Editar"
+                >
+                  <Pencil size={16} />
+                </button>
+                <button 
+                  onClick={() => removeReference(index)}
+                  className="text-red-400 hover:text-red-600 hover-btn"
+                  title="Eliminar"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+              <h4 className="font-bold text-slate-800">{ref.name}</h4>
+              <p className="text-sm font-medium text-slate-700">{ref.profession}</p>
+              <p className="text-sm text-slate-600">{ref.role} {ref.company && `at ${ref.company}`}</p>
+              <div className="text-xs text-slate-500 mt-1 flex gap-2">
+                {ref.phone && <span className="flex items-center gap-1"><Phone size={10} /> {ref.phone}</span>}
+                {ref.email && <span className="flex items-center gap-1"><Mail size={10} /> {ref.email}</span>}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {isAdding && (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-slate-50 p-4 rounded border border-blue-100">
@@ -75,6 +127,15 @@ const ReferencesForm = () => {
                 placeholder={t.refNamePlaceholder}
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{t.refProfession}</label>
+            <input
+              {...register("profession")}
+              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+              placeholder={t.refProfessionPlaceholder}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -133,7 +194,7 @@ const ReferencesForm = () => {
           <div className="flex justify-end gap-2 pt-2">
             <button 
               type="button" 
-              onClick={() => setIsAdding(false)}
+              onClick={handleCancel}
               className="px-3 py-1 text-slate-600 hover:text-slate-800 text-sm"
             >
               {t.cancel}
@@ -142,7 +203,7 @@ const ReferencesForm = () => {
               type="submit"
               className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
             >
-              {t.save}
+              {editingIndex !== null ? 'Actualizar' : t.save}
             </button>
           </div>
         </form>

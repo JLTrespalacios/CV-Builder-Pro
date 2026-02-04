@@ -69,7 +69,7 @@ const TechGamer = ({ data }) => {
               {personal.linkedin && (
                 <div className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
                   <span className="text-gray-500 block text-xs uppercase mb-1">LinkedIn</span>
-                  <a href={personal.linkedin} className="hover:underline break-all block truncate" style={{ color: accentColor }} target="_blank" rel="noopener noreferrer">
+                  <a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} className="hover:underline break-all block truncate" style={{ color: accentColor }} target="_blank" rel="noopener noreferrer">
                     {personal.linkedin.replace(/^https?:\/\//, '')}
                   </a>
                 </div>
@@ -77,7 +77,7 @@ const TechGamer = ({ data }) => {
               {personal.github && (
                 <div className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
                   <span className="text-gray-500 block text-xs uppercase mb-1">GitHub</span>
-                  <a href={personal.github} className="hover:underline break-all block truncate" style={{ color: accentColor }} target="_blank" rel="noopener noreferrer">
+                  <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} className="hover:underline break-all block truncate" style={{ color: accentColor }} target="_blank" rel="noopener noreferrer">
                     {personal.github.replace(/^https?:\/\//, '')}
                   </a>
                 </div>
@@ -85,7 +85,7 @@ const TechGamer = ({ data }) => {
               {personal.website && (
                 <div className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
                   <span className="text-gray-500 block text-xs uppercase mb-1">{t.lblWebsite}</span>
-                  <a href={personal.website} className="hover:underline break-all block truncate" style={{ color: accentColor }} target="_blank" rel="noopener noreferrer">
+                  <a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} className="hover:underline break-all block truncate" style={{ color: accentColor }} target="_blank" rel="noopener noreferrer">
                     {personal.website.replace(/^https?:\/\//, '')}
                   </a>
                 </div>
@@ -137,6 +137,7 @@ const TechGamer = ({ data }) => {
                   {references.map((ref, i) => (
                     <div key={i} className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
                       <span className="text-white block font-bold text-xs mb-1" style={{ color: accentColor }}>{ref.name}</span>
+                      {ref.profession && <span className="text-gray-300 block text-xs font-semibold mb-0.5">{ref.profession}</span>}
                       <span className="text-gray-400 block text-xs">{ref.role}</span>
                       {ref.company && <span className="text-gray-500 block text-xs italic">{ref.company}</span>}
                       {(ref.phone || ref.email) && (

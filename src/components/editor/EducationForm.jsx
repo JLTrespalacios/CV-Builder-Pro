@@ -2,20 +2,42 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useCVStore } from '../../store/cvStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Pencil } from 'lucide-react';
 import DateSelector from '../ui/DateSelector';
 
 const EducationForm = () => {
-  const { cvData, addEducation, removeEducation, language } = useCVStore();
+  const { cvData, addEducation, removeEducation, updateEducation, language } = useCVStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
   const t = TRANSLATIONS[language];
   
   const { register, handleSubmit, reset, control } = useForm();
 
-  const onSubmit = (data) => {
-    addEducation(data);
-    reset();
+  const handleEdit = (index) => {
+    const education = cvData.education[index];
+    setEditingIndex(index);
+    setIsAdding(true);
+    reset(education);
+  };
+
+  const handleCancel = () => {
     setIsAdding(false);
+    setEditingIndex(null);
+    reset({
+      degree: '',
+      school: '',
+      year: '',
+      description: ''
+    });
+  };
+
+  const onSubmit = (data) => {
+    if (editingIndex !== null) {
+      updateEducation(editingIndex, data);
+    } else {
+      addEducation(data);
+    }
+    handleCancel();
   };
 
   return (
@@ -23,27 +45,58 @@ const EducationForm = () => {
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold text-slate-800">{t.education}</h3>
         <button 
-          onClick={() => setIsAdding(!isAdding)}
+          onClick={() => {
+            if (isAdding) {
+              handleCancel();
+            } else {
+              setIsAdding(true);
+              setEditingIndex(null);
+              reset({
+                degree: '',
+                school: '',
+                year: '',
+                description: ''
+              });
+            }
+          }}
           className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-sm font-medium hover-btn"
         >
-          <Plus size={16} /> {t.add}
+          {isAdding ? 'Cancelar' : <><Plus size={16} /> {t.add}</>}
         </button>
       </div>
 
-      <div className="space-y-4 mb-4">
-        {cvData.education.map((edu, index) => (
-          <div key={index} className="bg-slate-50 p-4 rounded border border-slate-200 relative group hover-list-item">
-            <button 
-              onClick={() => removeEducation(index)}
-              className="absolute top-2 right-2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity hover-btn"
-            >
-              <Trash2 size={16} />
-            </button>
-            <h4 className="font-bold text-slate-800">{edu.degree}</h4>
-            <p className="text-sm text-slate-600">{edu.school} | {edu.year}</p>
-          </div>
-        ))}
-      </div>
+      {!isAdding && (
+        <div className="space-y-4 mb-4">
+          {cvData.education?.map((edu, index) => (
+            <div key={index} className="bg-slate-50 p-4 rounded border border-slate-200 relative group hover-list-item">
+              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button 
+                  onClick={() => handleEdit(index)}
+                  className="text-blue-400 hover:text-blue-600 hover-btn"
+                  title="Editar"
+                >
+                  <Pencil size={16} />
+                </button>
+                <button 
+                  onClick={() => removeEducation(index)}
+                  className="text-red-400 hover:text-red-600 hover-btn"
+                  title="Eliminar"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+              <h4 className="font-bold text-slate-800">{edu.degree}</h4>
+              <p className="text-sm text-slate-600">
+                {edu.school} | {
+                  typeof edu.year === 'object' 
+                    ? `${edu.year.start} - ${edu.year.isPresent ? 'Presente' : edu.year.end}`
+                    : edu.year
+                }
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {isAdding && (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-slate-50 p-4 rounded border border-blue-100">
@@ -74,7 +127,17 @@ const EducationForm = () => {
                   <DateSelector
                     label={t.year}
                     value={field.value}
-                    onChange={field.onChange}
+                    onChange={(val) => {
+                      let str = '';
+                      if (val.mode === 'single') {
+                        str = val.start;
+                      } else if (val.mode === 'present') {
+                        str = `${val.start} - Presente`;
+                      } else {
+                        str = `${val.start} - ${val.end}`;
+                      }
+                      field.onChange(str);
+                    }}
                     isRange={true}
                     allowPresent={true}
                     presentLabel="Estudio aquí actualmente"
@@ -98,7 +161,7 @@ const EducationForm = () => {
           <div className="flex gap-2 justify-end">
             <button 
               type="button" 
-              onClick={() => setIsAdding(false)}
+              onClick={handleCancel}
               className="px-3 py-1 text-slate-600 hover:bg-slate-200 rounded text-sm hover-btn"
             >
               {t.cancel}
@@ -107,7 +170,7 @@ const EducationForm = () => {
               type="submit"
               className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 hover-btn"
             >
-              {t.save}
+              {editingIndex !== null ? 'Actualizar' : t.save}
             </button>
           </div>
         </form>

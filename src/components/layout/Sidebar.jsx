@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Layout, Settings, Download, Upload, Save, FileText, Edit3, Globe } from 'lucide-react';
+import { Layout, Settings, Download, Upload, Save, FileText, Edit3, Globe, FolderOpen, Bot } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
@@ -70,6 +70,20 @@ const Sidebar = ({ onPrint }) => {
           onClick={() => setActiveTab('templates')}
           icon={<Layout size={20} />}
           label={t.templates}
+        />
+
+        <SidebarButton 
+          active={activeTab === 'ai-assistant'} 
+          onClick={() => setActiveTab('ai-assistant')}
+          icon={<Bot size={20} />}
+          label="Asistente IA"
+        />
+
+        <SidebarButton 
+          active={activeTab === 'saved'} 
+          onClick={() => setActiveTab('saved')}
+          icon={<FolderOpen size={20} />}
+          label="Mis CVs"
         />
         
         <div className="w-8 h-[1px] bg-slate-200 my-2" />

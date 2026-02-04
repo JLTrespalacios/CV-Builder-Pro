@@ -45,19 +45,25 @@ const ModernDark = ({ data, color }) => {
             {personal.linkedin && (
               <p className="break-all text-xs">
                 <span className="font-semibold text-slate-400 block">LinkedIn:</span>
-                {personal.linkedin.replace(/^https?:\/\//, '')}
+                <a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  {personal.linkedin.replace(/^https?:\/\//, '')}
+                </a>
               </p>
             )}
             {personal.github && (
               <p className="break-all text-xs">
                 <span className="font-semibold text-slate-400 block">GitHub:</span>
-                {personal.github.replace(/^https?:\/\//, '')}
+                <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  {personal.github.replace(/^https?:\/\//, '')}
+                </a>
               </p>
             )}
             {personal.website && (
               <p className="break-all text-xs">
                 <span className="font-semibold text-slate-400 block">{t.lblWebsite}:</span>
-                {personal.website.replace(/^https?:\/\//, '')}
+                <a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  {personal.website.replace(/^https?:\/\//, '')}
+                </a>
               </p>
             )}
           </div>
@@ -218,6 +224,7 @@ const ModernDark = ({ data, color }) => {
                 {references.map((ref, i) => (
                   <div key={i} className="p-4 bg-slate-50 rounded border-l-4 break-inside-avoid" style={{ borderColor: accentColor }}>
                     <h3 className="font-bold text-slate-800">{ref.name}</h3>
+                    {ref.profession && <p className="text-sm font-semibold text-slate-700">{ref.profession}</p>}
                     <p className="text-sm text-slate-600 font-medium">{ref.role}</p>
                     <p className="text-xs text-slate-500">{ref.company}</p>
                     <div className="mt-2 text-xs text-slate-400 space-y-1">

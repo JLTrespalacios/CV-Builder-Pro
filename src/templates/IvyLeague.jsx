@@ -17,8 +17,8 @@ const IvyLeague = ({ data }) => {
           {personal.location && <span>{personal.location}</span>}
           {personal.phone && <span>• {personal.phone}</span>}
           {personal.email && <span>• {personal.email}</span>}
-          {personal.linkedin && <span>• {personal.linkedin.replace(/^https?:\/\//, '')}</span>}
-          {personal.github && <span>• {personal.github.replace(/^https?:\/\//, '')}</span>}
+          {personal.linkedin && <span>• <a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.linkedin.replace(/^https?:\/\//, '')}</a></span>}
+          {personal.github && <span>• <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.github.replace(/^https?:\/\//, '')}</a></span>}
         </div>
       </header>
 
@@ -153,6 +153,7 @@ const IvyLeague = ({ data }) => {
               {references.map((ref, i) => (
                 <div key={i} className="break-inside-avoid">
                   <div className="font-bold">{ref.name}</div>
+                  {ref.profession && <div className="text-xs font-semibold">{ref.profession}</div>}
                   <div className="italic text-xs">{ref.role} {ref.company && `- ${ref.company}`}</div>
                   <div className="text-xs">
                     {ref.phone && <span>{ref.phone} • </span>}

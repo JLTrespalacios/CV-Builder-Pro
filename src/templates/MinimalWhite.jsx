@@ -25,9 +25,9 @@ const MinimalWhite = ({ data, color }) => {
             {personal.documentNumber && <span>• {getDocumentTypeLabel(personal.documentType, t) || 'ID'}: {personal.documentNumber}</span>}
           </div>
           <div className="flex flex-wrap gap-4 text-xs text-gray-500 font-medium uppercase tracking-wider mt-2">
-            {personal.linkedin && <span>LinkedIn: {personal.linkedin.replace(/^https?:\/\//, '')}</span>}
-            {personal.github && <span>• GitHub: {personal.github.replace(/^https?:\/\//, '')}</span>}
-            {personal.website && <span>• {t.lblWebsite}: {personal.website.replace(/^https?:\/\//, '')}</span>}
+            {personal.linkedin && <span>LinkedIn: <a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-600">{personal.linkedin.replace(/^https?:\/\//, '')}</a></span>}
+            {personal.github && <span>• GitHub: <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-600">{personal.github.replace(/^https?:\/\//, '')}</a></span>}
+            {personal.website && <span>• {t.lblWebsite}: <a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-600">{personal.website.replace(/^https?:\/\//, '')}</a></span>}
           </div>
         </div>
         {personal.showPhoto && personal.photo && (
@@ -203,6 +203,7 @@ const MinimalWhite = ({ data, color }) => {
                   {references.map((ref, i) => (
                     <div key={i} className="break-inside-avoid">
                       <h3 className="font-bold text-gray-800" style={{ color: accentColor }}>{ref.name}</h3>
+                      {ref.profession && <p className="text-sm font-medium text-gray-700">{ref.profession}</p>}
                       <p className="text-sm text-gray-600 mb-1">{ref.role} {ref.company && `| ${ref.company}`}</p>
                       <div className="text-xs text-gray-500">
                         {ref.phone && <div className="mb-0.5">{ref.phone}</div>}

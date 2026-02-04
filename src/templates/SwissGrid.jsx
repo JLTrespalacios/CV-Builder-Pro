@@ -25,9 +25,9 @@ const SwissGrid = ({ data, color }) => {
           <p>{personal.email}</p>
           <p>{personal.phone}</p>
           <p>{personal.location}</p>
-          {personal.linkedin && <p>{personal.linkedin.replace(/^https?:\/\//, '')}</p>}
-          {personal.github && <p>GitHub: {personal.github.replace(/^https?:\/\//, '')}</p>}
-          {personal.website && <p>{personal.website.replace(/^https?:\/\//, '')}</p>}
+          {personal.linkedin && <p><a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.linkedin.replace(/^https?:\/\//, '')}</a></p>}
+          {personal.github && <p>GitHub: <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.github.replace(/^https?:\/\//, '')}</a></p>}
+          {personal.website && <p><a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.website.replace(/^https?:\/\//, '')}</a></p>}
         </div>
       </div>
 
@@ -90,6 +90,7 @@ const SwissGrid = ({ data, color }) => {
                     {references.map((ref, i) => (
                       <div key={i} className="bg-gray-50 p-6 break-inside-avoid">
                         <h3 className="font-bold text-lg">{ref.name}</h3>
+                        {ref.profession && <p className="text-sm font-medium text-gray-700 mb-0.5">{ref.profession}</p>}
                         <p className="text-sm text-gray-500 mb-2">{ref.role} @ {ref.company}</p>
                         <div className="text-sm font-mono">
                           {ref.email && <div>{ref.email}</div>}
