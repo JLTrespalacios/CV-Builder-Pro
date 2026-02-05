@@ -8,7 +8,6 @@ import AcademicAPA from '../../templates/AcademicAPA';
 import IvyLeague from '../../templates/IvyLeague';
 import SwissGrid from '../../templates/SwissGrid';
 import ExecutiveGray from '../../templates/ExecutiveGray';
-import DesignControls from './DesignControls';
 
 const TEMPLATES = {
   'ModernDark': ModernDark,

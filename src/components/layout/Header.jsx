@@ -4,6 +4,7 @@ import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
 import { Globe, Trash2, PanelLeftOpen, FileText, Download, Upload, Languages } from 'lucide-react';
 import ThemeSwitcher from '../ui/ThemeSwitcher';
+import DesignControls from '../preview/DesignControls';
 import { generateWord } from '../../utils/wordGenerator';
 
 const Header = ({ onDownload }) => {
@@ -132,6 +133,8 @@ const Header = ({ onDownload }) => {
         </div>
 
         <div className="h-6 w-px bg-[var(--border-subtle)] mx-1"></div>
+        
+        <DesignControls />
 
         <button 
           onClick={handleReset}

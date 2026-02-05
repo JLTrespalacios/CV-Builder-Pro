@@ -35,19 +35,20 @@ const DesignControls = () => {
   const t = TRANSLATIONS[language];
 
   return (
-    <div className="absolute top-6 right-6 z-50 flex flex-col items-end print:hidden">
+    <div className="relative z-50 print:hidden">
       {/* Toggle Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg border transition-all duration-200 font-bold text-sm ${
+        className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all duration-200 font-medium text-xs ${
           isOpen 
-            ? 'bg-indigo-600 text-white border-indigo-600' 
-            : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
+            ? 'bg-indigo-600 text-white border-indigo-600 shadow-md' 
+            : 'bg-[var(--bg-panel)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-indigo-300 hover:text-indigo-600 hover:shadow-sm'
         }`}
+        title="Herramientas de Diseño"
       >
-        <Layout size={18} />
-        <span>Herramientas</span>
-        {isOpen ? <X size={16} /> : <ChevronDown size={16} />}
+        <Layout size={16} />
+        <span className="hidden sm:inline">Diseño</span>
+        {isOpen ? <X size={14} /> : <ChevronDown size={14} />}
       </button>
 
       <AnimatePresence>
@@ -57,7 +58,7 @@ const DesignControls = () => {
             animate={{ opacity: 1, scale: 1, y: 8 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="bg-white rounded-xl shadow-2xl border border-gray-200 w-80 overflow-hidden flex flex-col"
+            className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 w-80 overflow-hidden flex flex-col origin-top-right"
           >
             <div className="p-5 max-h-[70vh] overflow-y-auto custom-scrollbar">
               {/* Colors Section */}
