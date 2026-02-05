@@ -22,6 +22,8 @@ import TemplateSelector from '../components/editor/TemplateSelector';
 import SavedCVsPanel from '../components/editor/SavedCVsPanel';
 import AIAssistantPanel from '../components/editor/AIAssistantPanel';
 import CVPreview from '../components/preview/CVPreview';
+import LandingPage from '../components/layout/LandingPage';
+import TemplateSelectionOverlay from '../components/layout/TemplateSelectionOverlay';
 
 function App() {
   const componentRef = useRef();
@@ -29,6 +31,7 @@ function App() {
   const { appTheme } = useUIStore();
   const t = TRANSLATIONS[language];
   const [activeSection, setActiveSection] = useState('personal');
+  const [viewMode, setViewMode] = useState('landing'); // 'landing', 'templates', 'editor'
 
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
@@ -51,6 +54,29 @@ function App() {
     if (section === 'references') return cvData.references.length > 0;
     return false;
   };
+
+  if (viewMode === 'landing') {
+    return (
+      <>
+        <ToastContainer />
+        <LandingPage 
+          onCreateNew={() => setViewMode('templates')}
+          onImportExisting={() => setViewMode('editor')} 
+        />
+      </>
+    );
+  }
+
+  if (viewMode === 'templates') {
+    return (
+      <>
+        <ToastContainer />
+        <TemplateSelectionOverlay 
+          onSelect={() => setViewMode('editor')}
+        />
+      </>
+    );
+  }
 
   // Stepper Visual Component
   const Stepper = () => {

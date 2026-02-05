@@ -44,7 +44,7 @@ const TemplateSelector = () => {
 
       <div className="space-y-6">
         {/* Template Section */}
-        <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-xl shadow-slate-200/50 overflow-hidden relative z-20">
+        <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-xl shadow-slate-200/50 relative z-20">
           <div className="p-5 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
               <Sparkles size={14} className="text-amber-500" />

@@ -134,7 +134,7 @@ const CorporateBlue = ({ data, color }) => {
                     <div key={idx}>
                       <h4 className="text-xs font-bold text-slate-500 uppercase mb-2">{cat.category}</h4>
                       <ul className="space-y-1">
-                        {cat.items.split(',').map((item, i) => (
+                        {(cat.items || '').toString().split(',').map((item, i) => (
                           <li key={i} className="text-slate-700 text-sm font-medium flex items-center gap-2">
                             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }}></span>
                             {item.trim()}

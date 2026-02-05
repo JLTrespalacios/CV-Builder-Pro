@@ -155,7 +155,7 @@ const SwissGrid = ({ data, color }) => {
                   <div key={i} className="break-inside-avoid">
                     <h3 className="font-bold text-xs uppercase mb-1 text-gray-500">{cat.category}</h3>
                     <div className="flex flex-wrap gap-2">
-                      {cat.items.split(',').map((item, j) => (
+                      {(cat.items || '').toString().split(',').map((item, j) => (
                          <span key={j} className="px-3 py-2 bg-gray-100 text-sm font-bold text-gray-800">
                           {item.trim()}
                         </span>

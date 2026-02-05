@@ -190,7 +190,7 @@ const MinimalWhite = ({ data, color }) => {
                     <div key={idx} className="break-inside-avoid">
                       <h3 className="text-xs font-bold text-gray-400 uppercase mb-2">{cat.category}</h3>
                       <div className="flex flex-col gap-1">
-                          {cat.items.split(',').map((item, i) => (
+                          {(cat.items || '').toString().split(',').map((item, i) => (
                               <div key={i} className="flex items-center gap-2">
                                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }}></div>
                                 <span className="text-gray-700 font-medium text-sm">{item.trim()}</span>
