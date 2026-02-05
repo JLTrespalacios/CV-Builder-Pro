@@ -21,7 +21,7 @@ const templates = [
     badgeColor: 'bg-emerald-500',
     tags: { profile: 'Junior', industry: 'Tech', style: 'Minimalista' },
     layout: 'minimal',
-    description: 'Ideal para primeros empleos, perfiles claros y CVs limpios que pasan ATS sin fricción.'
+    description: 'Diseño limpio y directo que resalta lo esencial y facilita el paso por filtros ATS. Ideal para primeros empleos.'
   },
   { 
     id: 'SwissGrid', 
@@ -30,7 +30,7 @@ const templates = [
     badgeColor: 'bg-amber-500',
     tags: { profile: 'Senior', industry: 'Creativo', style: 'Moderno' },
     layout: 'grid',
-    description: 'Diseñado para profesionales con experiencia que necesitan destacar logros y resultados.'
+    description: 'Estructura moderna enfocada en logros, métricas y experiencia. Perfecta para perfiles con trayectoria sólida.'
   },
   { 
     id: 'ExecutiveGray', 
@@ -39,42 +39,42 @@ const templates = [
     badgeColor: 'bg-blue-500',
     tags: { profile: 'Ejecutivo', industry: 'Corporativo', style: 'Clásico' },
     layout: 'sidebar',
-    description: 'Currículum de alto nivel para cargos de liderazgo, dirección y toma de decisiones.'
+    description: 'Currículum elegante y estratégico para cargos de liderazgo, gerencia y alta responsabilidad.'
   },
   { 
     id: 'CorporateBlue', 
     name: 'Modern Authority', 
     tags: { profile: 'Senior', industry: 'Corporativo', style: 'Moderno' },
     layout: 'header-blue',
-    description: 'Proyecta dominio, claridad y confianza en entornos corporativos y tecnológicos.'
+    description: 'Proyecta dominio profesional con un diseño actual, claro y altamente competitivo.'
   },
   { 
     id: 'ModernDark', 
     name: 'Next Talent', 
     tags: { profile: 'Junior', industry: 'Tech', style: 'Moderno' },
     layout: 'dark',
-    description: 'Pensado para perfiles emergentes con alto potencial y proyección profesional.'
+    description: 'Ideal para talentos emergentes que buscan destacar potencial, habilidades y crecimiento.'
   },
   { 
     id: 'IvyLeague', 
     name: 'Classic Leader', 
     tags: { profile: 'Ejecutivo', industry: 'Corporativo', style: 'Clásico' },
     layout: 'serif',
-    description: 'Sobrio, elegante y estructurado para procesos de selección formales.'
+    description: 'Diseño sobrio y estructurado para procesos de selección formales y corporativos.'
   },
   { 
     id: 'TechGamer', 
     name: 'Smart Start', 
     tags: { profile: 'Junior', industry: 'Creativo', style: 'Moderno' },
     layout: 'accent',
-    description: 'Ideal para jóvenes profesionales que quieren un CV atractivo y bien estructurado.'
+    description: 'Plantilla ágil y atractiva para iniciar tu carrera con una imagen profesional sólida.'
   },
   { 
     id: 'AcademicAPA', 
     name: 'Senior Prestige', 
     tags: { profile: 'Senior', industry: 'Corporativo', style: 'Clásico' },
     layout: 'academic',
-    description: 'Un CV sólido y confiable para profesionales consolidados.'
+    description: 'Presentación clara y confiable para profesionales consolidados que buscan nuevas oportunidades.'
   },
 ];
 
@@ -459,7 +459,7 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
                     <div className="pt-3 border-t border-slate-50 flex flex-col gap-1.5">
                        <div className="flex items-start gap-2">
                           <CheckCircle2 size={14} className="text-emerald-500 mt-0.5 shrink-0" />
-                          <span className="text-xs text-slate-600 font-medium">Optimizado para ATS</span>
+                          <span className="text-xs text-slate-600 font-medium">Optimizada para sistemas ATS</span>
                        </div>
                        <div className="flex items-start gap-2">
                           <CheckCircle2 size={14} className="text-blue-500 mt-0.5 shrink-0" />
