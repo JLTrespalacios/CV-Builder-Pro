@@ -47,7 +47,7 @@ const DesignControls = () => {
         title="Herramientas de Diseño"
       >
         <Layout size={16} />
-        <span className="hidden sm:inline">Diseño</span>
+        <span className="hidden sm:inline">Herramientas</span>
         {isOpen ? <X size={14} /> : <ChevronDown size={14} />}
       </button>
 
