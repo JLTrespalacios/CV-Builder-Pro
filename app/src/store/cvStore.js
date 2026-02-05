@@ -86,38 +86,75 @@ const sortItemsByDate = (items, dateField) => {
   });
 };
 
+const SAMPLE_DATA = {
+  personal: {
+    name: "Juan Pérez",
+    role: "Desarrollador Full Stack",
+    email: "juan.perez@ejemplo.com",
+    phone: "+34 123 456 789",
+    location: "Madrid, España",
+    linkedin: "linkedin.com/in/juanperez",
+    website: "juanperez.dev",
+    github: "github.com/juanperez",
+    summary: "Desarrollador apasionado con más de 5 años de experiencia en la creación de aplicaciones web escalables. Especializado en JavaScript, React y Node.js. Comprometido con las mejores prácticas de código y la experiencia de usuario.",
+    photo: null,
+    showPhoto: true,
+    documentType: "DNI",
+    documentNumber: "12345678X",
+    expeditionPlace: "Madrid",
+    professionalLevel: "Senior"
+  },
+  experience: [
+    {
+      company: "Tech Solutions Inc.",
+      role: "Senior Frontend Developer",
+      duration: "2021 - Presente",
+      description: "Liderazgo técnico del equipo de frontend. Migración de arquitectura monolítica a micro-frontends. Mejora del rendimiento de carga en un 40%."
+    },
+    {
+      company: "WebStudio Agency",
+      role: "Web Developer",
+      duration: "2018 - 2021",
+      description: "Desarrollo de sitios web corporativos y e-commerce para clientes internacionales. Implementación de diseños responsivos y accesibles."
+    }
+  ],
+  education: [
+    {
+      institution: "Universidad Politécnica",
+      degree: "Ingeniería en Informática",
+      year: "2014 - 2018",
+      description: "Especialización en Ingeniería del Software. Matrícula de Honor en Trabajo Fin de Grado."
+    }
+  ],
+  skills: ["JavaScript", "React", "Node.js", "TypeScript", "Tailwind CSS", "Git", "Docker", "AWS"],
+  languages: [
+    { language: "Español", level: "Nativo" },
+    { language: "Inglés", level: "C1 - Avanzado" }
+  ],
+  projects: [
+    {
+      name: "E-commerce Dashboard",
+      description: "Panel de administración para gestión de inventario y ventas en tiempo real.",
+      link: "github.com/juanperez/dashboard"
+    }
+  ],
+  certifications: [
+    {
+      name: "AWS Certified Solutions Architect",
+      issuer: "Amazon Web Services",
+      date: "2023"
+    }
+  ],
+  hardSkills: ["Frontend Architecture", "CI/CD Pipelines", "Database Design"],
+  softSkills: ["Liderazgo de equipos", "Comunicación efectiva", "Resolución de problemas"],
+  references: [],
+  referencesAvailableOnRequest: true
+};
+
 export const useCVStore = create(
   persist(
     (set) => ({
-      cvData: {
-        personal: {
-          name: "",
-          role: "",
-          email: "",
-          phone: "",
-          location: "",
-          linkedin: "",
-          website: "",
-          github: "",
-          summary: "",
-          photo: null,
-          showPhoto: true,
-          documentType: "",
-          documentNumber: "",
-          expeditionPlace: "",
-          professionalLevel: ""
-        },
-        skills: [],
-        hardSkills: [],
-        softSkills: [],
-        experience: [],
-        projects: [],
-        education: [],
-        certifications: [],
-        languages: [],
-        references: [],
-        referencesAvailableOnRequest: false
-      },
+      cvData: SAMPLE_DATA,
       selectedTemplate: 'ModernDark',
       themeColor: '#2563eb', // Default blue-600
       design: {
@@ -339,10 +376,11 @@ export const useCVStore = create(
             certifications: [], languages: [], references: [],
             referencesAvailableOnRequest: false
         }
-      }))
+      })),
+      resetToSample: () => set({ cvData: SAMPLE_DATA }),
     }),
     {
-      name: 'cv-storage', // unique name for localStorage
+      name: 'cv-storage-v2', // Changed version to force refresh
       partialize: (state) => ({ 
         cvData: state.cvData, 
         selectedTemplate: state.selectedTemplate,
