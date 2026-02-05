@@ -73,8 +73,6 @@ const CVPreview = forwardRef((props, ref) => {
              <TemplateComponent data={cvData} color={themeColor} />
         </div>
       </div>
-      
-      <DesignControls />
     </div>
   );
 });
