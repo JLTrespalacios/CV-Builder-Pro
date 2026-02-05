@@ -16,57 +16,65 @@ const FILTERS = {
 const templates = [
   { 
     id: 'MinimalWhite', 
-    name: 'Budapest', 
+    name: 'Essential One', 
     badge: 'Más elegido', 
     badgeColor: 'bg-emerald-500',
     tags: { profile: 'Junior', industry: 'Tech', style: 'Minimalista' },
-    layout: 'minimal'
+    layout: 'minimal',
+    description: 'Ideal para primeros empleos, perfiles claros y CVs limpios que pasan ATS sin fricción.'
   },
   { 
     id: 'SwissGrid', 
-    name: 'Chicago', 
+    name: 'Impact Pro', 
     badge: 'Recomendado', 
     badgeColor: 'bg-amber-500',
     tags: { profile: 'Senior', industry: 'Creativo', style: 'Moderno' },
-    layout: 'grid'
+    layout: 'grid',
+    description: 'Diseñado para profesionales con experiencia que necesitan destacar logros y resultados.'
   },
   { 
     id: 'ExecutiveGray', 
-    name: 'Rotterdam', 
+    name: 'Executive Prime', 
     badge: 'Nuevo', 
     badgeColor: 'bg-blue-500',
     tags: { profile: 'Ejecutivo', industry: 'Corporativo', style: 'Clásico' },
-    layout: 'sidebar'
+    layout: 'sidebar',
+    description: 'Currículum de alto nivel para cargos de liderazgo, dirección y toma de decisiones.'
   },
   { 
     id: 'CorporateBlue', 
-    name: 'Riga', 
+    name: 'Modern Authority', 
     tags: { profile: 'Senior', industry: 'Corporativo', style: 'Moderno' },
-    layout: 'header-blue'
+    layout: 'header-blue',
+    description: 'Proyecta dominio, claridad y confianza en entornos corporativos y tecnológicos.'
   },
   { 
     id: 'ModernDark', 
-    name: 'Lima', 
+    name: 'Next Talent', 
     tags: { profile: 'Junior', industry: 'Tech', style: 'Moderno' },
-    layout: 'dark'
+    layout: 'dark',
+    description: 'Pensado para perfiles emergentes con alto potencial y proyección profesional.'
   },
   { 
     id: 'IvyLeague', 
-    name: 'Sydney', 
+    name: 'Classic Leader', 
     tags: { profile: 'Ejecutivo', industry: 'Corporativo', style: 'Clásico' },
-    layout: 'serif'
+    layout: 'serif',
+    description: 'Sobrio, elegante y estructurado para procesos de selección formales.'
   },
   { 
     id: 'TechGamer', 
-    name: 'Cali', 
+    name: 'Smart Start', 
     tags: { profile: 'Junior', industry: 'Creativo', style: 'Moderno' },
-    layout: 'accent'
+    layout: 'accent',
+    description: 'Ideal para jóvenes profesionales que quieren un CV atractivo y bien estructurado.'
   },
   { 
     id: 'AcademicAPA', 
-    name: 'Tokyo', 
+    name: 'Senior Prestige', 
     tags: { profile: 'Senior', industry: 'Corporativo', style: 'Clásico' },
-    layout: 'academic'
+    layout: 'academic',
+    description: 'Un CV sólido y confiable para profesionales consolidados.'
   },
 ];
 
@@ -396,13 +404,6 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
                     </div>
                   )}
 
-                  {/* ATS Friendly Indicator */}
-                  <div className="absolute top-3 left-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-white/90 backdrop-blur-sm text-emerald-600 text-[10px] font-bold px-2 py-1 rounded-md shadow-sm border border-emerald-100 flex items-center gap-1">
-                      <CheckCircle2 size={12} /> ATS-Friendly
-                    </div>
-                  </div>
-
                   {/* Preview Area */}
                   <div className="relative aspect-[1/1.4] w-full bg-slate-50 overflow-hidden p-6 transition-transform duration-500 group-hover:scale-[1.02]">
                     <div className="w-full h-full shadow-sm rounded-sm overflow-hidden relative transform transition-transform duration-500 group-hover:scale-105 origin-top">
@@ -423,33 +424,47 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
                   </div>
 
                   {/* Footer Info */}
-                  <div className="p-5 bg-white flex items-center justify-between border-t border-slate-100 mt-auto relative z-10">
-                    <div>
-                      <h3 className="font-bold text-slate-900 text-lg mb-1">{template.name}</h3>
-                      <div className="flex gap-2 text-[10px] text-slate-400 uppercase font-semibold tracking-wider">
-                         <span>{template.tags.profile}</span>
-                         <span>•</span>
-                         <span>{template.tags.style}</span>
+                  <div className="p-5 bg-white border-t border-slate-100 mt-auto relative z-10 flex flex-col gap-3">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-bold text-slate-900 text-lg mb-1">{template.name}</h3>
+                        <div className="flex gap-2 text-[10px] text-slate-500 uppercase font-bold tracking-wider">
+                           <span>{template.tags.profile}</span>
+                           <span className="text-slate-300">•</span>
+                           <span>{template.tags.style}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-1 shrink-0">
+                        <div className="group/icon relative">
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 cursor-help">
+                             <FileText size={14} />
+                          </div>
+                          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover/icon:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                            Word
+                          </span>
+                        </div>
+                        <div className="group/icon relative">
+                          <div className="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center border border-red-100 cursor-help">
+                             <FileText size={14} />
+                          </div>
+                          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover/icon:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                            PDF
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    
-                    <div className="flex gap-1">
-                      <div className="group/icon relative">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 cursor-help">
-                           <FileText size={14} />
-                        </div>
-                        <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover/icon:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          Word
-                        </span>
-                      </div>
-                      <div className="group/icon relative">
-                        <div className="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center border border-red-100 cursor-help">
-                           <FileText size={14} />
-                        </div>
-                        <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover/icon:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          PDF
-                        </span>
-                      </div>
+
+                    {/* Benefits List */}
+                    <div className="pt-3 border-t border-slate-50 flex flex-col gap-1.5">
+                       <div className="flex items-start gap-2">
+                          <CheckCircle2 size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                          <span className="text-xs text-slate-600 font-medium">Optimizado para ATS</span>
+                       </div>
+                       <div className="flex items-start gap-2">
+                          <CheckCircle2 size={14} className="text-blue-500 mt-0.5 shrink-0" />
+                          <span className="text-xs text-slate-600 font-medium leading-snug">{template.description}</span>
+                       </div>
                     </div>
                   </div>
                 </motion.div>
