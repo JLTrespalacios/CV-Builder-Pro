@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCVStore } from '../../store/cvStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { motion } from 'framer-motion';
-import { Type, Droplet } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Type, Droplet, Layout, ChevronUp, ChevronDown, X } from 'lucide-react';
 
 const PRESET_COLORS = [
   { name: 'Azul Profesional', value: '#2563eb' },
@@ -17,106 +17,175 @@ const PRESET_COLORS = [
   { name: 'Teal', value: '#0d9488' },
 ];
 
+const FONT_FAMILIES = [
+  { name: 'Inter (Moderno)', value: 'Inter, sans-serif' },
+  { name: 'Roboto (Estándar)', value: 'Roboto, sans-serif' },
+  { name: 'Open Sans (Limpio)', value: '"Open Sans", sans-serif' },
+  { name: 'Lato (Amigable)', value: 'Lato, sans-serif' },
+  { name: 'Montserrat (Geométrico)', value: 'Montserrat, sans-serif' },
+  { name: 'Merriweather (Serif)', value: 'Merriweather, serif' },
+  { name: 'Playfair Display (Elegante)', value: '"Playfair Display", serif' },
+  { name: 'Lora (Clásico)', value: 'Lora, serif' },
+  { name: 'Roboto Mono (Técnico)', value: '"Roboto Mono", monospace' },
+];
+
 const DesignControls = () => {
   const { design, updateDesign, language, themeColor, setThemeColor } = useCVStore();
+  const [isOpen, setIsOpen] = useState(false);
   const t = TRANSLATIONS[language];
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="absolute bottom-4 right-4 bg-white p-4 rounded-xl shadow-xl border border-gray-100 z-50 w-72 print:hidden max-h-[80vh] overflow-y-auto"
-    >
-      <h3 className="text-sm font-bold text-gray-800 mb-4 flex items-center gap-2">
-        <Droplet className="text-indigo-600" size={18} />
-        Colores
-      </h3>
+    <div className="absolute top-6 right-6 z-50 flex flex-col items-end print:hidden">
+      {/* Toggle Button */}
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg border transition-all duration-200 font-bold text-sm ${
+          isOpen 
+            ? 'bg-indigo-600 text-white border-indigo-600' 
+            : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
+        }`}
+      >
+        <Layout size={18} />
+        <span>Herramientas</span>
+        {isOpen ? <X size={16} /> : <ChevronDown size={16} />}
+      </button>
 
-      <div className="mb-6 space-y-3">
-        <div className="flex flex-wrap gap-2">
-          {PRESET_COLORS.map((color) => (
-            <button
-              key={color.value}
-              onClick={() => setThemeColor(color.value)}
-              className={`w-8 h-8 rounded-full border-2 transition-transform hover:scale-110 ${
-                themeColor === color.value ? 'border-indigo-600 scale-110' : 'border-transparent'
-              }`}
-              style={{ backgroundColor: color.value }}
-              title={color.name}
-            />
-          ))}
-          <div className="relative group">
-            <input
-              type="color"
-              value={themeColor}
-              onChange={(e) => setThemeColor(e.target.value)}
-              className="w-8 h-8 p-0 border-0 rounded-full overflow-hidden cursor-pointer"
-            />
-            <div className="absolute inset-0 rounded-full border-2 border-gray-200 pointer-events-none group-hover:border-indigo-400" />
-          </div>
-        </div>
-      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 8 }}
+            exit={{ opacity: 0, scale: 0.95, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="bg-white rounded-xl shadow-2xl border border-gray-200 w-80 overflow-hidden flex flex-col"
+          >
+            <div className="p-5 max-h-[70vh] overflow-y-auto custom-scrollbar">
+              {/* Colors Section */}
+              <div className="mb-6">
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <Droplet size={14} />
+                  Colores
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {PRESET_COLORS.map((color) => (
+                    <button
+                      key={color.value}
+                      onClick={() => setThemeColor(color.value)}
+                      className={`w-7 h-7 rounded-full border-2 transition-transform hover:scale-110 ${
+                        themeColor === color.value ? 'border-indigo-600 scale-110 shadow-md' : 'border-transparent'
+                      }`}
+                      style={{ backgroundColor: color.value }}
+                      title={color.name}
+                    />
+                  ))}
+                  <div className="relative group">
+                    <input
+                      type="color"
+                      value={themeColor}
+                      onChange={(e) => setThemeColor(e.target.value)}
+                      className="w-7 h-7 p-0 border-0 rounded-full overflow-hidden cursor-pointer"
+                    />
+                    <div className="absolute inset-0 rounded-full border-2 border-gray-200 pointer-events-none group-hover:border-indigo-400" />
+                  </div>
+                </div>
+              </div>
 
-      <div className="border-t border-gray-100 my-4" />
+              <div className="border-t border-gray-100 my-4" />
 
-      <h3 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
-        <Type className="text-indigo-600" size={18} />
-        Ajustes de Diseño
-      </h3>
+              {/* Typography Section */}
+              <div className="mb-6">
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <Type size={14} />
+                  Tipografía
+                </h3>
+                
+                {/* Font Family Selector */}
+                <div className="space-y-3 mb-4">
+                  <label className="text-xs text-gray-600 block font-medium">Fuente</label>
+                  <select 
+                    value={design.fontFamily || 'Inter, sans-serif'} 
+                    onChange={(e) => updateDesign({ fontFamily: e.target.value })}
+                    className="w-full text-sm p-2 border border-gray-300 rounded-lg bg-gray-50 hover:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                    style={{ fontFamily: design.fontFamily }}
+                  >
+                    {FONT_FAMILIES.map((font) => (
+                      <option key={font.value} value={font.value} style={{ fontFamily: font.value }}>
+                        {font.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-      <div className="space-y-4">
-        {/* Top Margin */}
-        <div className="space-y-1">
-          <label className="text-xs text-gray-500 flex justify-between">
-            <span>Mover contenido (Top)</span>
-            <span>{design.marginTop}px</span>
-          </label>
-          <input
-            type="range"
-            min="0"
-            max="200"
-            step="5"
-            value={design.marginTop}
-            onChange={(e) => updateDesign({ marginTop: parseInt(e.target.value) })}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-          />
-        </div>
+                {/* Font Size Slider */}
+                <div className="space-y-1">
+                  <label className="text-xs text-gray-600 flex justify-between font-medium">
+                    <span>Tamaño Base</span>
+                    <span className="bg-indigo-50 text-indigo-700 px-1.5 rounded text-[10px]">{design.fontSize}px</span>
+                  </label>
+                  <input
+                    type="range"
+                    min="12"
+                    max="20"
+                    step="1"
+                    value={design.fontSize}
+                    onChange={(e) => updateDesign({ fontSize: parseInt(e.target.value) })}
+                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  />
+                  <div className="flex justify-between text-[10px] text-gray-400 px-1">
+                    <span>A-</span>
+                    <span>A+</span>
+                  </div>
+                </div>
+              </div>
 
-        {/* Section Gap */}
-        <div className="space-y-1">
-          <label className="text-xs text-gray-500 flex justify-between">
-            <span>Espacio entre secciones</span>
-            <span>{design.sectionGap}px</span>
-          </label>
-          <input
-            type="range"
-            min="0"
-            max="50"
-            step="2"
-            value={design.sectionGap}
-            onChange={(e) => updateDesign({ sectionGap: parseInt(e.target.value) })}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-          />
-        </div>
+              <div className="border-t border-gray-100 my-4" />
 
-         {/* Font Size */}
-         <div className="space-y-1">
-          <label className="text-xs text-gray-500 flex justify-between">
-            <span>Tamaño Fuente Base</span>
-            <span>{design.fontSize}px</span>
-          </label>
-          <input
-            type="range"
-            min="12"
-            max="20"
-            step="1"
-            value={design.fontSize}
-            onChange={(e) => updateDesign({ fontSize: parseInt(e.target.value) })}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-          />
-        </div>
-      </div>
-    </motion.div>
+              {/* Layout Section */}
+              <div className="space-y-4">
+                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <Layout size={14} />
+                  Espaciado
+                </h3>
+
+                {/* Top Margin */}
+                <div className="space-y-1">
+                  <label className="text-xs text-gray-600 flex justify-between font-medium">
+                    <span>Margen Superior</span>
+                    <span className="bg-indigo-50 text-indigo-700 px-1.5 rounded text-[10px]">{design.marginTop}px</span>
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="200"
+                    step="5"
+                    value={design.marginTop}
+                    onChange={(e) => updateDesign({ marginTop: parseInt(e.target.value) })}
+                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  />
+                </div>
+
+                {/* Section Gap */}
+                <div className="space-y-1">
+                  <label className="text-xs text-gray-600 flex justify-between font-medium">
+                    <span>Separación Secciones</span>
+                    <span className="bg-indigo-50 text-indigo-700 px-1.5 rounded text-[10px]">{design.sectionGap}px</span>
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="50"
+                    step="2"
+                    value={design.sectionGap}
+                    onChange={(e) => updateDesign({ sectionGap: parseInt(e.target.value) })}
+                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

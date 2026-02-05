@@ -124,7 +124,8 @@ export const useCVStore = create(
         marginTop: 0,
         sectionGap: 10,
         lineHeight: 1.5,
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: 'Inter'
       },
       language: 'es',
       activeTab: 'editor', // 'editor', 'templates'

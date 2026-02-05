@@ -16,7 +16,8 @@ const MinimalWhite = ({ data, color }) => {
 
   const containerStyle = {
     paddingTop: `${design?.marginTop || 0}px`,
-    fontSize: `${design?.fontSize || 16}px`
+    fontSize: `${design?.fontSize || 16}px`,
+    fontFamily: design?.fontFamily || 'Inter'
   };
 
   const gapStyle = {

@@ -16,7 +16,8 @@ const IvyLeague = ({ data, color }) => {
 
   const containerStyle = {
     paddingTop: `${design?.marginTop || 0}px`,
-    fontSize: `${design?.fontSize || 14}px`
+    fontSize: `${design?.fontSize || 14}px`,
+    fontFamily: design?.fontFamily || 'Merriweather, serif'
   };
 
   const gapStyle = {
