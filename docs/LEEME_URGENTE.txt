@@ -8,11 +8,13 @@ PARA VER LA WEB FUNCIONANDO:
 1. Abre la carpeta de este proyecto en tu Windows.
    (La ruta es: c:\Users\tresp\Downloads\Generador de hojas de cv web)
 
-2. Busca el archivo llamado "iniciar_servidor.bat" y hazle DOBLE CLIC.
+2. Entra a la carpeta "scripts".
 
-3. Se abrirá una ventana negra. Espera unos segundos.
+3. Busca el archivo llamado "iniciar_servidor.bat" y hazle DOBLE CLIC.
 
-4. Cuando veas texto verde, vuelve a tu navegador y entra a:
+4. Se abrirá una ventana negra. Espera unos segundos.
+
+5. Cuando veas texto verde, vuelve a tu navegador y entra a:
    http://localhost:5173
 
 ¡ES TODO! Todo el código ya está arreglado y listo. Solo falta ese doble clic tuyo.

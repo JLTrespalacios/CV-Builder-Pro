@@ -14,17 +14,19 @@ Yo no puedo encenderlo desde aquí debido a restricciones de seguridad de este e
 ## Opción 1: Método Automático (Node.js nativo)
 
 1. Ve a la carpeta del proyecto en tu explorador de archivos.
-2. Haz doble clic en el archivo llamado **`iniciar_servidor.bat`**.
-3. Se abrirá una ventana negra que instalará lo necesario y arrancará el servidor.
-4. Cuando veas el mensaje `Local: http://localhost:5173`, abre tu navegador en esa dirección.
+2. Entra a la carpeta **`scripts`**.
+3. Haz doble clic en el archivo llamado **`iniciar_servidor.bat`**.
+4. Se abrirá una ventana negra que instalará lo necesario y arrancará el servidor.
+5. Cuando veas el mensaje `Local: http://localhost:5173`, abre tu navegador en esa dirección.
 
 ## Opción 2: Método con Docker (Si no tienes Node.js)
 
 Si prefieres usar Docker (como mencionaste):
 
 1. Asegúrate de tener **Docker Desktop** abierto.
-2. Haz doble clic en el archivo **`iniciar_con_docker.bat`**.
-3. Esto descargará la imagen de Node y arrancará el servidor automáticamente dentro de un contenedor.
+2. Ve a la carpeta del proyecto y entra a la carpeta **`scripts`**.
+3. Haz doble clic en el archivo **`iniciar_con_docker.bat`**.
+4. Esto descargará la imagen de Node y arrancará el servidor automáticamente dentro de un contenedor.
 
 ## Opción 3: Método Manual (Terminal)
 
