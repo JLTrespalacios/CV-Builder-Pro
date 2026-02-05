@@ -27,16 +27,61 @@ import TemplateSelectionOverlay from '../components/layout/TemplateSelectionOver
 
 function App() {
   const componentRef = useRef();
-  const { activeTab, isSidebarOpen, toggleSidebar, language, cvData } = useCVStore();
+  const { activeTab, isSidebarOpen, toggleSidebar, language, cvData, resetCVData, loadCVData } = useCVStore();
   const { appTheme } = useUIStore();
   const t = TRANSLATIONS[language];
   const [activeSection, setActiveSection] = useState('personal');
   const [viewMode, setViewMode] = useState('landing'); // 'landing', 'templates', 'editor'
+  const fileInputRef = useRef(null);
 
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
     documentTitle: 'Mi_CV_Profesional',
   });
+
+  const handleCreateNew = () => {
+    resetCVData();
+    setViewMode('templates');
+  };
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.type === 'application/json') {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const json = JSON.parse(e.target.result);
+          // Basic validation or just load it
+          // Assuming the JSON structure matches cvData
+          if (json.cvData) {
+              loadCVData(json.cvData);
+          } else {
+              loadCVData(json);
+          }
+          setViewMode('editor');
+          // You might want to show a success toast here
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+          alert("Error al leer el archivo JSON. Asegúrate de que es un archivo válido.");
+        }
+      };
+      reader.readAsText(file);
+    } else if (file.type === 'application/pdf') {
+      alert("La importación directa desde PDF aún está en desarrollo. Por favor, utiliza un archivo JSON de respaldo o crea tu CV desde cero.");
+      // Future: Implement PDF parsing or send to backend
+    } else {
+      alert("Formato no soportado. Por favor sube un archivo JSON o PDF.");
+    }
+    
+    // Reset input
+    event.target.value = '';
+  };
 
   const toggleSection = (section) => {
     setActiveSection(activeSection === section ? null : section);
@@ -60,8 +105,15 @@ function App() {
       <>
         <ToastContainer />
         <LandingPage 
-          onCreateNew={() => setViewMode('templates')}
-          onImportExisting={() => setViewMode('editor')} 
+          onCreateNew={handleCreateNew}
+          onImportExisting={handleImportClick} 
+        />
+        <input 
+          type="file" 
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          accept=".json,.pdf"
+          className="hidden"
         />
       </>
     );
