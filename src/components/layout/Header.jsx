@@ -85,19 +85,19 @@ const Header = ({ onDownload }) => {
   };
 
   return (
-    <header className="h-16 bg-[var(--bg-panel)] border-b border-[var(--border-subtle)] flex items-center justify-between px-8 z-10 relative shadow-sm transition-colors duration-300">
+    <header className="h-16 bg-[var(--bg-panel)]/80 backdrop-blur-md border-b border-[var(--border-subtle)] flex items-center justify-between px-6 z-50 sticky top-0 transition-colors duration-300">
       <div className="flex items-center gap-4">
         {!isSidebarOpen && (
           <button 
             onClick={toggleSidebar}
-            className="p-1.5 text-[var(--text-secondary)] hover:text-blue-600 hover:bg-[var(--bg-muted)] rounded-lg transition-colors mr-2 hover-btn"
+            className="p-2 text-[var(--text-secondary)] hover:text-[var(--primary)] hover:bg-[var(--bg-muted)] rounded-xl transition-all duration-300 hover:shadow-md hover:-translate-y-0.5"
             title="Mostrar panel lateral"
           >
             <PanelLeftOpen size={20} />
           </button>
         )}
-        <div className="flex items-center gap-2">
-          <div className="bg-blue-600 p-1.5 rounded-lg">
+        <div className="flex items-center gap-2 group">
+          <div className="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] p-1.5 rounded-xl shadow-lg shadow-[var(--primary)]/20 transition-transform duration-300 group-hover:scale-110">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M14 2V8H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -106,41 +106,44 @@ const Header = ({ onDownload }) => {
               <path d="M10 9H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-[var(--text-main)] tracking-tight flex items-center gap-2 font-sans">
-            CV<span className="text-blue-600">Builder</span>
-            <span className="text-[var(--text-secondary)] font-normal text-sm ml-1">Pro</span>
+          <h1 className="text-xl font-bold text-[var(--text-main)] tracking-tight flex items-center gap-1 font-sans">
+            CV<span className="text-[var(--primary)]">Builder</span>
+            <span className="bg-[var(--bg-muted)] text-[var(--text-secondary)] font-medium text-[10px] px-1.5 py-0.5 rounded-md ml-1 border border-[var(--border-subtle)] uppercase tracking-wide">Pro</span>
           </h1>
         </div>
       </div>
       
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <ThemeSwitcher />
         
-        <div className="flex items-center gap-2 bg-[var(--bg-app)] border border-[var(--border-subtle)] rounded-lg px-3 py-1.5 hover:border-blue-300 transition-colors">
-          <Globe size={14} className="text-[var(--text-secondary)]" />
+        <div className="flex items-center gap-2 bg-[var(--bg-panel)] border border-[var(--border-subtle)] rounded-xl px-3 py-1.5 hover:border-[var(--primary)]/30 transition-all hover:shadow-md hover:-translate-y-0.5 group cursor-pointer">
+          <Globe size={14} className="text-[var(--text-secondary)] group-hover:text-[var(--primary)] transition-colors" />
           <select 
             value={language} 
             onChange={(e) => setLanguage(e.target.value)}
             aria-label={t.language || "Seleccionar idioma"}
-            className="bg-transparent border-none text-xs text-[var(--text-main)] font-medium focus:outline-none cursor-pointer uppercase"
+            className="bg-transparent border-none text-xs text-[var(--text-main)] font-medium focus:outline-none cursor-pointer uppercase appearance-none pr-4"
+            style={{ backgroundImage: 'none' }}
           >
-            <option value="es">Español</option>
-            <option value="en">English</option>
-            <option value="fr">Français</option>
+            <option value="es">ES</option>
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
           </select>
         </div>
 
+        <div className="h-6 w-px bg-[var(--border-subtle)] mx-1"></div>
+
         <button 
           onClick={handleReset}
-          className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-[var(--text-secondary)] hover:text-red-600 transition-colors border border-transparent hover:bg-red-50 rounded-lg group hover-btn"
+          className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-[var(--text-secondary)] hover:text-red-500 transition-colors border border-transparent hover:bg-red-500/10 rounded-xl group"
+          title={t.reset}
         >
-          <Trash2 size={14} className="group-hover:text-red-600 text-[var(--text-secondary)]" />
-          {t.reset}
+          <Trash2 size={16} className="text-[var(--text-secondary)] group-hover:text-red-500 transition-colors" />
         </button>
         
         <button 
           onClick={handleDownloadWord}
-          className="px-4 py-2 bg-[var(--bg-app)] text-blue-600 border border-blue-200 text-xs font-bold rounded-lg hover:bg-blue-50 transition-all shadow-sm hover:shadow-md flex items-center gap-2 hover-btn"
+          className="px-4 py-2 bg-[var(--bg-panel)] text-[var(--primary)] border border-[var(--border-subtle)] hover:border-[var(--primary)]/50 text-xs font-bold rounded-xl hover:bg-[var(--bg-muted)] transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
           title="Descargar en Word"
         >
           <FileText size={16} />
@@ -149,8 +152,9 @@ const Header = ({ onDownload }) => {
 
         <button 
           onClick={onDownload}
-          className="px-6 py-2 bg-blue-600 text-white border border-blue-600 text-xs font-bold rounded-lg hover:bg-blue-700 transition-all shadow-sm hover:shadow-md flex items-center gap-2 hover-btn"
+          className="px-5 py-2 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white border border-transparent text-xs font-bold rounded-xl hover:shadow-lg hover:shadow-[var(--primary)]/25 transition-all hover:-translate-y-0.5 active:scale-95 flex items-center gap-2"
         >
+          <Download size={16} />
           {t.downloadPDF || "Descargar PDF"}
         </button>
       </div>

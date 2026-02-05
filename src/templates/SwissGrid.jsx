@@ -1,30 +1,53 @@
 import React from 'react';
 import { useCVStore } from '../store/cvStore';
+import EditableText from '../components/ui/EditableText';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange } from '../utils/formatters';
 
 const SwissGrid = ({ data, color }) => {
-  const { language } = useCVStore();
+  const { language, updatePersonal, design, themeColor } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, hardSkills, softSkills, certifications, languages, referencesAvailableOnRequest } = data;
-  const accentColor = color || '#000000'; // Default black for Swiss style
+  const accentColor = themeColor || color || '#000000';
+
+  const handlePersonalUpdate = (field, value) => {
+    updatePersonal({ [field]: value });
+  };
+
+  const containerStyle = {
+    paddingTop: `${design?.marginTop || 0}px`,
+    fontSize: `${design?.fontSize || 16}px`
+  };
+
+  const gridGapStyle = {
+    gap: `${design?.sectionGap || 32}px`
+  };
 
   return (
-    <div className="w-full h-full bg-white text-black font-sans p-12 min-h-full">
+    <div 
+      className="w-full h-full bg-white text-black font-sans p-12 print:p-0 min-h-full"
+      style={containerStyle}
+    >
       {/* Header Grid */}
-      <div className="grid grid-cols-12 gap-8 mb-16 border-t-8 pt-8" style={{ borderColor: accentColor }}>
+      <div 
+        className="grid grid-cols-12 mb-16 border-t-8 pt-8" 
+        style={{ borderColor: accentColor, ...gridGapStyle }}
+      >
         <div className="col-span-8">
-          <h1 className="text-6xl font-black tracking-tighter leading-none mb-4" style={{ color: accentColor }}>
-            {personal.name.split(' ').map((n, i) => (
-              <span key={i} className="block">{n}</span>
-            ))}
-          </h1>
+          <div className="text-6xl font-black tracking-tighter leading-none mb-4" style={{ color: accentColor }}>
+            <EditableText
+              value={personal.name}
+              onChange={(val) => handlePersonalUpdate('name', val)}
+              multiline={true}
+              placeholder="YOUR NAME"
+            />
+          </div>
         </div>
-        <div className="col-span-4 text-sm font-medium space-y-1 text-right">
-          <p>{personal.role}</p>
-          <p>{personal.email}</p>
-          <p>{personal.phone}</p>
-          <p>{personal.location}</p>
+        <div className="col-span-4 text-sm font-medium space-y-1 text-right flex flex-col items-end">
+          <EditableText value={personal.role} onChange={(val) => handlePersonalUpdate('role', val)} placeholder="Role" />
+          <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" />
+          <EditableText value={personal.phone} onChange={(val) => handlePersonalUpdate('phone', val)} placeholder="Phone" />
+          <EditableText value={personal.location} onChange={(val) => handlePersonalUpdate('location', val)} placeholder="Location" />
           {personal.linkedin && <p><a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.linkedin.replace(/^https?:\/\//, '')}</a></p>}
           {personal.github && <p>GitHub: <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.github.replace(/^https?:\/\//, '')}</a></p>}
           {personal.website && <p><a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.website.replace(/^https?:\/\//, '')}</a></p>}
@@ -32,7 +55,7 @@ const SwissGrid = ({ data, color }) => {
       </div>
 
       {/* Content Grid */}
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-12" style={gridGapStyle}>
         
         {/* Left Column: Experience */}
         <div className="col-span-8 space-y-12">
@@ -111,9 +134,13 @@ const SwissGrid = ({ data, color }) => {
             <h2 className="text-sm font-bold uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>
               {t.lblProfile}
             </h2>
-            <p className="text-lg font-light leading-relaxed">
-              {personal.summary}
-            </p>
+            <div className="text-lg font-light leading-relaxed">
+               <EditableText
+                value={personal.summary}
+                onChange={(val) => handlePersonalUpdate('summary', val)}
+                multiline={true}
+              />
+            </div>
           </section>
 
           <section className="break-inside-avoid">

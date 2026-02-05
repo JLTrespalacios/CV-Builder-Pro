@@ -33,33 +33,36 @@ const PersonalForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm hover-card">
-      <h3 className="text-lg font-semibold mb-4 text-slate-800">{t.personalInfo}</h3>
-      <form className="space-y-4">
+    <div className="bg-[var(--bg-panel)] p-6 rounded-2xl shadow-sm border border-[var(--border-subtle)] transition-all hover:shadow-md">
+      <h3 className="text-lg font-bold mb-6 text-[var(--text-main)] flex items-center gap-2">
+        <div className="w-1 h-6 bg-[var(--primary)] rounded-full"></div>
+        {t.personalInfo}
+      </h3>
+      <form className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t.fullName}</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.fullName}</label>
           <input
             {...register("name")}
-            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+            className="modern-input"
             placeholder={t.yourName}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t.professionalTitle}</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.professionalTitle}</label>
           <input
             {...register("role")}
-            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+            className="modern-input"
             placeholder={t.titlePlaceholder}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t.professionalLevel}</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.professionalLevel}</label>
           <div className="relative">
             <select
               {...register("professionalLevel")}
-              className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white text-slate-700 hover-input"
+              className="modern-input appearance-none"
             >
               <option value="">{t.selectLevel}</option>
               <option value="Junior">{t.levelJunior}</option>
@@ -69,7 +72,7 @@ const PersonalForm = () => {
               <option value="Architect">{t.levelArchitect}</option>
               <option value="Manager">{t.levelManager}</option>
             </select>
-            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-500">
+            <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[var(--text-secondary)]">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
           </div>
@@ -77,11 +80,11 @@ const PersonalForm = () => {
 
         <div>
           <div className="flex justify-between items-center mb-2">
-            <label className="block text-sm font-medium text-slate-700">{t.photo}</label>
+            <label className="block text-sm font-medium text-[var(--text-secondary)]">{t.photo}</label>
             <button
               type="button"
               onClick={() => updatePersonal({ showPhoto: !cvData.personal.showPhoto })}
-              className={`text-xs flex items-center gap-1 px-2 py-1 rounded transition-colors hover-btn ${cvData.personal.showPhoto ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}
+              className={`text-xs flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors font-medium ${cvData.personal.showPhoto ? 'bg-[var(--primary)]/10 text-[var(--primary)]' : 'bg-[var(--bg-muted)] text-[var(--text-secondary)]'}`}
               title={cvData.personal.showPhoto ? t.hidePhotoTitle : t.showPhotoTitle}
             >
               {cvData.personal.showPhoto ? (
@@ -98,104 +101,122 @@ const PersonalForm = () => {
             </button>
           </div>
           
-          <div className={`flex items-center gap-4 transition-all duration-300 ${cvData.personal.showPhoto ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-            {cvData.personal.photo && (
+          <div className={`flex items-center gap-5 transition-all duration-300 p-4 rounded-xl border border-[var(--border-subtle)] border-dashed ${cvData.personal.showPhoto ? 'bg-[var(--bg-muted)]/30' : 'opacity-60 grayscale bg-[var(--bg-muted)]'}`}>
+            {cvData.personal.photo ? (
               <img 
                 src={cvData.personal.photo} 
                 alt="Preview" 
-                className="w-16 h-16 rounded-full object-cover border border-slate-200"
+                className="w-16 h-16 rounded-full object-cover ring-2 ring-[var(--bg-panel)] shadow-md"
               />
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-[var(--bg-muted)] flex items-center justify-center text-[var(--text-secondary)] border border-[var(--border-subtle)]">
+                <Upload size={20} />
+              </div>
             )}
-            <label className="cursor-pointer bg-slate-800 text-white px-4 py-2 rounded-md hover:bg-slate-900 flex items-center gap-2 text-sm transition-colors hover-btn">
-              <Upload size={16} />
-              {cvData.personal.photo ? t.changePhoto : t.uploadPhoto}
-              <input 
-                type="file" 
-                accept="image/*" 
-                onChange={handleImageUpload} 
-                className="hidden" 
-              />
-            </label>
-            {cvData.personal.photo && (
-              <button
-                type="button"
-                onClick={() => updatePersonal({ photo: null })}
-                className="text-sm text-red-500 hover:text-red-700"
-              >
-                {t.deletePhoto}
-              </button>
-            )}
+            
+            <div className="flex-1">
+              <div className="flex gap-3">
+                <label className="cursor-pointer bg-[var(--text-main)] text-[var(--bg-panel)] px-4 py-2 rounded-xl hover:opacity-90 flex items-center gap-2 text-xs font-bold transition-all shadow-sm hover:shadow-md active:scale-95">
+                  <Upload size={14} />
+                  {cvData.personal.photo ? t.changePhoto : t.uploadPhoto}
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageUpload} 
+                    className="hidden" 
+                  />
+                </label>
+                {cvData.personal.photo && (
+                  <button
+                    type="button"
+                    onClick={() => updatePersonal({ photo: null })}
+                    className="text-xs text-red-500 hover:text-red-600 font-medium px-2"
+                  >
+                    {t.deletePhoto}
+                  </button>
+                )}
+              </div>
+              <p className="text-[10px] text-[var(--text-secondary)] mt-2">Recomendado: 400x400px, JPG o PNG</p>
+            </div>
           </div>
           {!cvData.personal.showPhoto && (
-             <p className="text-xs text-slate-500 mt-2 italic">{t.photoHiddenNote}</p>
+             <p className="text-xs text-[var(--text-secondary)] mt-2 italic flex items-center gap-1">
+               <EyeOff size={12} />
+               {t.photoHiddenNote}
+             </p>
           )}
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">{t.lblEmail}</label>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.lblEmail}</label>
             <input
               {...register("email")}
-              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+              className="modern-input"
               placeholder={t.emailPlaceholder}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">{t.lblPhone}</label>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.lblPhone}</label>
             <input
               {...register("phone")}
-              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+              className="modern-input"
               placeholder={t.phonePlaceholder}
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t.lblLocation}</label>
-          <input
-            {...register("location")}
-            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
-            placeholder={t.locationPlaceholder}
-          />
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.lblLocation}</label>
+          <div className="relative">
+            <input
+              {...register("location")}
+              className="modern-input pl-10"
+              placeholder={t.locationPlaceholder}
+            />
+            <MapPin size={16} className="absolute left-3.5 top-3.5 text-[var(--text-secondary)]" />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t.linkedin}</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.linkedin}</label>
           <input
             {...register("linkedin")}
-            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+            className="modern-input"
             placeholder={t.linkedinPlaceholder}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t.github}</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.github}</label>
           <input
             {...register("github")}
-            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+            className="modern-input"
             placeholder="github.com/username"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t.lblWebsite}</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.lblWebsite}</label>
           <input
             {...register("website")}
-            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+            className="modern-input"
             placeholder={t.websitePlaceholder}
           />
         </div>
 
         {/* Document Identification Module */}
-        <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 mt-2 hover-list-item">
-          <h4 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
-            <CreditCard size={16} className="text-slate-500" />
+        <div className="bg-[var(--bg-muted)]/50 p-5 rounded-xl border border-[var(--border-subtle)] mt-2 hover:border-[var(--primary)]/20 transition-colors">
+          <h4 className="text-sm font-bold text-[var(--text-main)] mb-4 flex items-center gap-2">
+            <div className="p-1.5 bg-[var(--bg-panel)] rounded-lg shadow-sm">
+              <CreditCard size={14} className="text-[var(--primary)]" />
+            </div>
             {t.idDocument}
           </h4>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">{t.idType}</label>
+              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">{t.idType}</label>
               <div className="relative">
                 <select
                   {...register("documentType")}

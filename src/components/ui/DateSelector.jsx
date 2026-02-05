@@ -87,28 +87,30 @@ const DateSelector = ({
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-1">
-        <label className="block text-sm font-medium text-slate-700">{label}</label>
+      <div className="flex justify-between items-center mb-1.5">
+        <label className="block text-sm font-medium text-[var(--text-secondary)]">{label}</label>
         {isRange && (
           <select 
             value={dateState.mode}
             onChange={handleModeChange}
-            className="text-xs border-none bg-slate-100 rounded px-2 py-1 text-slate-700 focus:ring-0 cursor-pointer hover:bg-slate-200"
+            className="text-xs border border-[var(--border-subtle)] bg-[var(--bg-muted)] rounded-lg px-2 py-1 text-[var(--text-secondary)] focus:outline-none focus:border-[var(--primary)] cursor-pointer hover:bg-[var(--bg-panel)] transition-colors appearance-none"
           >
-            <option value="range">Rango (Inicio - Fin)</option>
-            {allowPresent && <option value="present">En curso / Actualidad</option>}
-            <option value="single">Fecha única / Certificado</option>
+            <option value="range">Rango</option>
+            {allowPresent && <option value="present">Actualidad</option>}
+            <option value="single">Fecha única</option>
           </select>
         )}
       </div>
       
-      <div className={`grid ${dateState.mode === 'range' ? 'grid-cols-2' : 'grid-cols-1'} gap-2`}>
+      <div className={`grid ${dateState.mode === 'range' ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
         <div className="relative">
           <input
-            type="date"
+            type="text"
+            onFocus={(e) => e.target.type = 'date'}
+            onBlur={(e) => {if(!e.target.value) e.target.type = 'text'}}
             value={dateState.start}
             onChange={handleStartChange}
-            className="w-full pl-3 pr-2 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm hover-input"
+            className="modern-input text-sm"
             placeholder={placeholder}
             required={required}
           />
@@ -117,10 +119,13 @@ const DateSelector = ({
         {dateState.mode === 'range' && (
           <div className="relative">
             <input
-              type="date"
+              type="text"
+              onFocus={(e) => e.target.type = 'date'}
+              onBlur={(e) => {if(!e.target.value) e.target.type = 'text'}}
               value={dateState.end}
               onChange={handleEndChange}
-              className="w-full pl-3 pr-2 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm hover-input"
+              className="modern-input text-sm"
+              placeholder="Fin"
             />
           </div>
         )}

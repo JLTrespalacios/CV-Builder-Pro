@@ -2,26 +2,70 @@ import React from 'react';
 import { useCVStore } from '../store/cvStore';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
+import { EditableText } from '../components/ui/EditableText';
 
 const MinimalWhite = ({ data, color }) => {
-  const { language } = useCVStore();
+  const { language, updatePersonal, design, themeColor } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, hardSkills, softSkills, certifications, languages, referencesAvailableOnRequest } = data;
-  const accentColor = color || '#111827'; // Default gray-900
+  const accentColor = themeColor || color || '#111827'; // Default gray-900
+
+  const handlePersonalUpdate = (field, value) => {
+    updatePersonal({ [field]: value });
+  };
+
+  const containerStyle = {
+    paddingTop: `${design?.marginTop || 0}px`,
+    fontSize: `${design?.fontSize || 16}px`
+  };
+
+  const gapStyle = {
+      gap: `${design?.sectionGap || 40}px` // 40px default for MinimalWhite (gap-10)
+  };
 
   return (
-    <div className="w-full min-h-full bg-white text-gray-800 font-sans p-12">
+    <div 
+      className="w-full min-h-full bg-white text-gray-800 font-sans p-12 print:p-0"
+      style={containerStyle}
+    >
       {/* Header */}
       <header className="border-b-2 pb-8 mb-8 flex justify-between items-start" style={{ borderColor: accentColor }}>
         <div>
-          <h1 className="text-5xl font-bold uppercase tracking-tight mb-2" style={{ color: accentColor }}>
-            {personal.name}
-          </h1>
-          <p className="text-xl text-gray-500 font-light uppercase tracking-widest mb-4">{personal.role}</p>
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600 font-medium uppercase tracking-wider">
-            {personal.email && <span>{personal.email}</span>}
-            {personal.phone && <span>• {personal.phone}</span>}
-            {personal.location && <span>• {personal.location}</span>}
+          <div className="mb-2">
+            <EditableText
+              value={personal.name}
+              onChange={(val) => handlePersonalUpdate('name', val)}
+              className="text-5xl font-bold uppercase tracking-tight"
+              style={{ color: accentColor }}
+              placeholder="Nombre"
+            />
+          </div>
+          <div className="mb-4">
+             <EditableText
+              value={personal.role}
+              onChange={(val) => handlePersonalUpdate('role', val)}
+              className="text-xl text-gray-500 font-light uppercase tracking-widest"
+              placeholder="Cargo / Título"
+            />
+          </div>
+          <div className="flex flex-wrap gap-4 text-sm text-gray-600 font-medium uppercase tracking-wider items-center">
+            <EditableText
+                value={personal.email}
+                onChange={(val) => handlePersonalUpdate('email', val)}
+                placeholder="Email"
+            />
+            <span>•</span>
+            <EditableText
+                value={personal.phone}
+                onChange={(val) => handlePersonalUpdate('phone', val)}
+                placeholder="Teléfono"
+            />
+            <span>•</span>
+            <EditableText
+                value={personal.location}
+                onChange={(val) => handlePersonalUpdate('location', val)}
+                placeholder="Ubicación"
+            />
             {personal.documentNumber && <span>• {getDocumentTypeLabel(personal.documentType, t) || 'ID'}: {personal.documentNumber}</span>}
           </div>
           <div className="flex flex-wrap gap-4 text-xs text-gray-500 font-medium uppercase tracking-wider mt-2">
@@ -41,15 +85,20 @@ const MinimalWhite = ({ data, color }) => {
         {/* Main Column */}
         <div>
           {/* Profile */}
-          <section className="mb-10">
+          <section className="mb-10" style={{ marginBottom: gapStyle.gap }}>
             <h2 className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblProfile}</h2>
-            <p className="text-gray-700 leading-relaxed text-lg whitespace-pre-line">
-              {personal.summary || t.pendingSummary}
-            </p>
+            <div className="text-gray-700 leading-relaxed text-lg whitespace-pre-line">
+               <EditableText
+                value={personal.summary}
+                onChange={(val) => handlePersonalUpdate('summary', val)}
+                multiline={true}
+                placeholder={t.pendingSummary}
+              />
+            </div>
           </section>
 
           {/* Experience */}
-          <section className="mb-10">
+          <section className="mb-10" style={{ marginBottom: gapStyle.gap }}>
             <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblExperience}</h2>
             <div className="space-y-8">
               {experience.length === 0 ? (
@@ -72,7 +121,7 @@ const MinimalWhite = ({ data, color }) => {
 
           {/* Projects */}
           {projects && projects.length > 0 && (
-            <section className="mb-10">
+            <section className="mb-10" style={{ marginBottom: gapStyle.gap }}>
               <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblProjects}</h2>
               <div className="space-y-8">
                   {projects.map((proj, i) => (
@@ -92,7 +141,7 @@ const MinimalWhite = ({ data, color }) => {
           )}
           
            {/* Education */}
-           <section className="mb-10">
+           <section className="mb-10" style={{ marginBottom: gapStyle.gap }}>
             <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblEducation}</h2>
             <div className="space-y-6">
               {education.length === 0 ? (
@@ -112,7 +161,7 @@ const MinimalWhite = ({ data, color }) => {
 
           {/* Certifications */}
           {certifications && certifications.length > 0 && (
-            <section className="mb-10">
+            <section className="mb-10" style={{ marginBottom: gapStyle.gap }}>
               <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblCertifications}</h2>
               <div className="space-y-4">
                   {certifications.map((cert, i) => (
@@ -131,7 +180,7 @@ const MinimalWhite = ({ data, color }) => {
         {/* Sidebar Column */}
         <div>
            {/* Hard Skills */}
-           <section className="mb-12">
+           <section className="mb-12" style={{ marginBottom: gapStyle.gap }}>
             <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblHardSkills || t.lblSkills}</h2>
             {hardSkills && hardSkills.length > 0 ? (
                 <div className="space-y-6">
@@ -163,7 +212,7 @@ const MinimalWhite = ({ data, color }) => {
 
           {/* Soft Skills */}
            {softSkills && softSkills.length > 0 && (
-             <section className="mb-12">
+             <section className="mb-12" style={{ marginBottom: gapStyle.gap }}>
                <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblSoftSkills}</h2>
                <div className="flex flex-col gap-2">
                   {softSkills.map((skill, index) => (
@@ -178,7 +227,7 @@ const MinimalWhite = ({ data, color }) => {
 
            {/* Languages */}
            {languages && languages.length > 0 && (
-             <section className="mb-12">
+             <section className="mb-12" style={{ marginBottom: gapStyle.gap }}>
                <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblLanguages}</h2>
                <div className="space-y-2">
                   {languages.map((lang, index) => (
@@ -193,7 +242,7 @@ const MinimalWhite = ({ data, color }) => {
 
            {/* References */}
            {(referencesAvailableOnRequest || (references && references.length > 0)) && (
-            <section className="mb-12">
+            <section className="mb-12" style={{ marginBottom: gapStyle.gap }}>
               <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblReferences}</h2>
               
               {referencesAvailableOnRequest ? (

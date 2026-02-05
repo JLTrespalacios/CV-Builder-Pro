@@ -1,19 +1,38 @@
 import React from 'react';
 import { useCVStore } from '../store/cvStore';
+import EditableText from '../components/ui/EditableText';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange } from '../utils/formatters';
 
 const ExecutiveGray = ({ data, color }) => {
-  const { language } = useCVStore();
+  const { language, updatePersonal, design, themeColor } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, hardSkills, softSkills, certifications, languages, referencesAvailableOnRequest } = data;
-  const accentColor = color || '#374151'; // Default gray-700
+  const accentColor = themeColor || color || '#374151';
+
+  const handlePersonalUpdate = (field, value) => {
+    updatePersonal({ [field]: value });
+  };
+
+  const rootStyle = {
+    fontSize: `${design?.fontSize || 16}px`
+  };
+
+  const paddingTopStyle = {
+    paddingTop: `${design?.marginTop || 0}px`
+  };
+  
+  const gapStyle = {
+    gap: `${design?.sectionGap || 40}px`,
+    display: 'flex',
+    flexDirection: 'column'
+  };
 
   return (
-    <div className="w-full h-full bg-white text-gray-800 font-sans grid grid-cols-[1fr_2fr] min-h-full">
+    <div className="w-full h-full bg-white text-gray-800 font-sans grid grid-cols-[1fr_2fr] min-h-full" style={rootStyle}>
       
       {/* Sidebar */}
-      <div className="bg-gray-100 p-8 border-r border-gray-200 flex flex-col gap-10">
+      <div className="bg-gray-100 p-8 print:p-0 border-r border-gray-200 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
         
         {/* Photo & Contact */}
         <div className="text-center break-inside-avoid">
@@ -26,15 +45,21 @@ const ExecutiveGray = ({ data, color }) => {
           <div className="text-left space-y-3 text-sm text-gray-600 mt-6">
             <div className="flex items-center gap-3">
               <span className="font-bold text-gray-900 w-16">{t.lblEmail}</span>
-              <span className="truncate">{personal.email}</span>
+              <div className="flex-1 overflow-hidden">
+                <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" />
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <span className="font-bold text-gray-900 w-16">{t.lblPhone}</span>
-              <span>{personal.phone}</span>
+              <div className="flex-1 overflow-hidden">
+                <EditableText value={personal.phone} onChange={(val) => handlePersonalUpdate('phone', val)} placeholder="Phone" />
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <span className="font-bold text-gray-900 w-16">{t.lblLocation}</span>
-              <span>{personal.location}</span>
+              <div className="flex-1 overflow-hidden">
+                <EditableText value={personal.location} onChange={(val) => handlePersonalUpdate('location', val)} placeholder="Location" />
+              </div>
             </div>
             {personal.linkedin && (
               <div className="flex items-center gap-3">
@@ -65,7 +90,7 @@ const ExecutiveGray = ({ data, color }) => {
 
         {/* Education */}
         <div>
-          <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 border-gray-300 pb-2 mb-4">
+          <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor }}>
             {t.lblEducation}
           </h3>
           <div className="space-y-4">
@@ -86,7 +111,7 @@ const ExecutiveGray = ({ data, color }) => {
         {/* Certifications */}
         {certifications && certifications.length > 0 && (
           <div>
-            <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 border-gray-300 pb-2 mb-4">
+            <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor }}>
               {t.lblCertifications}
             </h3>
             <div className="space-y-4">
@@ -103,7 +128,7 @@ const ExecutiveGray = ({ data, color }) => {
 
         {/* Skills */}
         <div>
-          <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 border-gray-300 pb-2 mb-4">
+          <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor }}>
             {t.lblSkills}
           </h3>
           
@@ -115,7 +140,7 @@ const ExecutiveGray = ({ data, color }) => {
                   <ul className="space-y-1">
                     {cat.items.split(',').map((item, i) => (
                       <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }}></span>
                         {item.trim()}
                       </li>
                     ))}
@@ -127,7 +152,7 @@ const ExecutiveGray = ({ data, color }) => {
             <ul className="space-y-2">
               {skills.map((skill, i) => (
                 <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }}></span>
                   {skill}
                 </li>
               ))}
@@ -140,7 +165,7 @@ const ExecutiveGray = ({ data, color }) => {
               <ul className="space-y-1">
                 {softSkills.map((skill, i) => (
                   <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }}></span>
                     {skill}
                   </li>
                 ))}
@@ -165,29 +190,38 @@ const ExecutiveGray = ({ data, color }) => {
       </div>
 
       {/* Main Content */}
-      <div className="p-10 flex flex-col">
+      <div className="p-10 print:p-0 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
         {/* Header */}
-        <header className="mb-12 border-b-4 pb-6" style={{ borderColor: accentColor }}>
-          <h1 className="text-4xl font-serif font-bold text-gray-900 mb-2 tracking-tight">
-            {personal.name.toUpperCase()}
-          </h1>
-          <p className="text-xl text-gray-500 font-light uppercase tracking-wider">
-            {personal.role}
-          </p>
+        <header className="border-b-4 pb-6" style={{ borderColor: accentColor }}>
+          <div className="text-4xl font-serif font-bold text-gray-900 mb-2 tracking-tight">
+            <EditableText 
+              value={personal.name} 
+              onChange={(val) => handlePersonalUpdate('name', val)} 
+              placeholder="NAME"
+              className="uppercase"
+            />
+          </div>
+          <div className="text-xl text-gray-500 font-light uppercase tracking-wider">
+             <EditableText value={personal.role} onChange={(val) => handlePersonalUpdate('role', val)} placeholder="ROLE" />
+          </div>
         </header>
 
         {/* Profile */}
-        <section className="mb-10 break-inside-avoid">
+        <section className="break-inside-avoid">
           <h2 className="text-lg font-bold uppercase tracking-wider mb-4 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
             {t.lblProfile}
           </h2>
-          <p className="text-gray-600 leading-relaxed text-lg font-light">
-            {personal.summary}
-          </p>
+          <div className="text-gray-600 leading-relaxed text-lg font-light">
+             <EditableText 
+                value={personal.summary} 
+                onChange={(val) => handlePersonalUpdate('summary', val)} 
+                multiline={true}
+            />
+          </div>
         </section>
 
         {/* Experience */}
-        <section className="mb-10 flex-1">
+        <section className="flex-1">
           <h2 className="text-lg font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
             {t.lblExperience}
           </h2>
@@ -211,7 +245,7 @@ const ExecutiveGray = ({ data, color }) => {
 
         {/* Projects */}
         {projects && projects.length > 0 && (
-          <section className="mb-10">
+          <section>
             <h2 className="text-lg font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
               {t.lblProjects}
             </h2>

@@ -2,24 +2,38 @@ import React from 'react';
 import { useCVStore } from '../store/cvStore';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
+import { EditableText } from '../components/ui/EditableText';
 
 const ModernDark = ({ data, color }) => {
-  const { language } = useCVStore();
+  const { language, updatePersonal, cvData, design, themeColor } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, hardSkills, softSkills, certifications, languages, referencesAvailableOnRequest } = data;
-  const accentColor = color || '#2563eb';
+  const accentColor = themeColor || color || '#2563eb';
+
+  // Helper to update specific fields
+  const handlePersonalUpdate = (field, value) => {
+    updatePersonal({ [field]: value });
+  };
+
+  const containerStyle = {
+    background: 'linear-gradient(to right, #0f172a 33.333%, #ffffff 33.333%)',
+    WebkitPrintColorAdjust: 'exact',
+    printColorAdjust: 'exact',
+    paddingTop: `${design?.marginTop || 0}px`,
+    fontSize: `${design?.fontSize || 16}px`
+  };
+
+  const gapStyle = {
+      gap: `${design?.sectionGap || 32}px`
+  };
 
   return (
     <div 
       className="w-full min-h-full text-gray-800 font-sans grid grid-cols-[1fr_2fr]"
-      style={{ 
-        background: 'linear-gradient(to right, #0f172a 33.333%, #ffffff 33.333%)',
-        WebkitPrintColorAdjust: 'exact',
-        printColorAdjust: 'exact'
-      }}
+      style={containerStyle}
     >
       {/* Sidebar / Left Column */}
-      <div className="text-white p-8 flex flex-col gap-8">
+      <div className="text-white p-8 print:p-0 flex flex-col" style={gapStyle}>
         <div className="text-center break-inside-avoid">
           {/* Photo */}
           {personal.showPhoto && (
@@ -33,9 +47,25 @@ const ModernDark = ({ data, color }) => {
           )}
           <h2 className="text-xl font-bold uppercase tracking-wider mb-2" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblContact}</h2>
           <div className="text-sm space-y-2 text-slate-300">
-            <p>{personal.email}</p>
-            <p>{personal.phone}</p>
-            <p>{personal.location}</p>
+            <EditableText 
+              value={personal.email} 
+              onChange={(val) => handlePersonalUpdate('email', val)}
+              className="block"
+              placeholder="Email"
+            />
+            <EditableText 
+              value={personal.phone} 
+              onChange={(val) => handlePersonalUpdate('phone', val)}
+              className="block"
+              placeholder="Teléfono"
+            />
+            <EditableText 
+              value={personal.location} 
+              onChange={(val) => handlePersonalUpdate('location', val)}
+              className="block"
+              placeholder="Ubicación"
+            />
+
             {personal.documentNumber && (
               <p className="text-xs">
                 <span className="font-semibold text-slate-400 block">{getDocumentTypeLabel(personal.documentType, t) || 'ID'}:</span>
@@ -127,21 +157,36 @@ const ModernDark = ({ data, color }) => {
       </div>
 
       {/* Main Content / Right Column */}
-      <div className="p-8">
+      <div className="p-8 print:p-0 flex flex-col" style={gapStyle}>
         <div className="mb-10 break-inside-avoid">
           <h1 className="text-5xl font-bold text-slate-900 leading-tight mb-2" style={{ color: accentColor }}>
-            {personal.name}
+            <EditableText 
+              value={personal.name} 
+              onChange={(val) => handlePersonalUpdate('name', val)}
+              placeholder="Nombre Completo"
+            />
           </h1>
-          <p className="text-xl text-slate-600 font-light">{personal.role || "Full Stack Developer"}</p>
+          <div className="text-xl text-slate-600 font-light">
+             <EditableText 
+              value={personal.role} 
+              onChange={(val) => handlePersonalUpdate('role', val)}
+              placeholder="Cargo / Título"
+            />
+          </div>
         </div>
 
         <div className="mb-8 break-inside-avoid">
           <h2 className="text-2xl font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>
             {t.lblProfile}
           </h2>
-          <p className="text-slate-600 leading-relaxed whitespace-pre-line">
-            {personal.summary || t.pendingSummary}
-          </p>
+          <div className="text-slate-600 leading-relaxed whitespace-pre-line">
+            <EditableText 
+              value={personal.summary} 
+              onChange={(val) => handlePersonalUpdate('summary', val)}
+              multiline={true}
+              placeholder={t.pendingSummary}
+            />
+          </div>
         </div>
 
         <div className="mb-8">

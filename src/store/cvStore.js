@@ -120,12 +120,22 @@ export const useCVStore = create(
       },
       selectedTemplate: 'ModernDark',
       themeColor: '#2563eb', // Default blue-600
+      design: {
+        marginTop: 0,
+        sectionGap: 10,
+        lineHeight: 1.5,
+        fontSize: 16
+      },
       language: 'es',
       activeTab: 'editor', // 'editor', 'templates'
       isSidebarOpen: true,
       
       setLanguage: (lang) => set({ language: lang }),
       
+      updateDesign: (designUpdate) => set((state) => ({
+         design: { ...state.design, ...designUpdate }
+      })),
+
       updatePersonal: (data) => set((state) => ({
         cvData: { ...state.cvData, personal: { ...state.cvData.personal, ...data } }
       })),

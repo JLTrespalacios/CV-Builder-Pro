@@ -2,24 +2,51 @@ import React from 'react';
 import { useCVStore } from '../store/cvStore';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
+import { EditableText } from '../components/ui/EditableText';
 
 const CorporateBlue = ({ data, color }) => {
-  const { language } = useCVStore();
+  const { language, updatePersonal, design, themeColor } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, hardSkills, softSkills, languages, certifications } = data;
-  const accentColor = color || '#1e3a8a'; // Default blue-900
+  const accentColor = themeColor || color || '#1e3a8a'; // Default blue-900
+
+  const handlePersonalUpdate = (field, value) => {
+    updatePersonal({ [field]: value });
+  };
+
+  const containerStyle = {
+    paddingTop: `${design?.marginTop || 0}px`,
+    fontSize: `${design?.fontSize || 16}px`
+  };
+
+  const gapStyle = {
+      gap: `${design?.sectionGap || 32}px`
+  };
 
   return (
-    <div className="w-full h-full bg-white text-gray-800 font-sans min-h-full flex flex-col">
+    <div 
+      className="w-full h-full bg-white text-gray-800 font-sans min-h-full flex flex-col"
+      style={containerStyle}
+    >
       {/* Header */}
-      <header className="text-white p-10 flex justify-between items-center" style={{ backgroundColor: accentColor }}>
+      <header className="text-white p-10 print:p-0 flex justify-between items-center" style={{ backgroundColor: accentColor }}>
         <div>
-          <h1 className="text-4xl font-bold uppercase tracking-wide mb-2">
-            {personal.name}
-          </h1>
-          <p className="text-lg tracking-widest uppercase opacity-80">
-            {personal.role || experience[0]?.role || "Professional Profile"}
-          </p>
+          <div className="mb-2">
+            <EditableText
+              value={personal.name}
+              onChange={(val) => handlePersonalUpdate('name', val)}
+              className="text-4xl font-bold uppercase tracking-wide"
+              placeholder="Nombre"
+            />
+          </div>
+          <div className="mb-0">
+             <EditableText
+              value={personal.role}
+              onChange={(val) => handlePersonalUpdate('role', val)}
+              className="text-lg tracking-widest uppercase opacity-80"
+              placeholder="Cargo / Título"
+            />
+          </div>
         </div>
         {personal.showPhoto && personal.photo && (
           <div className="w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-lg">
@@ -30,24 +57,36 @@ const CorporateBlue = ({ data, color }) => {
 
       <div className="flex flex-1">
         {/* Left Column (Contact & Skills) */}
-        <aside className="w-1/3 bg-slate-100 p-8 border-r border-slate-200">
-          <div className="mb-8 break-inside-avoid">
+        <aside className="w-1/3 bg-slate-100 p-8 border-r border-slate-200 flex flex-col" style={gapStyle}>
+          <div className="break-inside-avoid">
             <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid' }}>
               {t.lblContact}
             </h3>
             <div className="text-sm space-y-3 text-slate-600">
-              <p className="flex flex-col">
+              <div className="flex flex-col">
                 <span className="font-semibold text-slate-800">{t.lblEmail}</span>
-                {personal.email}
-              </p>
-              <p className="flex flex-col">
+                <EditableText
+                    value={personal.email}
+                    onChange={(val) => handlePersonalUpdate('email', val)}
+                    placeholder="Email"
+                />
+              </div>
+              <div className="flex flex-col">
                 <span className="font-semibold text-slate-800">{t.lblPhone}</span>
-                {personal.phone}
-              </p>
-              <p className="flex flex-col">
+                <EditableText
+                    value={personal.phone}
+                    onChange={(val) => handlePersonalUpdate('phone', val)}
+                    placeholder="Teléfono"
+                />
+              </div>
+              <div className="flex flex-col">
                 <span className="font-semibold text-slate-800">{t.lblLocation}</span>
-                {personal.location}
-              </p>
+                <EditableText
+                    value={personal.location}
+                    onChange={(val) => handlePersonalUpdate('location', val)}
+                    placeholder="Ubicación"
+                />
+              </div>
               {personal.documentNumber && (
                 <p className="flex flex-col">
                   <span className="font-semibold text-slate-800">{getDocumentTypeLabel(personal.documentType, t) || 'ID'}</span>
@@ -150,17 +189,22 @@ const CorporateBlue = ({ data, color }) => {
         </aside>
 
         {/* Right Column (Experience & Education) */}
-        <main className="w-2/3 p-8">
-          <section className="mb-10">
+        <main className="w-2/3 p-8 print:p-0 flex flex-col" style={gapStyle}>
+          <section>
             <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
               <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblProfile}
             </h3>
-            <p className="text-slate-600 leading-relaxed text-justify">
-              {personal.summary || t.pendingSummary}
-            </p>
+            <div className="text-slate-600 leading-relaxed text-justify">
+               <EditableText
+                value={personal.summary}
+                onChange={(val) => handlePersonalUpdate('summary', val)}
+                multiline={true}
+                placeholder={t.pendingSummary}
+              />
+            </div>
           </section>
 
-          <section className="mb-10">
+          <section>
             <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
               <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblExperience}
             </h3>
@@ -184,7 +228,7 @@ const CorporateBlue = ({ data, color }) => {
             </div>
           </section>
 
-          <section className="mb-10">
+          <section>
             <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
               <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblEducation}
             </h3>
@@ -204,7 +248,7 @@ const CorporateBlue = ({ data, color }) => {
           </section>
 
           {certifications && certifications.length > 0 && (
-            <section className="mb-10">
+            <section>
               <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor }}>
                 <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblCertifications}
               </h3>
@@ -221,7 +265,7 @@ const CorporateBlue = ({ data, color }) => {
           )}
 
           {(data.referencesAvailableOnRequest || (references && references.length > 0)) && (
-            <section className="mt-10">
+            <section>
               <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor }}>
                 <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblReferences}
               </h3>

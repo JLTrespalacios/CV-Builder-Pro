@@ -2,35 +2,57 @@ import React from 'react';
 import { useCVStore } from '../store/cvStore';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
+import { EditableText } from '../components/ui/EditableText';
 
-const TechGamer = ({ data }) => {
-  const { language } = useCVStore();
+const TechGamer = ({ data, color }) => {
+  const { language, updatePersonal, design, themeColor } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, certifications, languages, referencesAvailableOnRequest } = data;
 
-  const accentColor = data.design?.accentColor || '#00ff00'; // Default green
+  const accentColor = themeColor || color || '#00ff00'; // Default green
+
+  const handlePersonalUpdate = (field, value) => {
+    updatePersonal({ [field]: value });
+  };
+
+  const containerStyle = {
+    borderTopColor: accentColor,
+    background: 'linear-gradient(to right, #0f0f0f 33.333%, #0a0a0a 33.333%)',
+    WebkitPrintColorAdjust: 'exact',
+    printColorAdjust: 'exact',
+    paddingTop: `${design?.marginTop || 0}px`,
+    fontSize: `${design?.fontSize || 16}px`
+  };
+
+  const gapStyle = {
+      gap: `${design?.sectionGap || 32}px`
+  };
 
   return (
     <div 
       className="w-full min-h-full text-gray-300 font-mono flex flex-col border-t-8" 
-      style={{ 
-        borderTopColor: accentColor,
-        background: 'linear-gradient(to right, #0f0f0f 33.333%, #0a0a0a 33.333%)',
-        WebkitPrintColorAdjust: 'exact',
-        printColorAdjust: 'exact'
-      }}
+      style={containerStyle}
     >
       {/* Header */}
-      <header className="p-8 flex items-center justify-between border-b border-gray-800 bg-[#111] z-10 relative">
+      <header className="p-8 print:p-0 flex items-center justify-between border-b border-gray-800 bg-[#111] z-10 relative">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-1 tracking-tighter">
+          <h1 className="text-4xl font-bold text-white mb-1 tracking-tighter flex items-center">
             <span style={{ color: accentColor }}>&lt;</span>
-            {personal.name}
+            <EditableText
+              value={personal.name}
+              onChange={(val) => handlePersonalUpdate('name', val)}
+              className="mx-1"
+              placeholder="Nombre"
+            />
             <span style={{ color: accentColor }}>/&gt;</span>
           </h1>
-          <p className="text-sm uppercase tracking-widest" style={{ color: accentColor }}>
-            {personal.role || experience[0]?.role || "Full Stack Developer"}
-          </p>
+          <div className="text-sm uppercase tracking-widest" style={{ color: accentColor }}>
+             <EditableText
+              value={personal.role}
+              onChange={(val) => handlePersonalUpdate('role', val)}
+              placeholder="Full Stack Developer"
+            />
+          </div>
         </div>
         {personal.showPhoto && personal.photo && (
           <div className="w-24 h-24 rounded-lg overflow-hidden border-2 shadow-lg" style={{ borderColor: accentColor, boxShadow: `0 0 15px ${accentColor}40` }}>
@@ -41,8 +63,8 @@ const TechGamer = ({ data }) => {
 
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-1/3 p-6 border-r border-gray-800">
-          <div className="mb-8 break-inside-avoid">
+        <aside className="w-1/3 p-6 print:p-0 border-r border-gray-800 flex flex-col" style={gapStyle}>
+          <div className="break-inside-avoid">
             <h3 className="text-white font-bold uppercase mb-4 text-xs tracking-[0.2em] flex items-center gap-2">
               <span className="w-2 h-2 rounded-sm" style={{ backgroundColor: accentColor }}></span>
               Stats
@@ -50,15 +72,33 @@ const TechGamer = ({ data }) => {
             <div className="space-y-4 text-sm font-light">
               <div className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
                 <span className="text-gray-500 block text-xs uppercase mb-1">{t.lblEmail}</span>
-                <span className="text-white break-all">{personal.email}</span>
+                <span className="text-white break-all">
+                    <EditableText
+                        value={personal.email}
+                        onChange={(val) => handlePersonalUpdate('email', val)}
+                        placeholder="Email"
+                    />
+                </span>
               </div>
               <div className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
                 <span className="text-gray-500 block text-xs uppercase mb-1">{t.lblPhone}</span>
-                <span className="text-white">{personal.phone}</span>
+                <span className="text-white">
+                    <EditableText
+                        value={personal.phone}
+                        onChange={(val) => handlePersonalUpdate('phone', val)}
+                        placeholder="Teléfono"
+                    />
+                </span>
               </div>
               <div className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
                 <span className="text-gray-500 block text-xs uppercase mb-1">{t.lblLocation}</span>
-                <span className="text-white">{personal.location}</span>
+                <span className="text-white">
+                    <EditableText
+                        value={personal.location}
+                        onChange={(val) => handlePersonalUpdate('location', val)}
+                        placeholder="Ubicación"
+                    />
+                </span>
               </div>
               {personal.documentNumber && (
                 <div className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
@@ -155,7 +195,7 @@ const TechGamer = ({ data }) => {
         </aside>
 
         {/* Main Content */}
-        <main className="w-2/3 p-8">
+        <main className="w-2/3 p-8 print:p-0">
           <section className="mb-10 break-inside-avoid">
             <h3 className="text-white font-bold uppercase mb-6 text-sm tracking-[0.2em] border-b border-gray-800 pb-2">
               // {t.lblProfile}
