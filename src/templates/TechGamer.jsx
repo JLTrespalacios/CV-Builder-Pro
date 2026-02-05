@@ -22,7 +22,8 @@ const TechGamer = ({ data, color }) => {
     printColorAdjust: 'exact',
     paddingTop: `${design?.marginTop || 0}px`,
     fontSize: `${design?.fontSize || 16}px`,
-    fontFamily: design?.fontFamily || 'Roboto Mono, monospace'
+    fontFamily: design?.fontFamily || 'Roboto Mono, monospace',
+    color: design?.fontColor || '#d1d5db'
   };
 
   const gapStyle = {

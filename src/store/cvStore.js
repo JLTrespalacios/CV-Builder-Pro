@@ -125,7 +125,8 @@ export const useCVStore = create(
         sectionGap: 10,
         lineHeight: 1.5,
         fontSize: 16,
-        fontFamily: 'Inter'
+        fontFamily: 'Inter',
+        fontColor: '#334155'
       },
       language: 'es',
       activeTab: 'editor', // 'editor', 'templates'

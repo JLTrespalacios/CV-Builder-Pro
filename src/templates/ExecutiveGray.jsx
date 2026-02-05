@@ -16,7 +16,8 @@ const ExecutiveGray = ({ data, color }) => {
 
   const rootStyle = {
     fontSize: `${design?.fontSize || 16}px`,
-    fontFamily: design?.fontFamily || 'Inter'
+    fontFamily: design?.fontFamily || 'Inter',
+    color: design?.fontColor || '#1f2937'
   };
 
   const paddingTopStyle = {

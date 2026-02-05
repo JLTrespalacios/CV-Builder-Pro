@@ -3,6 +3,7 @@ import { Layout, Settings, Download, Upload, Save, FileText, Edit3, Globe, Folde
 import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
+import { motion } from 'framer-motion';
 
 const Sidebar = ({ onPrint }) => {
   const { activeTab, setActiveTab, cvData, loadCVData, language, setLanguage } = useCVStore();
@@ -53,12 +54,12 @@ const Sidebar = ({ onPrint }) => {
   };
 
   return (
-    <aside className="h-full w-20 bg-[var(--bg-panel)] border-r border-[var(--border-subtle)] flex flex-col items-center py-6 z-40 shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative transition-colors duration-300">
-      <div className="mb-8 p-2.5 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] rounded-2xl shadow-lg shadow-[var(--primary)]/20 text-white">
-        <FileText size={24} />
+    <aside className="h-full w-20 bg-[var(--bg-panel)]/80 backdrop-blur-xl border-r border-[var(--border-subtle)] flex flex-col items-center py-6 z-40 shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative transition-all duration-300">
+      <div className="mb-8 p-3 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-2xl shadow-xl shadow-indigo-500/20 text-white transform hover:scale-105 transition-transform duration-300 cursor-default">
+        <FileText size={24} strokeWidth={2.5} />
       </div>
       
-      <nav className="flex-1 w-full flex flex-col items-center gap-3 px-3">
+      <nav className="flex-1 w-full flex flex-col items-center gap-4 px-3">
         <SidebarButton 
           active={activeTab === 'editor'} 
           onClick={() => setActiveTab('editor')}
@@ -86,7 +87,7 @@ const Sidebar = ({ onPrint }) => {
           label="Mis CVs"
         />
         
-        <div className="w-10 h-[1px] bg-[var(--border-subtle)] my-3 opacity-60" />
+        <div className="w-10 h-[1px] bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent my-2 opacity-60" />
         
         <SidebarButton 
           onClick={onPrint || (() => window.print())}
@@ -118,39 +119,35 @@ const Sidebar = ({ onPrint }) => {
             />
         </div>
       </nav>
-
-      <div className="mt-auto flex flex-col gap-4 w-full px-2 items-center pb-4">
-        {/* Language Toggle in Sidebar if needed, though it's in Header too */}
-      </div>
     </aside>
   );
 };
 
 const SidebarButton = ({ active, onClick, icon, label, variant = 'default' }) => {
   const getColors = () => {
-    if (variant === 'primary') return 'text-[var(--primary)] bg-[var(--primary-light)]/50 hover:bg-[var(--primary-light)] border-[var(--primary)]/20';
-    if (variant === 'secondary') return 'text-[var(--text-secondary)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] border-transparent hover:border-[var(--border-subtle)]';
+    if (variant === 'primary') return 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border-indigo-100 hover:shadow-md hover:shadow-indigo-500/10';
+    if (variant === 'secondary') return 'text-slate-500 hover:text-slate-700 hover:bg-slate-50 border-transparent hover:border-slate-200';
     
     return active 
-      ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/30 border-transparent scale-105' 
-      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-muted)] hover:text-[var(--text-main)] border-transparent';
+      ? 'bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 border-transparent scale-105 ring-2 ring-indigo-100 ring-offset-2' 
+      : 'text-slate-400 hover:bg-slate-50 hover:text-indigo-500 border-transparent hover:shadow-sm';
   };
 
   return (
-    <div className="relative group flex items-center justify-center w-full">
+    <div className="relative group flex items-center justify-center w-full z-50">
       <button
         onClick={onClick}
         aria-label={label}
-        className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 border hover-btn ${getColors()}`}
+        className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 border ${getColors()}`}
       >
-        {icon}
+        {active ? React.cloneElement(icon, { strokeWidth: 2.5 }) : icon}
       </button>
       
-      {/* Tooltip Premium */}
-      <div className="absolute left-14 px-3 py-2 bg-slate-800 text-white text-xs font-medium rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap pointer-events-none z-50 transform translate-x-2 group-hover:translate-x-0 backdrop-blur-sm bg-slate-900/90">
+      {/* Tooltip Premium Glassmorphism */}
+      <div className="absolute left-16 px-4 py-2.5 bg-white/90 backdrop-blur-xl border border-slate-200/60 text-slate-700 text-xs font-bold rounded-xl shadow-xl shadow-slate-200/50 opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none transform translate-x-4 group-hover:translate-x-0 z-[100]">
         {label}
         {/* Flechita del tooltip */}
-        <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-800/90 transform rotate-45"></div>
+        <div className="absolute left-[-5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white/90 border-l border-b border-slate-200/60 transform rotate-45 rounded-bl-[1px]"></div>
       </div>
     </div>
   );

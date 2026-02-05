@@ -21,7 +21,8 @@ const ModernDark = ({ data, color }) => {
     printColorAdjust: 'exact',
     paddingTop: `${design?.marginTop || 0}px`,
     fontSize: `${design?.fontSize || 16}px`,
-    fontFamily: design?.fontFamily || 'Inter'
+    fontFamily: design?.fontFamily || 'Inter',
+    color: design?.fontColor || '#334155'
   };
 
   const gapStyle = {

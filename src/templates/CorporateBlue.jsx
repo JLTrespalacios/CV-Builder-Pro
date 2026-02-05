@@ -17,7 +17,8 @@ const CorporateBlue = ({ data, color }) => {
   const containerStyle = {
     paddingTop: `${design?.marginTop || 0}px`,
     fontSize: `${design?.fontSize || 16}px`,
-    fontFamily: design?.fontFamily || 'Inter'
+    fontFamily: design?.fontFamily || 'Inter',
+    color: design?.fontColor || '#1f2937'
   };
 
   const gapStyle = {
