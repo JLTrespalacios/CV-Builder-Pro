@@ -2,7 +2,7 @@ import React from 'react';
 import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { Globe, Trash2, PanelLeftOpen, FileText, Download, Upload, Languages } from 'lucide-react';
+import { Globe, Trash2, PanelLeftOpen, FileText, Download, Upload, Languages, Cloud, ChevronDown, Save } from 'lucide-react';
 import ThemeSwitcher from '../ui/ThemeSwitcher';
 import DesignControls from '../preview/DesignControls';
 import { generateWord } from '../../utils/wordGenerator';
@@ -12,6 +12,7 @@ const Header = ({ onDownload }) => {
   const { addToast } = useUIStore();
   const t = TRANSLATIONS[language];
   const fileInputRef = React.useRef(null);
+  const [isSaveMenuOpen, setIsSaveMenuOpen] = React.useState(false);
 
   const handleReset = () => {
     if (window.confirm('WARNING: SYSTEM RESET. ¿Estás seguro de borrar todos los datos? Esta acción es irreversible.')) {
@@ -32,7 +33,8 @@ const Header = ({ onDownload }) => {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      addToast('Copia de seguridad descargada', 'success');
+      addToast('Archivo guardado. Puedes subirlo a Drive/OneDrive manualmente.', 'success');
+      setIsSaveMenuOpen(false);
     } catch (error) {
       console.error(error);
       addToast('Error al exportar datos', 'error');
@@ -41,6 +43,7 @@ const Header = ({ onDownload }) => {
 
   const handleImportClick = () => {
     fileInputRef.current.click();
+    setIsSaveMenuOpen(false);
   };
 
   const handleFileChange = (event) => {
@@ -135,6 +138,76 @@ const Header = ({ onDownload }) => {
         <div className="h-6 w-px bg-[var(--border-subtle)] mx-1"></div>
         
         <DesignControls />
+
+        {/* Menú de Guardado / Nube */}
+        <div className="relative">
+          <button 
+            onClick={() => setIsSaveMenuOpen(!isSaveMenuOpen)}
+            className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all duration-200 font-medium text-xs ${
+              isSaveMenuOpen 
+                ? 'bg-blue-600 text-white border-blue-600 shadow-md' 
+                : 'bg-[var(--bg-panel)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-blue-300 hover:text-blue-600 hover:shadow-sm'
+            }`}
+            title="Opciones de Guardado y Nube"
+          >
+            <Cloud size={16} />
+            <span className="hidden sm:inline">Guardar/Cargar</span>
+            {isSaveMenuOpen ? <ChevronDown size={14} className="rotate-180 transition-transform" /> : <ChevronDown size={14} className="transition-transform" />}
+          </button>
+
+          {isSaveMenuOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setIsSaveMenuOpen(false)}></div>
+              <div className="absolute top-full right-0 mt-2 w-64 bg-[var(--bg-panel)] border border-[var(--border-subtle)] rounded-xl shadow-xl z-20 overflow-hidden animate-fade-in">
+                <div className="p-3 border-b border-[var(--border-subtle)] bg-[var(--bg-muted)]/50">
+                  <h3 className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Gestión de Archivos</h3>
+                </div>
+                <div className="p-1">
+                  <button 
+                    onClick={handleExport}
+                    className="w-full text-left px-3 py-2.5 hover:bg-[var(--bg-muted)] rounded-lg text-xs font-medium text-[var(--text-main)] flex items-center gap-3 transition-colors"
+                  >
+                    <div className="p-1.5 bg-green-100 text-green-600 rounded-lg">
+                      <Download size={14} />
+                    </div>
+                    <div>
+                      <span className="block font-bold">Descargar Respaldo</span>
+                      <span className="text-[10px] text-[var(--text-secondary)]">Guardar en PC o Drive/OneDrive</span>
+                    </div>
+                  </button>
+                  
+                  <button 
+                    onClick={handleImportClick}
+                    className="w-full text-left px-3 py-2.5 hover:bg-[var(--bg-muted)] rounded-lg text-xs font-medium text-[var(--text-main)] flex items-center gap-3 transition-colors"
+                  >
+                    <div className="p-1.5 bg-blue-100 text-blue-600 rounded-lg">
+                      <Upload size={14} />
+                    </div>
+                    <div>
+                      <span className="block font-bold">Cargar Respaldo</span>
+                      <span className="text-[10px] text-[var(--text-secondary)]">Subir archivo .json guardado</span>
+                    </div>
+                  </button>
+
+                  <div className="h-px bg-[var(--border-subtle)] my-1"></div>
+
+                  <div className="px-3 py-2 text-[10px] text-[var(--text-secondary)] italic text-center">
+                    Los cambios se guardan automáticamente en este navegador.
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        
+        {/* Input oculto para carga de archivos */}
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          onChange={handleFileChange} 
+          accept=".json" 
+          className="hidden" 
+        />
 
         <button 
           onClick={handleReset}
