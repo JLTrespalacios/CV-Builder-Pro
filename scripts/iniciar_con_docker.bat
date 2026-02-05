@@ -1,5 +1,5 @@
 @echo off
-cd /d "%~dp0.."
+cd /d "%~dp0..\app"
 echo ==========================================
 echo    INICIANDO CON DOCKER (NODE.JS)
 echo ==========================================
