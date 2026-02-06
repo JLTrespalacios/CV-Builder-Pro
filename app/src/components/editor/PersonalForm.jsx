@@ -1,19 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCVStore } from '../../store/cvStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { Upload, CreditCard, MapPin, Fingerprint, Eye, EyeOff } from 'lucide-react';
+import { TEMPLATE_CONFIG } from '../../constants/templatesConfig';
+import { Upload, CreditCard, MapPin, Fingerprint, Eye, EyeOff, Info, CheckCircle, XCircle, Camera } from 'lucide-react';
 
 const PersonalForm = () => {
-  const { cvData, updatePersonal, language } = useCVStore();
+  const { cvData, updatePersonal, language, template: templateId } = useCVStore();
   const t = TRANSLATIONS[language];
   const { register, watch } = useForm({
     defaultValues: cvData.personal
   });
 
+  // Get current template info for smart recommendations
+  const currentTemplate = useMemo(() => 
+    TEMPLATE_CONFIG.find(t => t.id === templateId) || TEMPLATE_CONFIG[0], 
+    [templateId]
+  );
+
+  const isCreative = currentTemplate?.category === 'Creative' || currentTemplate?.role?.includes('Creative');
+  const isTechOrATS = currentTemplate?.category === 'Tech' || currentTemplate?.keywords?.includes('ATS');
+
   // Watch for changes and update store immediately
-  // We remove the useEffect that resets on every store change to avoid input cursor jumping
-  // and infinite loops.
   useEffect(() => {
     const subscription = watch((value) => {
       updatePersonal(value);
@@ -78,72 +86,125 @@ const PersonalForm = () => {
           </div>
         </div>
 
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <label className="block text-sm font-medium text-[var(--text-secondary)]">{t.photo}</label>
+        {/* Photo Section with Smart Logic */}
+        <div className="border border-[var(--border-subtle)] rounded-xl p-4 bg-[var(--bg-subtle)]/30">
+          <div className="flex justify-between items-center mb-3">
+            <div>
+              <label className="block text-sm font-bold text-[var(--text-main)] flex items-center gap-2">
+                <Camera size={16} className="text-[var(--primary)]" />
+                {t.photo || "Foto profesional"} 
+                <span className="text-xs font-normal text-[var(--text-secondary)] bg-[var(--bg-subtle)] px-2 py-0.5 rounded-full border border-[var(--border-subtle)]">
+                  {t.optional || "Opcional"}
+                </span>
+              </label>
+              
+              {/* Smart Recommendation Microcopy */}
+              <div className="mt-1 flex items-center gap-1.5">
+                {isCreative ? (
+                   <span className="text-xs text-emerald-600 font-medium flex items-center gap-1">
+                     <Info size={12} />
+                     Recomendado para tu perfil {currentTemplate.category || "Creativo"}
+                   </span>
+                ) : isTechOrATS ? (
+                   <span className="text-xs text-amber-600 font-medium flex items-center gap-1">
+                     <Info size={12} />
+                     Mejor sin foto para roles ATS/Tech
+                   </span>
+                ) : (
+                   <span className="text-xs text-[var(--text-secondary)] flex items-center gap-1">
+                     <Info size={12} />
+                     El diseño se adapta automáticamente
+                   </span>
+                )}
+              </div>
+            </div>
+
             <button
               type="button"
               onClick={() => updatePersonal({ showPhoto: !cvData.personal.showPhoto })}
-              className={`text-xs flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors font-medium ${cvData.personal.showPhoto ? 'bg-[var(--primary)]/10 text-[var(--primary)]' : 'bg-[var(--bg-muted)] text-[var(--text-secondary)]'}`}
-              title={cvData.personal.showPhoto ? t.hidePhotoTitle : t.showPhotoTitle}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2 ${
+                cvData.personal.showPhoto ? 'bg-[var(--primary)]' : 'bg-gray-300'
+              }`}
             >
-              {cvData.personal.showPhoto ? (
-                <>
-                  <Eye size={14} />
-                  {t.visible}
-                </>
-              ) : (
-                <>
-                  <EyeOff size={14} />
-                  {t.hidden}
-                </>
-              )}
+              <span
+                className={`${
+                  cvData.personal.showPhoto ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+              />
             </button>
           </div>
           
-          <div className={`flex items-center gap-5 transition-all duration-300 p-4 rounded-xl border border-[var(--border-subtle)] border-dashed ${cvData.personal.showPhoto ? 'bg-[var(--bg-muted)]/30' : 'opacity-60 grayscale bg-[var(--bg-muted)]'}`}>
-            {cvData.personal.photo ? (
-              <img 
-                src={cvData.personal.photo} 
-                alt="Preview" 
-                className="w-16 h-16 rounded-full object-cover ring-2 ring-[var(--bg-panel)] shadow-md"
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-[var(--bg-muted)] flex items-center justify-center text-[var(--text-secondary)] border border-[var(--border-subtle)]">
-                <Upload size={20} />
-              </div>
-            )}
-            
-            <div className="flex-1">
-              <div className="flex gap-3">
-                <label className="cursor-pointer bg-[var(--text-main)] text-[var(--bg-panel)] px-4 py-2 rounded-xl hover:opacity-90 flex items-center gap-2 text-xs font-bold transition-all shadow-sm hover:shadow-md active:scale-95">
-                  <Upload size={14} />
-                  {cvData.personal.photo ? t.changePhoto : t.uploadPhoto}
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleImageUpload} 
-                    className="hidden" 
+          {cvData.personal.showPhoto ? (
+            <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex items-center gap-5 p-4 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-subtle)] shadow-sm">
+                {cvData.personal.photo ? (
+                  <img 
+                    src={cvData.personal.photo} 
+                    alt="Preview" 
+                    className="w-16 h-16 rounded-full object-cover ring-2 ring-[var(--border-subtle)]"
                   />
-                </label>
-                {cvData.personal.photo && (
-                  <button
-                    type="button"
-                    onClick={() => updatePersonal({ photo: null })}
-                    className="text-xs text-red-500 hover:text-red-600 font-medium px-2"
-                  >
-                    {t.deletePhoto}
-                  </button>
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-[var(--bg-muted)] flex items-center justify-center text-[var(--text-secondary)] border border-[var(--border-subtle)]">
+                    <Upload size={20} />
+                  </div>
                 )}
+                
+                <div className="flex-1">
+                  <div className="flex gap-3">
+                    <label className="cursor-pointer bg-[var(--text-main)] text-[var(--bg-panel)] px-4 py-2 rounded-lg hover:opacity-90 flex items-center gap-2 text-xs font-bold transition-all shadow-sm active:scale-95">
+                      <Upload size={14} />
+                      {cvData.personal.photo ? t.changePhoto : t.uploadPhoto}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleImageUpload} 
+                        className="hidden" 
+                      />
+                    </label>
+                    {cvData.personal.photo && (
+                      <button
+                        type="button"
+                        onClick={() => updatePersonal({ photo: null })}
+                        className="text-xs text-red-500 hover:text-red-600 font-medium px-2 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        {t.deletePhoto}
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-[var(--text-secondary)] mt-2">Recomendado: 400x400px, JPG/PNG, Fondo neutro</p>
+                </div>
               </div>
-              <p className="text-[10px] text-[var(--text-secondary)] mt-2">Recomendado: 400x400px, JPG o PNG</p>
+
+              {/* Professional Guidelines */}
+              <div className="bg-blue-50/50 dark:bg-blue-900/10 p-3 rounded-lg border border-blue-100 dark:border-blue-800/30">
+                <h4 className="text-xs font-bold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-1.5">
+                  <CheckCircle size={12} />
+                  Guía para foto profesional
+                </h4>
+                <div className="grid grid-cols-2 gap-2">
+                  <ul className="text-[10px] space-y-1 text-blue-800/80 dark:text-blue-200/80">
+                    <li className="flex items-center gap-1.5"><span className="w-1 h-1 bg-blue-400 rounded-full"></span>Fondo neutro (blanco/gris)</li>
+                    <li className="flex items-center gap-1.5"><span className="w-1 h-1 bg-blue-400 rounded-full"></span>Buena iluminación frontal</li>
+                  </ul>
+                  <ul className="text-[10px] space-y-1 text-blue-800/80 dark:text-blue-200/80">
+                    <li className="flex items-center gap-1.5"><span className="w-1 h-1 bg-blue-400 rounded-full"></span>Ropa formal / Business casual</li>
+                    <li className="flex items-center gap-1.5"><span className="w-1 h-1 bg-blue-400 rounded-full"></span>Expresión natural y profesional</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
-          {!cvData.personal.showPhoto && (
-             <p className="text-xs text-[var(--text-secondary)] mt-2 italic flex items-center gap-1">
-               <EyeOff size={12} />
-               {t.photoHiddenNote}
-             </p>
+          ) : (
+            <div className="p-3 bg-[var(--bg-panel)] rounded-lg border border-[var(--border-subtle)] flex items-start gap-3 opacity-80">
+              <div className="p-2 bg-[var(--bg-muted)] rounded-full text-[var(--text-secondary)]">
+                <EyeOff size={16} />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[var(--text-main)] mb-0.5">Modo ATS (Sin foto)</h4>
+                <p className="text-[10px] text-[var(--text-secondary)] leading-relaxed">
+                  Tu CV se generará sin foto, priorizando el contenido textual para máxima compatibilidad con sistemas de reclutamiento (ATS).
+                </p>
+              </div>
+            </div>
           )}
         </div>
         

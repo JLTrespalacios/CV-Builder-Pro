@@ -25,6 +25,10 @@ const MinimalWhite = ({ data, color }) => {
       gap: `${design?.sectionGap || 40}px` // 40px default for MinimalWhite (gap-10)
   };
 
+  const titleStyle = {
+    fontFamily: design?.titleFont || design?.fontFamily || 'Inter'
+  };
+
   return (
     <div 
       className="w-full min-h-full bg-white text-gray-800 font-sans p-12 print:p-0"
@@ -76,9 +80,13 @@ const MinimalWhite = ({ data, color }) => {
             {personal.website && <span>• {t.lblWebsite}: <a href={personal.website.startsWith('http') ? personal.website : `https://${personal.website}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-600">{personal.website.replace(/^https?:\/\//, '')}</a></span>}
           </div>
         </div>
-        {personal.showPhoto && personal.photo && (
-          <div className="w-24 h-24 rounded-full overflow-hidden border-2" style={{ borderColor: accentColor }}>
-             <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
+        {personal.showPhoto && (
+          <div className="w-24 h-24 rounded-full overflow-hidden border-2 flex items-center justify-center bg-gray-50" style={{ borderColor: accentColor }}>
+             {personal.photo ? (
+               <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
+             ) : (
+               <span className="text-3xl font-bold text-gray-300">{personal.name ? personal.name.charAt(0) : 'U'}</span>
+             )}
           </div>
         )}
       </header>

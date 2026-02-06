@@ -40,6 +40,15 @@ const AcademicAPA = ({ data, color }) => {
     >
       {/* Header / Personal Info */}
       <header className="text-center">
+        {personal.showPhoto && (
+           <div className="w-24 h-24 mx-auto mb-4 rounded border flex items-center justify-center bg-gray-50">
+             {personal.photo ? (
+               <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
+             ) : (
+               <span className="text-3xl font-serif font-bold text-gray-400">{personal.name ? personal.name.charAt(0) : 'U'}</span>
+             )}
+           </div>
+        )}
         <div className="text-2xl font-bold mb-2 flex justify-center">
           <EditableText
             value={personal.name}

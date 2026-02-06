@@ -46,6 +46,15 @@ const SwissGrid = ({ data, color }) => {
           </div>
         </div>
         <div className="col-span-4 text-sm font-medium space-y-1 text-right flex flex-col items-end">
+          {personal.showPhoto && (
+            <div className="w-24 h-24 mb-4 bg-gray-100 flex items-center justify-center overflow-hidden">
+               {personal.photo ? (
+                 <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover grayscale" />
+               ) : (
+                 <span className="text-3xl font-black" style={{ color: accentColor }}>{personal.name ? personal.name.charAt(0) : 'U'}</span>
+               )}
+            </div>
+          )}
           <EditableText value={personal.role} onChange={(val) => handlePersonalUpdate('role', val)} placeholder="Role" />
           <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" />
           <EditableText value={personal.phone} onChange={(val) => handlePersonalUpdate('phone', val)} placeholder="Phone" />

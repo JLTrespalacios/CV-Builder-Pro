@@ -174,7 +174,7 @@ function App() {
       <div className="flex-1 flex flex-col h-full relative z-10">
         <Header onDownload={handlePrint} />
         
-        <main className="flex-1 flex overflow-hidden">
+        <main className="flex-1 flex overflow-hidden mt-16">
           {/* Editor Section */}
           <section 
             className={`bg-[var(--bg-panel)] border-r border-[var(--border-subtle)] overflow-y-auto transition-all duration-300 ease-in-out shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30

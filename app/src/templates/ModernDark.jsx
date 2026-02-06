@@ -29,6 +29,10 @@ const ModernDark = ({ data, color }) => {
       gap: `${design?.sectionGap || 32}px`
   };
 
+  const titleStyle = {
+    fontFamily: design?.titleFont || design?.fontFamily || 'Inter'
+  };
+
   return (
     <div 
       className="w-full min-h-full text-gray-800 font-sans grid grid-cols-[1fr_2fr]"
@@ -43,11 +47,11 @@ const ModernDark = ({ data, color }) => {
               {personal.photo ? (
                 <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
               ) : (
-                <span className="text-4xl font-bold" style={{ color: accentColor }}>{personal.name.charAt(0)}</span>
+                <span className="text-4xl font-bold" style={{ color: accentColor }}>{personal.name ? personal.name.charAt(0) : 'U'}</span>
               )}
             </div>
           )}
-          <h2 className="text-xl font-bold uppercase tracking-wider mb-2" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblContact}</h2>
+          <h2 className="text-xl font-bold uppercase tracking-wider mb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblContact}</h2>
           <div className="text-sm space-y-2 text-slate-300">
             <EditableText 
               value={personal.email} 
@@ -104,7 +108,7 @@ const ModernDark = ({ data, color }) => {
         {/* Skills Section (Hard & Soft) */}
         {(skills.length > 0 || (hardSkills && hardSkills.length > 0)) && (
           <div className="break-inside-avoid">
-            <h2 className="text-xl font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblHardSkills || t.lblSkills}</h2>
+            <h2 className="text-xl font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblHardSkills || t.lblSkills}</h2>
             
             {/* Categorized Hard Skills */}
             {hardSkills && hardSkills.length > 0 ? (
@@ -131,7 +135,7 @@ const ModernDark = ({ data, color }) => {
 
         {softSkills && softSkills.length > 0 && (
           <div className="break-inside-avoid">
-            <h2 className="text-xl font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblSoftSkills}</h2>
+            <h2 className="text-xl font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblSoftSkills}</h2>
              <div className="flex flex-wrap gap-2">
                 {softSkills.map((skill, index) => (
                   <span key={index} className="bg-slate-800 px-3 py-1 rounded text-sm text-slate-200" style={{ borderLeft: `2px solid ${accentColor}` }}>
@@ -145,7 +149,7 @@ const ModernDark = ({ data, color }) => {
         {/* Languages */}
         {languages && languages.length > 0 && (
           <div className="break-inside-avoid">
-             <h2 className="text-xl font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblLanguages}</h2>
+             <h2 className="text-xl font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblLanguages}</h2>
              <ul className="space-y-2 text-sm text-slate-300">
                {languages.map((lang, idx) => (
                  <li key={idx} className="flex justify-between">
@@ -161,7 +165,7 @@ const ModernDark = ({ data, color }) => {
       {/* Main Content / Right Column */}
       <div className="p-8 print:p-0 flex flex-col" style={gapStyle}>
         <div className="mb-10 break-inside-avoid">
-          <h1 className="text-5xl font-bold text-slate-900 leading-tight mb-2" style={{ color: accentColor }}>
+          <h1 className="text-5xl font-bold text-slate-900 leading-tight mb-2" style={{ color: accentColor, ...titleStyle }}>
             <EditableText 
               value={personal.name} 
               onChange={(val) => handlePersonalUpdate('name', val)}
@@ -178,7 +182,7 @@ const ModernDark = ({ data, color }) => {
         </div>
 
         <div className="mb-8 break-inside-avoid">
-          <h2 className="text-2xl font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>
+          <h2 className="text-2xl font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>
             {t.lblProfile}
           </h2>
           <div className="text-slate-600 leading-relaxed whitespace-pre-line">
@@ -220,6 +224,11 @@ const ModernDark = ({ data, color }) => {
                    <h3 className="font-bold text-lg" style={{ color: accentColor }}>{proj.name}</h3>
                    {proj.link && <a href={proj.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline">{proj.link}</a>}
                  </div>
+                 {proj.image && (
+                   <div className="mb-3 rounded overflow-hidden border border-slate-200 mt-2 shadow-sm">
+                     <img src={proj.image} alt={proj.name} className="w-full h-40 object-cover" />
+                   </div>
+                 )}
                  <p className="text-sm font-medium text-slate-700 mb-1">{proj.technologies}</p>
                  <p className="text-slate-600 whitespace-pre-line">{proj.description}</p>
                </div>

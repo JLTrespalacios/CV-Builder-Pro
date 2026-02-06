@@ -27,13 +27,26 @@ const IvyLeague = ({ data, color }) => {
     flexDirection: 'column'
   };
 
+  const titleStyle = {
+    fontFamily: design?.titleFont || 'Merriweather, serif'
+  };
+
   return (
     <div 
       className="w-full h-full bg-white text-black font-serif p-10 print:p-0 min-h-full text-sm leading-snug"
       style={containerStyle}
     >
       {/* Header */}
-      <header className="text-center mb-6 border-b pb-4" style={{ borderColor: accentColor }}>
+      <header className="text-center mb-6 border-b pb-4" style={{ borderColor: accentColor, ...titleStyle }}>
+        {personal.showPhoto && (
+          <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-2 flex items-center justify-center bg-gray-50" style={{ borderColor: accentColor }}>
+            {personal.photo ? (
+              <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-3xl font-serif font-bold text-gray-400">{personal.name ? personal.name.charAt(0) : 'U'}</span>
+            )}
+          </div>
+        )}
         <div className="text-2xl font-bold uppercase tracking-wide mb-2 flex justify-center">
           <EditableText
             value={personal.name}
@@ -57,7 +70,7 @@ const IvyLeague = ({ data, color }) => {
       {/* Education - Often comes first in Ivy League style if recent grad, but we'll stick to standard order or put it top if requested. We'll follow standard CV flow here but Education is high priority. */}
       {education.length > 0 && (
         <section>
-          <h2 className="text-sm font-bold uppercase border-b mb-3" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>{t.lblEducation}</h2>
+          <h2 className="text-sm font-bold uppercase border-b mb-3" style={{ borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblEducation}</h2>
           <div className="space-y-3">
             {education.map((edu, i) => (
               <div key={i} className="break-inside-avoid">
@@ -76,7 +89,7 @@ const IvyLeague = ({ data, color }) => {
 
       {/* Experience */}
       <section>
-        <h2 className="text-sm font-bold uppercase border-b mb-3" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>{t.lblExperience}</h2>
+        <h2 className="text-sm font-bold uppercase border-b mb-3" style={{ borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblExperience}</h2>
         <div className="space-y-4">
           {experience.length === 0 ? (
             <p className="italic text-gray-500">{t.noExperience}</p>
@@ -100,7 +113,7 @@ const IvyLeague = ({ data, color }) => {
       {/* Projects */}
       {projects && projects.length > 0 && (
         <section>
-          <h2 className="text-sm font-bold uppercase border-b mb-3" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>{t.lblProjects}</h2>
+          <h2 className="text-sm font-bold uppercase border-b mb-3" style={{ borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblProjects}</h2>
           <div className="space-y-4">
             {projects.map((proj, i) => (
               <div key={i} className="break-inside-avoid">
@@ -124,7 +137,7 @@ const IvyLeague = ({ data, color }) => {
 
       {/* Skills & Additional Info */}
       <section className="break-inside-avoid">
-        <h2 className="text-sm font-bold uppercase border-b mb-3" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>{t.lblSkills} & {t.lblProfile}</h2>
+        <h2 className="text-sm font-bold uppercase border-b mb-3" style={{ borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblSkills} & {t.lblProfile}</h2>
         <div className="space-y-1">
           {hardSkills && hardSkills.length > 0 ? (
              <div>

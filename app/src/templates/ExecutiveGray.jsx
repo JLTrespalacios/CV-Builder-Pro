@@ -30,6 +30,10 @@ const ExecutiveGray = ({ data, color }) => {
     flexDirection: 'column'
   };
 
+  const titleStyle = {
+    fontFamily: design?.titleFont || design?.fontFamily || 'Inter'
+  };
+
   return (
     <div className="w-full h-full bg-white text-gray-800 font-sans grid grid-cols-[1fr_2fr] min-h-full" style={rootStyle}>
       
@@ -38,9 +42,13 @@ const ExecutiveGray = ({ data, color }) => {
         
         {/* Photo & Contact */}
         <div className="text-center break-inside-avoid">
-           {personal.showPhoto && personal.photo && (
-            <div className="w-40 h-40 mx-auto mb-6 rounded shadow-lg overflow-hidden grayscale">
-               <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
+           {personal.showPhoto && (
+            <div className="w-40 h-40 mx-auto mb-6 rounded shadow-lg overflow-hidden flex items-center justify-center bg-gray-200 grayscale">
+               {personal.photo ? (
+                 <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
+               ) : (
+                 <span className="text-4xl font-bold text-gray-500">{personal.name ? personal.name.charAt(0) : 'U'}</span>
+               )}
             </div>
           )}
           
@@ -92,7 +100,7 @@ const ExecutiveGray = ({ data, color }) => {
 
         {/* Education */}
         <div>
-          <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor }}>
+          <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor, ...titleStyle }}>
             {t.lblEducation}
           </h3>
           <div className="space-y-4">
@@ -113,7 +121,7 @@ const ExecutiveGray = ({ data, color }) => {
         {/* Certifications */}
         {certifications && certifications.length > 0 && (
           <div>
-            <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor }}>
+            <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor, ...titleStyle }}>
               {t.lblCertifications}
             </h3>
             <div className="space-y-4">
@@ -130,7 +138,7 @@ const ExecutiveGray = ({ data, color }) => {
 
         {/* Skills */}
         <div>
-          <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor }}>
+          <h3 className="uppercase tracking-widest font-bold text-gray-900 border-b-2 pb-2 mb-4" style={{ borderColor: accentColor, ...titleStyle }}>
             {t.lblSkills}
           </h3>
           
@@ -195,7 +203,7 @@ const ExecutiveGray = ({ data, color }) => {
       <div className="p-10 print:p-0 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
         {/* Header */}
         <header className="border-b-4 pb-6" style={{ borderColor: accentColor }}>
-          <div className="text-4xl font-serif font-bold text-gray-900 mb-2 tracking-tight">
+          <div className="text-4xl font-serif font-bold text-gray-900 mb-2 tracking-tight" style={titleStyle}>
             <EditableText 
               value={personal.name} 
               onChange={(val) => handlePersonalUpdate('name', val)} 

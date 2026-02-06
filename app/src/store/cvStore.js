@@ -163,6 +163,7 @@ export const useCVStore = create(
         lineHeight: 1.5,
         fontSize: 16,
         fontFamily: 'Inter',
+        titleFont: 'Inter',
         fontColor: '#334155'
       },
       language: 'es',

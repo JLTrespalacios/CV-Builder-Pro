@@ -25,6 +25,10 @@ const CorporateBlue = ({ data, color }) => {
       gap: `${design?.sectionGap || 32}px`
   };
 
+  const titleStyle = {
+    fontFamily: design?.titleFont || design?.fontFamily || 'Inter'
+  };
+
   return (
     <div 
       className="w-full h-full bg-white text-gray-800 font-sans min-h-full flex flex-col"
@@ -33,7 +37,7 @@ const CorporateBlue = ({ data, color }) => {
       {/* Header */}
       <header className="text-white p-10 print:p-0 flex justify-between items-center" style={{ backgroundColor: accentColor }}>
         <div>
-          <div className="mb-2">
+          <div className="mb-2" style={titleStyle}>
             <EditableText
               value={personal.name}
               onChange={(val) => handlePersonalUpdate('name', val)}
@@ -50,9 +54,13 @@ const CorporateBlue = ({ data, color }) => {
             />
           </div>
         </div>
-        {personal.showPhoto && personal.photo && (
-          <div className="w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-lg">
-            <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
+        {personal.showPhoto && (
+          <div className="w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-lg flex items-center justify-center bg-white/10 backdrop-blur-sm">
+            {personal.photo ? (
+              <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
+            ) : (
+               <span className="text-4xl font-bold text-white">{personal.name ? personal.name.charAt(0) : 'U'}</span>
+            )}
           </div>
         )}
       </header>
@@ -61,7 +69,7 @@ const CorporateBlue = ({ data, color }) => {
         {/* Left Column (Contact & Skills) */}
         <aside className="w-1/3 bg-slate-100 p-8 border-r border-slate-200 flex flex-col" style={gapStyle}>
           <div className="break-inside-avoid">
-            <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid' }}>
+            <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>
               {t.lblContact}
             </h3>
             <div className="text-sm space-y-3 text-slate-600">
@@ -124,7 +132,7 @@ const CorporateBlue = ({ data, color }) => {
 
           {(skills.length > 0 || (hardSkills && hardSkills.length > 0)) && (
             <div className="mb-8 break-inside-avoid">
-              <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid' }}>
+              <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>
                 {t.lblHardSkills || t.lblSkills}
               </h3>
               
@@ -159,7 +167,7 @@ const CorporateBlue = ({ data, color }) => {
 
           {softSkills && softSkills.length > 0 && (
             <div className="mb-8 break-inside-avoid">
-              <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid' }}>
+              <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>
                 {t.lblSoftSkills}
               </h3>
               <ul className="space-y-2">
@@ -175,7 +183,7 @@ const CorporateBlue = ({ data, color }) => {
 
           {languages && languages.length > 0 && (
             <div className="mb-8 break-inside-avoid">
-              <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid' }}>
+              <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>
                 {t.lblLanguages}
               </h3>
               <ul className="space-y-3">
@@ -193,7 +201,7 @@ const CorporateBlue = ({ data, color }) => {
         {/* Right Column (Experience & Education) */}
         <main className="w-2/3 p-8 print:p-0 flex flex-col" style={gapStyle}>
           <section>
-            <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
+            <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>
               <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblProfile}
             </h3>
             <div className="text-slate-600 leading-relaxed text-justify">

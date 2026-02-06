@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
 import { useCVStore } from '../../store/cvStore';
 import { TRANSLATIONS } from '../../constants/translations';
+import { TEMPLATE_CONFIG } from '../../constants/templatesConfig';
 import { LayoutTemplate, ChevronDown, Check, Palette, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const templates = [
-  { id: 'ModernDark', name: 'Dark Mode', color: 'bg-slate-900', description: 'Elegante y moderno' },
-  { id: 'MinimalWhite', name: 'Minimalist', color: 'bg-white border border-slate-200', description: 'Limpio y claro' },
-  { id: 'CorporateBlue', name: 'Corporate', color: 'bg-blue-900', description: 'Profesional y serio' },
-  { id: 'TechGamer', name: 'Tech / Neon', color: 'bg-black border border-green-500', description: 'Audaz y digital' },
-  { id: 'AcademicAPA', name: 'Academic', color: 'bg-stone-50 border border-stone-200', description: 'Estándar APA' },
-  { id: 'IvyLeague', name: 'Ivy League', color: 'bg-white border-2 border-slate-900', description: 'Clásico prestigioso' },
-  { id: 'SwissGrid', name: 'Swiss Design', color: 'bg-red-600', description: 'Ordenado y suizo' },
-  { id: 'ExecutiveGray', name: 'Executive', color: 'bg-gray-700', description: 'Sobrio y ejecutivo' },
-];
 
 const PROFESSIONAL_COLORS = [
   { value: '#0f172a', name: 'Director Tech (Slate)', class: 'bg-slate-900' },
@@ -29,6 +19,9 @@ const TemplateSelector = () => {
   const { selectedTemplate, setTemplate, themeColor, setThemeColor, language } = useCVStore();
   const t = TRANSLATIONS[language];
   const [isOpen, setIsOpen] = useState(false);
+
+  // Find current template object from config, fallback to first if not found
+  const currentTemplate = TEMPLATE_CONFIG.find(t => t.id === selectedTemplate) || TEMPLATE_CONFIG[0];
 
   return (
     <div className="p-6 lg:p-8 min-w-[350px] max-w-md mx-auto">
@@ -59,10 +52,13 @@ const TemplateSelector = () => {
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-lg shadow-sm flex-shrink-0 ${templates.find(t => t.id === selectedTemplate).color} transition-transform group-hover:scale-110 duration-300`}></div>
+                  <div 
+                    className="w-10 h-10 rounded-lg shadow-sm flex-shrink-0 transition-transform group-hover:scale-110 duration-300"
+                    style={{ backgroundColor: currentTemplate?.colorHex?.accent || '#334155' }}
+                  ></div>
                   <div>
-                    <span className="block font-bold text-slate-700 text-base">{templates.find(t => t.id === selectedTemplate).name}</span>
-                    <span className="block text-xs text-slate-400 font-medium">{templates.find(t => t.id === selectedTemplate).description}</span>
+                    <span className="block font-bold text-slate-700 text-base">{currentTemplate?.name || 'Seleccionar Plantilla'}</span>
+                    <span className="block text-xs text-slate-400 font-medium truncate max-w-[180px]">{currentTemplate?.description || ''}</span>
                   </div>
                 </div>
                 <motion.div
@@ -83,7 +79,7 @@ const TemplateSelector = () => {
                     className="absolute top-full left-0 right-0 mt-2 bg-white/90 backdrop-blur-xl border border-white/40 rounded-xl shadow-2xl z-50 max-h-[300px] overflow-y-auto custom-scrollbar ring-1 ring-black/5"
                   >
                     <div className="p-2 grid gap-1">
-                      {templates.map((template) => (
+                      {TEMPLATE_CONFIG.map((template) => (
                         <button 
                           key={template.id}
                           className={`w-full flex items-center gap-3 px-3 py-3 text-left rounded-lg transition-all duration-200 group ${
@@ -96,12 +92,15 @@ const TemplateSelector = () => {
                             setIsOpen(false);
                           }}
                         >
-                          <div className={`w-8 h-8 rounded-md shadow-sm border border-black/5 ${template.color} group-hover:scale-110 transition-transform`}></div>
+                          <div 
+                            className="w-8 h-8 rounded-md shadow-sm border border-black/5 group-hover:scale-110 transition-transform"
+                            style={{ backgroundColor: template.colorHex?.accent || '#334155' }}
+                          ></div>
                           <div className="flex-1">
                             <span className={`block text-sm font-semibold ${selectedTemplate === template.id ? 'text-indigo-700' : 'text-slate-700'}`}>
                               {template.name}
                             </span>
-                            <span className="block text-[10px] text-slate-400">{template.description}</span>
+                            <span className="block text-[10px] text-slate-400 truncate max-w-[200px]">{template.description}</span>
                           </div>
                           {selectedTemplate === template.id && (
                             <motion.div layoutId="check">

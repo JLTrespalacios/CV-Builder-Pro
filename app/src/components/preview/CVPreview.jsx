@@ -10,6 +10,7 @@ import SwissGrid from '../../templates/SwissGrid';
 import ExecutiveGray from '../../templates/ExecutiveGray';
 
 const TEMPLATES = {
+  // Base Components
   'ModernDark': ModernDark,
   'MinimalWhite': MinimalWhite,
   'CorporateBlue': CorporateBlue,
@@ -18,6 +19,19 @@ const TEMPLATES = {
   'IvyLeague': IvyLeague,
   'SwissGrid': SwissGrid,
   'ExecutiveGray': ExecutiveGray,
+
+  // Specialized System (Role + Strategy)
+  'CreativePulse': ModernDark,   // Layout asimétrico / Visual
+  'FrontendVision': TechGamer,   // Grid moderno / Tech chips
+  'BackendCore': MinimalWhite,   // Arquitectura clara / Minimal
+  'UXFlow': SwissGrid,           // Timeline / Structured
+  'FashionForm': IvyLeague,      // Editorial / Serif
+  'ShowcasePro': TechGamer,      // Gallery / Grid
+  'ATSSmart': MinimalWhite,      // Ultra Clean / ATS
+  'SmartStart': CorporateBlue,   // Visual ligero / Fresh
+  'SeniorPrestige': ExecutiveGray, // Logros / Executive
+  'LeadershipPrime': ExecutiveGray, // Estrategia / Sobrio
+  'HybridPro': TechGamer,        // Hybrid / Versatile
 };
 
 const A4_HEIGHT_PX = 1123; // Approx height of A4 at 96dpi (297mm)

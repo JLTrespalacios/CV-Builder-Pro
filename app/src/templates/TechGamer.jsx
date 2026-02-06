@@ -30,6 +30,10 @@ const TechGamer = ({ data, color }) => {
       gap: `${design?.sectionGap || 32}px`
   };
 
+  const titleStyle = {
+    fontFamily: design?.titleFont || design?.fontFamily || 'Roboto Mono, monospace'
+  };
+
   return (
     <div 
       className="w-full min-h-full text-gray-300 font-mono flex flex-col border-t-8" 
@@ -38,7 +42,7 @@ const TechGamer = ({ data, color }) => {
       {/* Header */}
       <header className="p-8 print:p-0 flex items-center justify-between border-b border-gray-800 bg-[#111] z-10 relative">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-1 tracking-tighter flex items-center">
+          <h1 className="text-4xl font-bold text-white mb-1 tracking-tighter flex items-center" style={titleStyle}>
             <span style={{ color: accentColor }}>&lt;</span>
             <EditableText
               value={personal.name}
@@ -56,9 +60,13 @@ const TechGamer = ({ data, color }) => {
             />
           </div>
         </div>
-        {personal.showPhoto && personal.photo && (
-          <div className="w-24 h-24 rounded-lg overflow-hidden border-2 shadow-lg" style={{ borderColor: accentColor, boxShadow: `0 0 15px ${accentColor}40` }}>
-             <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+        {personal.showPhoto && (
+          <div className="w-24 h-24 rounded-lg overflow-hidden border-2 shadow-lg flex items-center justify-center bg-[#1a1a1a]" style={{ borderColor: accentColor, boxShadow: `0 0 15px ${accentColor}40` }}>
+             {personal.photo ? (
+               <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+             ) : (
+               <span className="text-3xl font-bold" style={{ color: accentColor }}>{personal.name ? personal.name.charAt(0) : 'U'}</span>
+             )}
           </div>
         )}
       </header>
@@ -67,7 +75,7 @@ const TechGamer = ({ data, color }) => {
         {/* Sidebar */}
         <aside className="w-1/3 p-6 print:p-0 border-r border-gray-800 flex flex-col" style={gapStyle}>
           <div className="break-inside-avoid">
-            <h3 className="text-white font-bold uppercase mb-4 text-xs tracking-[0.2em] flex items-center gap-2">
+            <h3 className="text-white font-bold uppercase mb-4 text-xs tracking-[0.2em] flex items-center gap-2" style={titleStyle}>
               <span className="w-2 h-2 rounded-sm" style={{ backgroundColor: accentColor }}></span>
               Stats
             </h3>
@@ -243,6 +251,11 @@ const TechGamer = ({ data, color }) => {
                        <h4 className="text-white font-bold transition-colors text-lg" style={{ color: accentColor }}>{proj.name}</h4>
                        {proj.link && <a href={proj.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline font-mono">&lt;Link /&gt;</a>}
                      </div>
+                     {proj.image && (
+                       <div className="mb-3 rounded overflow-hidden border border-gray-800 mt-2">
+                         <img src={proj.image} alt={proj.name} className="w-full h-32 object-cover opacity-80 hover:opacity-100 transition-opacity" />
+                       </div>
+                     )}
                      <p className="text-xs font-mono mb-3 opacity-70" style={{ color: accentColor }}>{proj.technologies}</p>
                      <p className="text-gray-400 text-sm leading-relaxed whitespace-pre-line font-sans">
                        {proj.description}
