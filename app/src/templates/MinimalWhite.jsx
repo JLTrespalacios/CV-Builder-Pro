@@ -3,7 +3,7 @@ import { useCVStore } from '../store/cvStore';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
 import { EditableText } from '../components/ui/EditableText';
-import { Palette } from 'lucide-react';
+import { Palette, GripVertical } from 'lucide-react';
 
 const MinimalWhite = ({ data, color }) => {
   const { language, updatePersonal, design, themeColor, updateDesign } = useCVStore();
@@ -77,7 +77,7 @@ const MinimalWhite = ({ data, color }) => {
               value={personal.name}
               onChange={(val) => handlePersonalUpdate('name', val)}
               className="text-5xl font-bold uppercase tracking-tight"
-              style={{ color: accentColor }}
+              style={{ color: design?.nameColor || accentColor }}
               placeholder="Nombre"
             />
           </div>
@@ -257,7 +257,9 @@ const MinimalWhite = ({ data, color }) => {
                 className="absolute top-0 left-0 w-4 h-full cursor-col-resize flex items-center justify-center hover:bg-blue-500/10 transition-colors z-40 print:hidden group/handle -translate-x-1/2"
                 onMouseDown={startResizing}
             >
-                <div className="w-1 h-8 bg-slate-300 rounded-full group-hover/handle:bg-blue-400 transition-colors" />
+                <div className="w-1 h-8 bg-slate-300 rounded-full group-hover/handle:bg-blue-400 transition-colors flex items-center justify-center">
+                    <GripVertical size={12} className="text-slate-600 opacity-0 group-hover/handle:opacity-100 group-hover/handle:text-white" />
+                </div>
             </div>
 
            {/* Hard Skills */}

@@ -83,6 +83,7 @@ const CorporateBlue = ({ data, color }) => {
               value={personal.name}
               onChange={(val) => handlePersonalUpdate('name', val)}
               className="text-4xl font-bold uppercase tracking-wide"
+              style={{ color: design?.nameColor }}
               placeholder="Nombre"
             />
           </div>

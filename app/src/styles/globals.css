@@ -176,4 +176,10 @@
   .no-print {
     display: none !important;
   }
+
+  /* Critical for printing full content in React apps with h-screen */
+  body, #root, main, div[class*="overflow-hidden"] {
+    overflow: visible !important;
+    height: auto !important;
+  }
 }

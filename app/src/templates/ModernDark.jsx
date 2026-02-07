@@ -241,7 +241,7 @@ const ModernDark = ({ data, color }) => {
       {/* Main Content / Right Column */}
       <div className="p-6 flex flex-col" style={gapStyle}>
         <div className="mb-10 break-inside-avoid">
-          <h1 className="text-[3em] font-bold text-slate-900 leading-tight mb-2" style={{ color: accentColor, ...titleStyle }}>
+          <h1 className="text-[3em] font-bold text-slate-900 leading-tight mb-2" style={{ color: design?.nameColor || accentColor, ...titleStyle }}>
             <EditableText 
               value={personal.name} 
               onChange={(val) => handlePersonalUpdate('name', val)}

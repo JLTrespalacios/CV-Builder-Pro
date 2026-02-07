@@ -3,7 +3,7 @@ import { useCVStore } from '../store/cvStore';
 import EditableText from '../components/ui/EditableText';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange } from '../utils/formatters';
-import { Palette } from 'lucide-react';
+import { Palette, GripVertical } from 'lucide-react';
 
 const SwissGrid = ({ data, color }) => {
   const { language, updatePersonal, design, themeColor, updateDesign } = useCVStore();
@@ -79,7 +79,7 @@ const SwissGrid = ({ data, color }) => {
         }}
       >
         <div className="">
-          <div className="text-6xl font-black tracking-tighter leading-none mb-4" style={{ color: accentColor }}>
+          <div className="text-6xl font-black tracking-tighter leading-none mb-4" style={{ color: design?.nameColor || accentColor }}>
             <EditableText
               value={personal.name}
               onChange={(val) => handlePersonalUpdate('name', val)}
@@ -217,7 +217,9 @@ const SwissGrid = ({ data, color }) => {
                 className="absolute top-0 left-0 w-4 h-full cursor-col-resize flex items-center justify-center hover:bg-blue-500/10 transition-colors z-40 print:hidden group/handle -translate-x-1/2"
                 onMouseDown={startResizing}
             >
-                <div className="w-1 h-8 bg-slate-300 rounded-full group-hover/handle:bg-blue-400 transition-colors" />
+                <div className="w-1 h-8 bg-slate-300 rounded-full group-hover/handle:bg-blue-400 transition-colors flex items-center justify-center">
+                    <GripVertical size={12} className="text-slate-600 opacity-0 group-hover/handle:opacity-100 group-hover/handle:text-white" />
+                </div>
             </div>
 
           <section className="break-inside-avoid">

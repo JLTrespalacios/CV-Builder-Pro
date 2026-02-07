@@ -3,7 +3,7 @@ import { useCVStore } from '../store/cvStore';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
 import { EditableText } from '../components/ui/EditableText';
-import { Palette } from 'lucide-react';
+import { Palette, GripVertical } from 'lucide-react';
 
 const TechGamer = ({ data, color }) => {
   const { language, updatePersonal, design, themeColor, updateDesign } = useCVStore();
@@ -86,6 +86,7 @@ const TechGamer = ({ data, color }) => {
               value={personal.name}
               onChange={(val) => handlePersonalUpdate('name', val)}
               className="mx-1"
+              style={{ color: design?.nameColor }}
               placeholder="Nombre"
             />
             <span style={{ color: accentColor }}>/&gt;</span>
@@ -141,7 +142,9 @@ const TechGamer = ({ data, color }) => {
               className="absolute top-0 right-0 w-4 h-full cursor-col-resize flex items-center justify-center hover:bg-green-500/10 transition-colors z-40 print:hidden group/handle translate-x-1/2"
               onMouseDown={startResizing}
           >
-              <div className="w-1 h-8 bg-gray-700 rounded-full group-hover/handle:bg-green-400 transition-colors" />
+              <div className="w-1 h-8 bg-gray-700 rounded-full group-hover/handle:bg-green-400 transition-colors flex items-center justify-center">
+                  <GripVertical size={12} className="text-gray-500 opacity-0 group-hover/handle:opacity-100 group-hover/handle:text-black" />
+              </div>
           </div>
 
           <div className="break-inside-avoid">

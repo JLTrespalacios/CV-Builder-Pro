@@ -7,6 +7,12 @@ export const useUIStore = create(
       appTheme: 'dark', // Fixed to dark/modern as per requirement
       // setAppTheme: (theme) => set({ appTheme: theme }), // Disabled logic
       
+      editorWidth: 50,
+      setEditorWidth: (width) => set({ editorWidth: width }),
+
+      activeMobileTab: 'editor', // 'editor' | 'preview'
+      setActiveMobileTab: (tab) => set({ activeMobileTab: tab }),
+
       toasts: [],
       addToast: (message, type = 'info') => {
         const id = Date.now();
@@ -19,7 +25,7 @@ export const useUIStore = create(
     }),
     {
       name: 'ui-storage',
-      partialize: (state) => ({ appTheme: state.appTheme }),
+      partialize: (state) => ({ appTheme: state.appTheme, editorWidth: state.editorWidth }),
     }
   )
 );

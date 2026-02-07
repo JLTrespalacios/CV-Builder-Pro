@@ -50,10 +50,10 @@ const LanguageSelector = ({ currentLang, onLanguageChange }) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute top-full right-0 mt-2 w-48 bg-[var(--bg-panel)]/95 backdrop-blur-xl border border-[var(--border-subtle)] rounded-xl shadow-xl overflow-hidden z-50 ring-1 ring-black/5"
+            className="absolute top-full right-0 mt-2 w-48 bg-[#0f1428]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-black/50 z-50 overflow-hidden ring-1 ring-white/5"
           >
             <div className="p-1.5 flex flex-col gap-1">
-              <div className="px-3 py-2 text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-wider opacity-70">
+              <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider opacity-70">
                 Seleccionar Idioma
               </div>
               {LANGUAGES.map((lang) => (
@@ -64,10 +64,10 @@ const LanguageSelector = ({ currentLang, onLanguageChange }) => {
                     setIsOpen(false);
                   }}
                   className={`
-                    flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-xs font-medium transition-all group
+                    flex items-center justify-between w-full px-3 py-2.5 rounded-xl text-xs font-medium transition-all group
                     ${currentLang === lang.code 
-                      ? 'bg-[var(--primary)]/10 text-[var(--primary)]' 
-                      : 'text-[var(--text-main)] hover:bg-[var(--bg-muted)]'
+                      ? 'bg-indigo-500/10 text-indigo-400' 
+                      : 'text-slate-300 hover:bg-white/5 hover:text-white'
                     }
                   `}
                 >
@@ -81,7 +81,7 @@ const LanguageSelector = ({ currentLang, onLanguageChange }) => {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                     >
-                      <Check size={14} className="text-[var(--primary)]" />
+                      <Check size={14} className="text-indigo-400" />
                     </motion.div>
                   )}
                 </button>
