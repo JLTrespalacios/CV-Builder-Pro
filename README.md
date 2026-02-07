@@ -1,4 +1,4 @@
-# CV Builder Pro - Sistema de Currículums por Rol 🚀  app/public/logo.svg
+# CV Builder Pro - Sistema de Currículums por Rol 🚀  
 
 ![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat&logo=react)
 ![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?style=flat&logo=vite)
