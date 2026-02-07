@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUIStore } from '../../store/uiStore';
 import { Palette, Monitor, Moon, Zap, Box } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const themes = [
   { id: 'hybrid', label: 'Híbrido', icon: Monitor, color: 'bg-blue-600' },

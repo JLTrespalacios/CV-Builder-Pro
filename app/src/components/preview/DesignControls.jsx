@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCVStore } from '../../store/cvStore';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Droplet, Layout, ChevronDown, X } from 'lucide-react';
 
 const PRESET_COLORS = [

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Check, FileText, Download, Star, Sparkles, Briefcase, User, Layers, Search, CheckCircle2, Zap, LayoutTemplate, Code, Palette, Monitor, ArrowLeft } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
 // import { generatePDF } from '../../utils/pdfGenerator';

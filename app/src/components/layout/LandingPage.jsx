@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FilePlus2, FolderOpen, ArrowRight, CheckCircle2, ShieldCheck, TrendingUp, Users, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useUIStore } from '../../store/uiStore';
 import { useCVStore } from '../../store/cvStore';
 import { extractTextFromPDF } from '../../utils/pdfImporter';
