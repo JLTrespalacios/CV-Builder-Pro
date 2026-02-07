@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { FilePlus2, FolderOpen, ArrowRight, CheckCircle2, ShieldCheck, TrendingUp, Users, Sparkles } from 'lucide-react';
 import { useUIStore } from '../../store/uiStore';
 import { useCVStore } from '../../store/cvStore';
@@ -80,7 +79,7 @@ const LandingPage = () => {
   ];
 
   // Animation variants for floating particles
-  const particleVariants = {
+  /* const particleVariants = {
     animate: (i) => ({
       y: [0, -20, 0],
       x: [0, 10, 0],
@@ -91,7 +90,7 @@ const LandingPage = () => {
         ease: "easeInOut"
       }
     })
-  };
+  }; */
 
   return (
     <div className="min-h-screen w-full bg-[#0B0F19] flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans selection:bg-indigo-500/30" data-theme={appTheme}>

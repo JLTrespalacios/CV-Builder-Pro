@@ -23,6 +23,7 @@ const PersonalForm = () => {
 
   // Watch for changes and update store immediately
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/incompatible-library
     const subscription = watch((value) => {
       updatePersonal(value);
     });

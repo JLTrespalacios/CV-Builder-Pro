@@ -376,7 +376,7 @@ export const useCVStore = create(
           cvData: { ...state.cvData, ...sortedData }
         };
       }),
-      resetCVData: () => set((state) => ({
+      resetCVData: () => set(() => ({
         cvData: {
             personal: {
               name: "", role: "", email: "", phone: "", location: "",

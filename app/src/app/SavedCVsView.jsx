@@ -8,7 +8,7 @@ import CVPreview from '../components/preview/CVPreview';
 import SavedCVsPanel from '../components/editor/SavedCVsPanel';
 
 const SavedCVsView = () => {
-  const { isSidebarOpen, language } = useCVStore();
+  const { isSidebarOpen } = useCVStore();
   const { appTheme } = useUIStore();
   
   const handlePrint = () => window.print();

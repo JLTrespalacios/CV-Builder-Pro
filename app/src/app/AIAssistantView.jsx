@@ -8,7 +8,7 @@ import CVPreview from '../components/preview/CVPreview';
 import AIAssistantPanel from '../components/editor/AIAssistantPanel';
 
 const AIAssistantView = () => {
-  const { isSidebarOpen, language } = useCVStore();
+  const { isSidebarOpen } = useCVStore();
   const { appTheme } = useUIStore();
   
   const handlePrint = () => window.print();

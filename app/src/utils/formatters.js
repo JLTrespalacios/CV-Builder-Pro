@@ -7,7 +7,7 @@ export const formatDate = (dateString, language = 'es') => {
   
   try {
     return new Intl.DateTimeFormat(language, { month: 'short', year: 'numeric' }).format(date);
-  } catch (e) {
+  } catch {
     return dateString;
   }
 };

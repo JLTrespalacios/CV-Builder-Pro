@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar } from 'lucide-react';
 
 const DateSelector = ({ 
@@ -8,11 +8,10 @@ const DateSelector = ({
   isRange = false,
   allowPresent = false,
   placeholder = "YYYY",
-  required = false,
-  presentLabel = "Actualmente"
+  required = false
 }) => {
   // Parse initial value to determine mode and dates
-  const parseValue = (val) => {
+  const parseValue = useCallback((val) => {
     if (!val) return { start: '', end: '', mode: isRange ? 'range' : 'single' };
     
     if (typeof val === 'object') {
@@ -41,13 +40,13 @@ const DateSelector = ({
     // If no separator but isRange is true, it might be a single date (Certificado)
     // or just a start date. We assume 'single' if it doesn't have the separator structure
     return { start: val, end: '', mode: 'single' };
-  };
+  }, [isRange]);
 
-  const [dateState, setDateState] = useState(parseValue(value));
+  const [dateState, setDateState] = useState(() => parseValue(value));
 
   useEffect(() => {
     setDateState(parseValue(value));
-  }, [value, isRange]);
+  }, [value, parseValue]);
 
   const updateParent = (newState) => {
     // Pass the full object with mode so parent can format

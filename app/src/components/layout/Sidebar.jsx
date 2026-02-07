@@ -4,7 +4,6 @@ import { Layout, Settings, Download, Upload, Save, FileText, Edit3, Globe, Folde
 import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { motion } from 'framer-motion';
 
 const Sidebar = ({ onPrint }) => {
   const { cvData, loadCVData, language } = useCVStore();

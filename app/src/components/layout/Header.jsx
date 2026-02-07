@@ -7,12 +7,13 @@ import { Globe, Trash2, PanelLeftOpen, FileText, Download, Upload, Languages, Cl
 import DesignControls from '../preview/DesignControls';
 import LanguageSelector from '../ui/LanguageSelector';
 import CloudExportModal from '../ui/CloudExportModal';
-import { generateWord } from '../../utils/wordGenerator';
+// import { generatePDF } from '../../utils/pdfGenerator'; 
+// import { generateWord } from '../../utils/wordGenerator';
 import { extractTextFromPDF } from '../../utils/pdfImporter';
 import { parseCVText } from '../../utils/cvParser';
 
 const Header = ({ onDownload }) => {
-  const { language, setLanguage, resetCVData, isSidebarOpen, toggleSidebar, cvData, loadCVData, translateData } = useCVStore();
+  const { language, resetCVData, isSidebarOpen, toggleSidebar, cvData, loadCVData, translateData } = useCVStore();
   const { addToast } = useUIStore();
   const t = TRANSLATIONS[language];
   const fileInputRef = React.useRef(null);
@@ -20,9 +21,9 @@ const Header = ({ onDownload }) => {
   const [isCloudModalOpen, setIsCloudModalOpen] = React.useState(false);
 
   const handleReset = () => {
-    if (window.confirm('WARNING: SYSTEM RESET. ¿Estás seguro de borrar todos los datos? Esta acción es irreversible.')) {
+    if (window.confirm(t.confirmReset)) {
       resetCVData();
-      addToast('Sistema reiniciado. Datos eliminados.', 'info');
+      addToast(t.resetSuccess, 'success');
     }
   };
 
@@ -54,6 +55,7 @@ const Header = ({ onDownload }) => {
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
+    event.target.value = '';
 
     // PDF Handling
     if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
@@ -91,19 +93,9 @@ const Header = ({ onDownload }) => {
     event.target.value = '';
   };
 
-  const handleTranslateAll = () => {
-    // Logic to toggle language or translate content
-    if (language === 'es') {
-      translateData('en');
-      addToast('Idioma cambiado a Inglés. Contenido adaptado.', 'success');
-    } else {
-      translateData('es');
-      addToast('Idioma cambiado a Español. Contenido adaptado.', 'success');
-    }
-    // Future: Call AI API to translate user content
-  };
 
-  const handleDownloadWord = async () => {
+
+  /* const handleDownloadWord = async () => {
     try {
       await generateWord(cvData, t);
       addToast('CV descargado en Word', 'success');
@@ -111,7 +103,7 @@ const Header = ({ onDownload }) => {
       console.error(error);
       addToast('Error al descargar Word', 'error');
     }
-  };
+  }; */
 
   return (
     <header className="h-16 bg-[var(--bg-panel)]/80 backdrop-blur-md border-b border-[var(--border-subtle)] flex items-center justify-between px-6 z-50 fixed top-0 right-0 left-20 transition-colors duration-300">
@@ -256,14 +248,14 @@ const Header = ({ onDownload }) => {
           <Trash2 size={16} className="text-[var(--text-secondary)] group-hover:text-red-500 transition-colors" />
         </button>
         
-        <button 
+        {/* <button 
           onClick={handleDownloadWord}
           className="px-4 py-2 bg-[var(--bg-panel)] text-[var(--primary)] border border-[var(--border-subtle)] hover:border-[var(--primary)]/50 text-xs font-bold rounded-xl hover:bg-[var(--bg-muted)] transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
           title="Descargar en Word"
         >
           <FileText size={16} />
           Word
-        </button>
+        </button> */}
 
         <button 
           onClick={onDownload}

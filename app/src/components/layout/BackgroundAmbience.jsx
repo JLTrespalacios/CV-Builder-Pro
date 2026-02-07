@@ -1,7 +1,19 @@
+'use client';
+
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 const BackgroundAmbience = () => {
+  // Pre-calculate random values to keep them stable across renders
+  const [particles] = React.useState(() => [...Array(5)].map((_, i) => ({
+    id: i,
+    top: `${Math.random() * 100}%`,
+    left: `${Math.random() * 100}%`,
+    width: `${Math.random() * 3 + 1}px`,
+    height: `${Math.random() * 3 + 1}px`
+  })));
+
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none fixed">
       {/* Main Gradients */}
@@ -32,9 +44,9 @@ const BackgroundAmbience = () => {
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
       
       {/* Floating Particles */}
-      {[...Array(5)].map((_, i) => (
+      {particles.map((p, i) => (
         <motion.div
-          key={i}
+          key={p.id}
           animate={{
             y: [0, -20, 0],
             x: [0, 10, 0],
@@ -47,10 +59,10 @@ const BackgroundAmbience = () => {
           }}
           className="absolute rounded-full bg-white blur-[1px]"
           style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            width: `${Math.random() * 3 + 1}px`,
-            height: `${Math.random() * 3 + 1}px`,
+            top: p.top,
+            left: p.left,
+            width: p.width,
+            height: p.height,
           }}
         />
       ))}

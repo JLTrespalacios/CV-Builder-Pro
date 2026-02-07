@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Copy, Check, Bot, Sparkles, MessageSquare, ExternalLink, BrainCircuit, Wand2 } from 'lucide-react';
+import { Copy, Check, Bot, Sparkles, MessageSquare, ExternalLink, BrainCircuit, Wand2, Send, Loader2 } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
 import { AI_RECRUITER_PROMPT } from '../../constants/aiPersona';
 import { useUIStore } from '../../store/uiStore';
-import { motion } from 'framer-motion';
 
 const AIAssistantPanel = () => {
   const { cvData } = useCVStore();

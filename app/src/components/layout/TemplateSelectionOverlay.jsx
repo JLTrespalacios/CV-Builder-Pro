@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { Check, FileText, Download, Star, Sparkles, Briefcase, User, Layers, Search, CheckCircle2, Zap, LayoutTemplate, Code, Palette, Monitor, ArrowLeft } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
-import { generateWord } from '../../utils/wordGenerator';
+// import { generatePDF } from '../../utils/pdfGenerator';
+// import { generateWord } from '../../utils/wordGenerator';
 import { TRANSLATIONS } from '../../constants/translations';
 import { getRoleData } from '../../constants/roleData';
 import BackgroundAmbience from './BackgroundAmbience';
@@ -45,7 +46,7 @@ const MiniCVPreview = ({ template }) => {
   // Common styles
   const textTitle = { backgroundColor: colors.primary, opacity: 0.8, height: '6px', width: '40%', marginBottom: '4px', borderRadius: '1px' };
   const textBody = { backgroundColor: colors.primary, opacity: 0.4, height: '4px', width: '100%', marginBottom: '2px', borderRadius: '1px' };
-  const accentBox = { backgroundColor: colors.accent };
+  // const accentBox = { backgroundColor: colors.accent };
   
   const renderSection = (lines = 3, width = "100%") => (
     <div className="mb-2" style={{ width }}>
@@ -430,10 +431,10 @@ const MiniCVPreview = ({ template }) => {
 
 
 const TemplateSelectionOverlay = ({ onClose, isModal = false }) => {
-  const { setTemplate, cvData, language, loadCVData, updateDesign, setThemeColor } = useCVStore();
+  const { setTemplate, loadCVData, updateDesign, setThemeColor } = useCVStore();
   const navigate = useNavigate();
   const [hoveredTemplate, setHoveredTemplate] = useState(null);
-  const t = TRANSLATIONS[language];
+  // const t = TRANSLATIONS[language];
 
   // Filter State
   const [activeProfile, setActiveProfile] = useState('Todos');
@@ -489,18 +490,25 @@ const TemplateSelectionOverlay = ({ onClose, isModal = false }) => {
     navigate('/editor');
   };
 
-  const handleDownloadSample = async (e, type, templateId) => {
+  /* const handleDownloadSample = (e, templateId) => {
     e.stopPropagation();
-    if (type === 'word') {
-      try {
-        await generateWord(cvData, t);
-      } catch (error) {
-        console.error("Error generating word:", error);
-      }
-    } else {
-      alert("Para descargar en PDF, selecciona la plantilla y usa el botón de descarga en el editor.");
+    console.log(`Descargando ejemplo para: ${templateId}`);
+    // Implementar lógica de descarga de ejemplo si es necesario
+  }; */
+
+  /* const getTemplateBadge = (tags) => {
+    if (!tags || tags.length === 0) return null;
+    
+    // const accentBox = "bg-indigo-100 text-indigo-700 border border-indigo-200";
+    
+    if (tags.includes('Popular')) {
+      return (
+        <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm flex items-center gap-1">
+          <Star size={10} fill="currentColor" /> POPULAR
+        </div>
+      );
     }
-  };
+  }; */
 
   return (
     <div className={`w-full min-h-screen bg-[var(--bg-app)] flex flex-col ${isModal ? 'fixed inset-0 z-50 overflow-y-auto' : 'relative'} font-sans text-[var(--text-main)] transition-colors duration-300`}>

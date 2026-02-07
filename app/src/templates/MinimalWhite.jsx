@@ -64,10 +64,6 @@ const MinimalWhite = ({ data, color }) => {
       gap: `${design?.sectionGap || 28}px` // 40px default for MinimalWhite (gap-10)
   };
 
-  const titleStyle = {
-    fontFamily: design?.titleFont || design?.fontFamily || 'Inter'
-  };
-
   return (
     <div 
       className="w-full min-h-full bg-white text-gray-800 font-sans p-8"

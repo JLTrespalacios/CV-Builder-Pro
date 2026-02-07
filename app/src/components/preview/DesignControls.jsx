@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useCVStore } from '../../store/cvStore';
-import { TRANSLATIONS } from '../../constants/translations';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Type, Droplet, Layout, ChevronUp, ChevronDown, X } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
+import { Droplet, Layout, ChevronDown, X } from 'lucide-react';
 
 const PRESET_COLORS = [
   { name: 'Azul Profesional', value: '#2563eb' },
@@ -30,9 +29,8 @@ const FONT_FAMILIES = [
 ];
 
 const DesignControls = () => {
-  const { design, updateDesign, language, themeColor, setThemeColor } = useCVStore();
+  const { updateDesign, themeColor, setThemeColor, design } = useCVStore();
   const [isOpen, setIsOpen] = useState(false);
-  const t = TRANSLATIONS[language];
 
   return (
     <div className="relative z-50 print:hidden">

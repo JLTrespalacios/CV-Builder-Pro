@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
+import { Save, Trash2, Clock, Edit3, FileText, Check, Plus, FolderOpen, FileCheck } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
-import { Save, FolderOpen, Trash2, Edit3, Plus, FileText, Clock, FileCheck, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SavedCVsPanel = () => {
-  const { savedCVs, saveCV, deleteSavedCV, loadSavedCV, cvData, updateSavedCV, resetCVData, language } = useCVStore();
+  const { savedCVs, loadSavedCV, deleteSavedCV, saveCV, language, updateSavedCV, resetCVData } = useCVStore();
   const { addToast } = useUIStore();
-  const t = TRANSLATIONS[language];
   
   const [newCVName, setNewCVName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -75,9 +74,7 @@ const SavedCVsPanel = () => {
         </h3>
         
         {isSaving ? (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div 
             className="flex flex-col gap-3"
           >
             <input
@@ -102,7 +99,7 @@ const SavedCVsPanel = () => {
                 Cancelar
               </button>
             </div>
-          </motion.div>
+          </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
              <button

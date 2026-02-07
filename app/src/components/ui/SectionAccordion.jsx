@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { ChevronDown, CheckCircle2 } from 'lucide-react';
 
 const SectionAccordion = ({ title, icon: Icon, children, isOpen, onToggle, isComplete = false }) => {

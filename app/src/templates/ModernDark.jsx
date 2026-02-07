@@ -6,7 +6,7 @@ import { EditableText } from '../components/ui/EditableText';
 import { Settings, GripVertical, Palette } from 'lucide-react';
 
 const ModernDark = ({ data, color }) => {
-  const { language, updatePersonal, cvData, design, themeColor, updateDesign } = useCVStore();
+  const { language, updatePersonal, design, themeColor, updateDesign } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, hardSkills, softSkills, certifications, languages, referencesAvailableOnRequest } = data;
   const accentColor = themeColor || color || '#2563eb';

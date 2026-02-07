@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
+import { Layout, Check, Palette, Eye, ArrowRight } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
-import { TRANSLATIONS } from '../../constants/translations';
 import { TEMPLATE_CONFIG } from '../../constants/templatesConfig';
-import { LayoutTemplate, ChevronDown, Check, Palette, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const PROFESSIONAL_COLORS = [
   { value: '#0f172a', name: 'Director Tech (Slate)', class: 'bg-slate-900' },
@@ -16,8 +14,7 @@ const PROFESSIONAL_COLORS = [
 ];
 
 const TemplateSelector = () => {
-  const { selectedTemplate, setTemplate, themeColor, setThemeColor, language } = useCVStore();
-  const t = TRANSLATIONS[language];
+  const { selectedTemplate, setTemplate, themeColor, setThemeColor } = useCVStore();
   const [isOpen, setIsOpen] = useState(false);
 
   // Find current template object from config, fallback to first if not found

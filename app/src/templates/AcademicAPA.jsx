@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useCVStore } from '../store/cvStore';
 import EditableText from '../components/ui/EditableText';
 import { TRANSLATIONS } from '../constants/translations';
-import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
+import { formatDateRange } from '../utils/formatters';
 import { Palette } from 'lucide-react';
 
 const AcademicAPA = ({ data, color }) => {

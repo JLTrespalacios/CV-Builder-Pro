@@ -60,7 +60,7 @@ const CVPreview = forwardRef((props, ref) => {
 
     resizeObserver.observe(containerRef.current);
     return () => resizeObserver.disconnect();
-  }, [cvData, selectedTemplate]); // Re-calculate when data changes
+  }, [cvData, selectedTemplate, pages.length]); // Re-calculate when data changes
 
   return (
     <div className="w-full h-full bg-transparent overflow-auto flex justify-center p-8 print:p-0 print:bg-white print:overflow-visible relative">

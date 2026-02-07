@@ -202,7 +202,6 @@ const parseChronologicalItems = (lines, type = 'experience') => {
  */
 const extractSkills = (fullText) => {
   const foundSkills = new Set();
-  const lowerText = fullText.toLowerCase();
   
   TECH_SKILLS_DB.forEach(skill => {
     // Word boundary check to avoid partial matches (e.g. "C" in "Center")
@@ -252,7 +251,6 @@ export const parseCVText = (rawText) => {
   // 1. Personal Info Extraction
   // Look in the first 20 lines (Summary usually comes later)
   const headerLines = lines.slice(0, 20);
-  const fullHeaderText = headerLines.join(' ');
   
   // Email & Phone
   const emailMatch = rawText.match(EMAIL_REGEX);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useUIStore } from '../../store/uiStore';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
 
 const ToastContainer = () => {
