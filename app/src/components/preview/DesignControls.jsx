@@ -169,19 +169,77 @@ const DesignControls = () => {
                         {design.fontSize}px
                       </span>
                     </div>
+                    
+                    {/* Presets Profesionales */}
+                    <div className="grid grid-cols-4 gap-2 mb-2">
+                        {[
+                          { label: 'S', size: 12, desc: 'Compacto' },
+                          { label: 'M', size: 14, desc: 'Estándar' },
+                          { label: 'L', size: 16, desc: 'Lectura' },
+                          { label: 'XL', size: 18, desc: 'Amplio' }
+                        ].map((preset) => (
+                          <button
+                            key={preset.size}
+                            onClick={() => updateDesign({ fontSize: preset.size })}
+                            className={`py-1.5 px-1 rounded-lg border text-[10px] font-medium transition-all ${
+                              design.fontSize === preset.size
+                                ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                                : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+                            }`}
+                            title={`Tamaño ${preset.desc} (${preset.size}px)`}
+                          >
+                            {preset.label}
+                          </button>
+                        ))}
+                    </div>
+
                     <input
                       type="range"
-                      min="12"
-                      max="20"
+                      min="11"
+                      max="24"
                       step="1"
                       value={design.fontSize}
                       onChange={(e) => updateDesign({ fontSize: parseInt(e.target.value) })}
                       className="w-full h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer accent-indigo-600 hover:accent-indigo-500 transition-all"
                     />
-                    <div className="flex justify-between text-[10px] font-medium text-slate-400 px-1">
-                      <span>Compacto</span>
-                      <span>Amplio</span>
+                  </div>
+
+                  {/* Line Height Control */}
+                  <div className="space-y-3 pt-2 border-t border-slate-100 mt-2">
+                    <div className="flex justify-between items-center">
+                      <label className="text-xs font-semibold text-slate-700">Espaciado de Texto (Interlineado)</label>
+                      <span className="bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-md text-[10px] font-bold border border-indigo-100">
+                        {design.lineHeight || 1.5}
+                      </span>
                     </div>
+                    <div className="grid grid-cols-3 gap-2 mb-2">
+                        {[
+                          { label: 'Compacto', val: 1.2 },
+                          { label: 'Normal', val: 1.5 },
+                          { label: 'Aireado', val: 1.8 }
+                        ].map((preset) => (
+                          <button
+                            key={preset.val}
+                            onClick={() => updateDesign({ lineHeight: preset.val })}
+                            className={`py-1.5 px-1 rounded-lg border text-[10px] font-medium transition-all ${
+                              (design.lineHeight || 1.5) === preset.val
+                                ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                                : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+                            }`}
+                          >
+                            {preset.label}
+                          </button>
+                        ))}
+                    </div>
+                    <input
+                      type="range"
+                      min="1.0"
+                      max="2.5"
+                      step="0.1"
+                      value={design.lineHeight || 1.5}
+                      onChange={(e) => updateDesign({ lineHeight: parseFloat(e.target.value) })}
+                      className="w-full h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer accent-indigo-600 hover:accent-indigo-500 transition-all"
+                    />
                   </div>
                 </div>
 

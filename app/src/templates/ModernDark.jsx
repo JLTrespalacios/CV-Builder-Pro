@@ -22,7 +22,8 @@ const ModernDark = ({ data, color }) => {
     paddingTop: `${design?.marginTop || 0}px`,
     fontSize: `${design?.fontSize || 16}px`,
     fontFamily: design?.fontFamily || 'Inter',
-    color: design?.fontColor || '#334155'
+    color: design?.fontColor || '#334155',
+    lineHeight: design?.lineHeight || 1.5
   };
 
   const gapStyle = {

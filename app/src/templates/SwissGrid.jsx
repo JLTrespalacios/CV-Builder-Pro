@@ -18,7 +18,8 @@ const SwissGrid = ({ data, color }) => {
     paddingTop: `${design?.marginTop || 0}px`,
     fontSize: `${design?.fontSize || 16}px`,
     fontFamily: design?.fontFamily || 'Inter',
-    color: design?.fontColor || '#000000'
+    color: design?.fontColor || '#000000',
+    lineHeight: design?.lineHeight || 1.5
   };
 
   const gridGapStyle = {
