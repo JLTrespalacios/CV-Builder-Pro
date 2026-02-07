@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Layout, Check, Palette, Eye, ArrowRight } from 'lucide-react';
+import { Layout, Check, Palette, Eye, ArrowRight, ChevronDown } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
 import { TEMPLATE_CONFIG } from '../../constants/templatesConfig';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const PROFESSIONAL_COLORS = [
   { value: '#0f172a', name: 'Director Tech (Slate)', class: 'bg-slate-900' },
