@@ -133,7 +133,7 @@
 
 @media print {
   @page {
-    margin: 2.54cm;
+    margin: 0mm;
     size: auto;
   }
   
@@ -141,6 +141,7 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     background-color: white;
+    margin: 0;
   }
 
   /* Reset layout for print */
