@@ -56,7 +56,7 @@ const ModernDark = ({ data, color }) => {
             <EditableText 
               value={personal.email} 
               onChange={(val) => handlePersonalUpdate('email', val)}
-              className="block break-all"
+              className="block text-xs break-words"
               placeholder="Email"
             />
             <EditableText 

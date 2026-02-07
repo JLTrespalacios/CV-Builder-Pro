@@ -79,7 +79,7 @@ const CorporateBlue = ({ data, color }) => {
                     value={personal.email}
                     onChange={(val) => handlePersonalUpdate('email', val)}
                     placeholder="Email"
-                    className="break-all"
+                    className="text-xs break-words"
                 />
               </div>
               <div className="flex flex-col">
@@ -205,7 +205,7 @@ const CorporateBlue = ({ data, color }) => {
             <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>
               <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblProfile}
             </h3>
-            <div className="text-slate-600 leading-relaxed text-justify">
+            <div className="text-slate-600 leading-loose text-left">
                <EditableText
                 value={personal.summary}
                 onChange={(val) => handlePersonalUpdate('summary', val)}
