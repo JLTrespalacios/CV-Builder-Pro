@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Trash2, Clock, Edit3, FileText, Check, Plus, FolderOpen, FileCheck } from 'lucide-react';
+import { Save, Trash2, Clock, Edit3, FileText, Check, Plus, FolderOpen, FileCheck, RefreshCw } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
