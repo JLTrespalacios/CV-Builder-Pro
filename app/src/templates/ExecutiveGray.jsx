@@ -201,7 +201,7 @@ const ExecutiveGray = ({ data, color }) => {
 
       {/* Main Content */}
       <div className="p-8 print:p-0 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
-        <div className="break-inside-avoid">Header */}
+        {/* Header */}
         <header className="border-b-4 pb-6" style={{ borderColor: accentColor }}>
           <div className="text-4xl font-serif font-bold text-gray-900 mb-2 tracking-tight" style={titleStyle}>
             <EditableText 
