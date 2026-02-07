@@ -7,7 +7,7 @@
 
 **CV Builder Pro** es una plataforma avanzada para la creación de currículums profesionales, diseñada bajo la filosofía de que "ningún CV debe parecerse a otro". El sistema adapta el diseño, la estructura y el contenido según el rol profesional del usuario (Tech, Creativo, Ejecutivo, etc.).
 
-🔗 **Live Demo:** [[https://cv-builder-pro.leonardotrespalacios.dev/](https://cv-builder-pro.leonardotrespalacios.dev/)](https://cv-builder-pro-tech.leonardotrespalacios.dev/)
+🔗 **Live Demo:** (https://cv-builder-pro-tech.leonardotrespalacios.dev/)
 
 ---
 
