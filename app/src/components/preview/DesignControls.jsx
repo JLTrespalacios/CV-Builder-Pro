@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCVStore } from '../../store/cvStore';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Droplet, Layout, ChevronDown, X } from 'lucide-react';
+import { Droplet, Layout, ChevronDown, X, Type } from 'lucide-react';
 
 const PRESET_COLORS = [
   { name: 'Azul Profesional', value: '#2563eb' },
