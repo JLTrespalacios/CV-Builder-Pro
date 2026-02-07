@@ -3,16 +3,21 @@ import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
 import { TRANSLATIONS } from '../../constants/translations';
 import { Globe, Trash2, PanelLeftOpen, FileText, Download, Upload, Languages, Cloud, ChevronDown, Save } from 'lucide-react';
-import ThemeSwitcher from '../ui/ThemeSwitcher';
+// import ThemeSwitcher from '../ui/ThemeSwitcher';
 import DesignControls from '../preview/DesignControls';
+import LanguageSelector from '../ui/LanguageSelector';
+import CloudExportModal from '../ui/CloudExportModal';
 import { generateWord } from '../../utils/wordGenerator';
+import { extractTextFromPDF } from '../../utils/pdfImporter';
+import { parseCVText } from '../../utils/cvParser';
 
 const Header = ({ onDownload }) => {
-  const { language, setLanguage, resetCVData, isSidebarOpen, toggleSidebar, cvData, loadCVData } = useCVStore();
+  const { language, setLanguage, resetCVData, isSidebarOpen, toggleSidebar, cvData, loadCVData, translateData } = useCVStore();
   const { addToast } = useUIStore();
   const t = TRANSLATIONS[language];
   const fileInputRef = React.useRef(null);
   const [isSaveMenuOpen, setIsSaveMenuOpen] = React.useState(false);
+  const [isCloudModalOpen, setIsCloudModalOpen] = React.useState(false);
 
   const handleReset = () => {
     if (window.confirm('WARNING: SYSTEM RESET. ¿Estás seguro de borrar todos los datos? Esta acción es irreversible.')) {
@@ -46,10 +51,30 @@ const Header = ({ onDownload }) => {
     setIsSaveMenuOpen(false);
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
+    // PDF Handling
+    if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+      try {
+        addToast('Analizando PDF... Esto puede tardar unos segundos.', 'info');
+        const text = await extractTextFromPDF(file);
+        const parsedData = parseCVText(text);
+        
+        // Merge or replace? For now replace to be safe, or we could ask.
+        // But loadCVData typically replaces.
+        loadCVData(parsedData);
+        addToast('PDF Importado. Revisa y corrige los datos extraídos.', 'success');
+      } catch (error) {
+        console.error(error);
+        addToast('Error al importar PDF: ' + error.message, 'error');
+      }
+      event.target.value = '';
+      return;
+    }
+
+    // JSON Handling
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -69,11 +94,11 @@ const Header = ({ onDownload }) => {
   const handleTranslateAll = () => {
     // Logic to toggle language or translate content
     if (language === 'es') {
-      setLanguage('en');
-      addToast('Idioma cambiado a Inglés. Los encabezados se han traducido.', 'success');
+      translateData('en');
+      addToast('Idioma cambiado a Inglés. Contenido adaptado.', 'success');
     } else {
-      setLanguage('es');
-      addToast('Idioma cambiado a Español.', 'success');
+      translateData('es');
+      addToast('Idioma cambiado a Español. Contenido adaptado.', 'success');
     }
     // Future: Call AI API to translate user content
   };
@@ -101,15 +126,11 @@ const Header = ({ onDownload }) => {
           </button>
         )}
         <div className="flex items-center gap-2 group">
-          <div className="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] p-1.5 rounded-xl shadow-lg shadow-[var(--primary)]/20 transition-transform duration-300 group-hover:scale-110">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M14 2V8H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M16 13H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M16 17H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M10 9H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
+          <img 
+            src="/logo.svg" 
+            alt="CV Builder Logo" 
+            className="w-8 h-8 rounded-xl shadow-lg shadow-[var(--primary)]/20 transition-transform duration-300 group-hover:scale-110"
+          />
           <h1 className="text-xl font-bold text-[var(--text-main)] tracking-tight flex items-center gap-1 font-sans">
             CV<span className="text-[var(--primary)]">Builder</span>
             <span className="bg-[var(--bg-muted)] text-[var(--text-secondary)] font-medium text-[10px] px-1.5 py-0.5 rounded-md ml-1 border border-[var(--border-subtle)] uppercase tracking-wide">Pro</span>
@@ -118,22 +139,15 @@ const Header = ({ onDownload }) => {
       </div>
       
       <div className="flex items-center gap-3">
-        <ThemeSwitcher />
+        {/* Theme Switcher Removed by user request */}
         
-        <div className="flex items-center gap-2 bg-[var(--bg-panel)] border border-[var(--border-subtle)] rounded-xl px-3 py-1.5 hover:border-[var(--primary)]/30 transition-all hover:shadow-md hover:-translate-y-0.5 group cursor-pointer">
-          <Globe size={14} className="text-[var(--text-secondary)] group-hover:text-[var(--primary)] transition-colors" />
-          <select 
-            value={language} 
-            onChange={(e) => setLanguage(e.target.value)}
-            aria-label={t.language || "Seleccionar idioma"}
-            className="bg-transparent border-none text-xs text-[var(--text-main)] font-medium focus:outline-none cursor-pointer uppercase appearance-none pr-4"
-            style={{ backgroundImage: 'none' }}
-          >
-            <option value="es">ES</option>
-            <option value="en">EN</option>
-            <option value="fr">FR</option>
-          </select>
-        </div>
+        <LanguageSelector 
+          currentLang={language} 
+          onLanguageChange={(lang) => {
+            translateData(lang);
+            addToast('Idioma cambiado. Traduciendo contenido...', 'success');
+          }} 
+        />
 
         <div className="h-6 w-px bg-[var(--border-subtle)] mx-1"></div>
         
@@ -163,6 +177,26 @@ const Header = ({ onDownload }) => {
                   <h3 className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Gestión de Archivos</h3>
                 </div>
                 <div className="p-1">
+                  
+                  {/* Nueva opción Cloud */}
+                  <button 
+                    onClick={() => {
+                        setIsCloudModalOpen(true);
+                        setIsSaveMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2.5 hover:bg-[var(--bg-muted)] rounded-lg text-xs font-medium text-[var(--text-main)] flex items-center gap-3 transition-colors mb-1"
+                  >
+                    <div className="p-1.5 bg-indigo-100 text-indigo-600 rounded-lg">
+                      <Cloud size={14} />
+                    </div>
+                    <div>
+                      <span className="block font-bold text-indigo-600">Guardar en la Nube</span>
+                      <span className="text-[10px] text-[var(--text-secondary)]">Drive, Dropbox, OneDrive...</span>
+                    </div>
+                  </button>
+
+                  <div className="h-px bg-[var(--border-subtle)] my-1"></div>
+
                   <button 
                     onClick={handleExport}
                     className="w-full text-left px-3 py-2.5 hover:bg-[var(--bg-muted)] rounded-lg text-xs font-medium text-[var(--text-main)] flex items-center gap-3 transition-colors"
@@ -184,8 +218,8 @@ const Header = ({ onDownload }) => {
                       <Upload size={14} />
                     </div>
                     <div>
-                      <span className="block font-bold">Cargar Respaldo</span>
-                      <span className="text-[10px] text-[var(--text-secondary)]">Subir archivo .json guardado</span>
+                      <span className="block font-bold">Cargar / Importar</span>
+                      <span className="text-[10px] text-[var(--text-secondary)]">Soporta .json (Respaldo) y .pdf (Importar)</span>
                     </div>
                   </button>
 
@@ -205,8 +239,13 @@ const Header = ({ onDownload }) => {
           type="file" 
           ref={fileInputRef} 
           onChange={handleFileChange} 
-          accept=".json" 
+          accept=".json, .pdf" 
           className="hidden" 
+        />
+        
+        <CloudExportModal 
+            isOpen={isCloudModalOpen} 
+            onClose={() => setIsCloudModalOpen(false)} 
         />
 
         <button 

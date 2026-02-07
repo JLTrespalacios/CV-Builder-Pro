@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Layout, Settings, Download, Upload, Save, FileText, Edit3, Globe, FolderOpen, Bot } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
 import { useUIStore } from '../../store/uiStore';
@@ -6,8 +7,10 @@ import { TRANSLATIONS } from '../../constants/translations';
 import { motion } from 'framer-motion';
 
 const Sidebar = ({ onPrint }) => {
-  const { activeTab, setActiveTab, cvData, loadCVData, language, setLanguage } = useCVStore();
+  const { cvData, loadCVData, language } = useCVStore();
   const { addToast } = useUIStore();
+  const navigate = useNavigate();
+  const location = useLocation();
   const fileInputRef = useRef(null);
   const t = TRANSLATIONS[language];
 
@@ -55,34 +58,37 @@ const Sidebar = ({ onPrint }) => {
 
   return (
     <aside className="h-full w-20 bg-[var(--bg-panel)]/80 backdrop-blur-xl border-r border-[var(--border-subtle)] flex flex-col items-center py-6 z-40 shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative transition-all duration-300">
-      <div className="mb-8 p-3 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-2xl shadow-xl shadow-indigo-500/20 text-white transform hover:scale-105 transition-transform duration-300 cursor-default">
-        <FileText size={24} strokeWidth={2.5} />
+      <div 
+        className="mb-8 w-12 h-12 transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+        onClick={() => navigate('/')}
+      >
+        <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain drop-shadow-lg" />
       </div>
       
       <nav className="flex-1 w-full flex flex-col items-center gap-4 px-3">
         <SidebarButton 
-          active={activeTab === 'editor'} 
-          onClick={() => setActiveTab('editor')}
+          active={location.pathname === '/editor'} 
+          onClick={() => navigate('/editor')}
           icon={<Edit3 size={20} />}
           label={t.editor}
         />
         <SidebarButton 
-          active={activeTab === 'templates'} 
-          onClick={() => setActiveTab('templates')}
+          active={location.pathname === '/templates'} 
+          onClick={() => navigate('/templates')}
           icon={<Layout size={20} />}
           label={t.templates}
         />
 
         <SidebarButton 
-          active={activeTab === 'ai-assistant'} 
-          onClick={() => setActiveTab('ai-assistant')}
+          active={location.pathname === '/ai-assistant'} 
+          onClick={() => navigate('/ai-assistant')}
           icon={<Bot size={20} />}
           label="Asistente IA"
         />
 
         <SidebarButton 
-          active={activeTab === 'saved'} 
-          onClick={() => setActiveTab('saved')}
+          active={location.pathname === '/saved'} 
+          onClick={() => navigate('/saved')}
           icon={<FolderOpen size={20} />}
           label="Mis CVs"
         />

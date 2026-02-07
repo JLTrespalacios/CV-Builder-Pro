@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, FileText, Download, Star, Sparkles, Briefcase, User, Layers, Search, CheckCircle2, Zap, LayoutTemplate, Code, Palette, Monitor } from 'lucide-react';
+import { Check, FileText, Download, Star, Sparkles, Briefcase, User, Layers, Search, CheckCircle2, Zap, LayoutTemplate, Code, Palette, Monitor, ArrowLeft } from 'lucide-react';
 import { useCVStore } from '../../store/cvStore';
 import { generateWord } from '../../utils/wordGenerator';
 import { TRANSLATIONS } from '../../constants/translations';
 import { getRoleData } from '../../constants/roleData';
+import BackgroundAmbience from './BackgroundAmbience';
 
 import { TEMPLATE_CONFIG } from '../../constants/templatesConfig';
 
@@ -427,8 +429,9 @@ const MiniCVPreview = ({ template }) => {
 };
 
 
-const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
+const TemplateSelectionOverlay = ({ onClose, isModal = false }) => {
   const { setTemplate, cvData, language, loadCVData, updateDesign, setThemeColor } = useCVStore();
+  const navigate = useNavigate();
   const [hoveredTemplate, setHoveredTemplate] = useState(null);
   const t = TRANSLATIONS[language];
 
@@ -483,7 +486,7 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
     }
 
     setTemplate(templateId);
-    onSelect();
+    navigate('/editor');
   };
 
   const handleDownloadSample = async (e, type, templateId) => {
@@ -500,35 +503,47 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
   };
 
   return (
-    <div className={`w-full min-h-screen bg-slate-50 flex flex-col ${isModal ? 'fixed inset-0 z-50 overflow-y-auto' : 'relative'} font-sans`}>
+    <div className={`w-full min-h-screen bg-[var(--bg-app)] flex flex-col ${isModal ? 'fixed inset-0 z-50 overflow-y-auto' : 'relative'} font-sans text-[var(--text-main)] transition-colors duration-300`}>
+      <BackgroundAmbience />
       
       {/* Close Button (Modal Mode) */}
       {isModal && (
         <button 
           onClick={onClose}
-          className="absolute top-6 right-6 p-2 bg-white rounded-full shadow-md hover:bg-slate-100 z-50 transition-colors"
+          className="absolute top-6 right-6 p-2 bg-[var(--bg-panel)] rounded-full shadow-lg hover:bg-[var(--bg-muted)] z-50 transition-colors border border-[var(--border-subtle)]"
         >
-          <Zap size={24} className="text-slate-500" />
+          <Zap size={24} className="text-[var(--text-secondary)]" />
         </button>
       )}
 
-      <div className="max-w-7xl mx-auto px-6 py-12 w-full">
+      {/* Back Button (Standalone Mode) */}
+      {!isModal && (
+        <button 
+          onClick={() => navigate('/')}
+          className="absolute top-6 left-6 p-2 bg-[var(--bg-panel)] rounded-full shadow-lg hover:bg-[var(--bg-muted)] z-50 transition-colors border border-[var(--border-subtle)] flex items-center gap-2 px-4"
+        >
+          <ArrowLeft size={20} className="text-[var(--text-secondary)]" />
+          <span className="text-sm font-medium text-[var(--text-secondary)]">Volver</span>
+        </button>
+      )}
+
+      <div className="max-w-7xl mx-auto px-6 py-12 w-full relative z-10">
         
         {/* Header Section */}
         <div className="text-center mb-12">
           <motion.h2 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight"
+            className="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-6 tracking-tight"
           >
-            Plantillas diseñadas para tu <span className="text-blue-600">industria, rol y nivel</span>
+            Plantillas diseñadas para tu <span className="text-blue-500">industria, rol y nivel</span>
           </motion.h2>
           
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed mb-8"
+            className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto leading-relaxed mb-8"
           >
             No usamos plantillas genéricas. Usamos estructuras diseñadas para tu rol, tu industria y tu nivel profesional.
           </motion.p>
@@ -538,17 +553,17 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-6 text-sm font-medium text-slate-500"
+            className="flex flex-wrap justify-center gap-6 text-sm font-medium text-[var(--text-secondary)]"
           >
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100">
+            <div className="flex items-center gap-2 bg-[var(--bg-panel)] px-4 py-2 rounded-full shadow-lg border border-[var(--border-subtle)] backdrop-blur-sm">
               <CheckCircle2 size={16} className="text-emerald-500" />
               <span>Aprobadas por reclutadores</span>
             </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100">
+            <div className="flex items-center gap-2 bg-[var(--bg-panel)] px-4 py-2 rounded-full shadow-lg border border-[var(--border-subtle)] backdrop-blur-sm">
               <LayoutTemplate size={16} className="text-blue-500" />
               <span>Estructura profesional validada</span>
             </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100">
+            <div className="flex items-center gap-2 bg-[var(--bg-panel)] px-4 py-2 rounded-full shadow-lg border border-[var(--border-subtle)] backdrop-blur-sm">
               <Briefcase size={16} className="text-purple-500" />
               <span>Listas para procesos reales</span>
             </div>
@@ -556,12 +571,12 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
         </div>
 
         {/* Filters Section */}
-        <div className="mb-12 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+        <div className="mb-12 bg-[var(--bg-panel)]/80 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-[var(--border-subtle)]">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             
             {/* Filter Group: Profile */}
             <div className="space-y-2">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+              <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1">
                 <Layers size={14} /> Perfil
               </span>
               <div className="flex flex-wrap gap-1">
@@ -571,8 +586,8 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
                     onClick={() => setActiveProfile(filter)}
                     className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                       activeProfile === filter 
-                        ? 'bg-slate-900 text-white shadow-md' 
-                        : 'bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                        ? 'bg-[var(--primary)] text-white shadow-md' 
+                        : 'bg-[var(--bg-muted)] text-[var(--text-secondary)] hover:bg-[var(--bg-muted)]/80 hover:text-[var(--text-main)]'
                     }`}
                   >
                     {filter}
@@ -583,13 +598,13 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
 
             {/* Filter Group: Role */}
             <div className="space-y-2">
-               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+               <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1">
                  <Briefcase size={14} /> Rol
                </span>
                <select 
                  value={activeRole}
                  onChange={(e) => setActiveRole(e.target.value)}
-                 className="w-full p-2 rounded-md bg-slate-50 border-none text-sm text-slate-700 font-medium focus:ring-2 focus:ring-slate-200"
+                 className="w-full p-2 rounded-md bg-[var(--bg-muted)] border-none text-sm text-[var(--text-main)] font-medium focus:ring-2 focus:ring-blue-500/30 outline-none"
                >
                  {FILTERS.roles.map(role => (
                    <option key={role} value={role}>{role}</option>
@@ -599,7 +614,7 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
 
             {/* Filter Group: Level */}
             <div className="space-y-2">
-               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+               <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1">
                  <Star size={14} /> Nivel
                </span>
                <div className="flex flex-wrap gap-1">
@@ -609,8 +624,8 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
                     onClick={() => setActiveLevel(filter)}
                     className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                       activeLevel === filter 
-                        ? 'bg-slate-900 text-white shadow-md' 
-                        : 'bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                        ? 'bg-[var(--primary)] text-white shadow-md' 
+                        : 'bg-[var(--bg-muted)] text-[var(--text-secondary)] hover:bg-[var(--bg-muted)]/80 hover:text-[var(--text-main)]'
                     }`}
                   >
                     {filter}
@@ -623,7 +638,7 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
             <div className="flex items-end">
                <button 
                  onClick={() => { setActiveProfile('Todos'); setActiveRole('Todos'); setActiveLevel('Todos'); }}
-                 className="w-full py-2 px-4 rounded-md border border-slate-200 text-slate-500 text-sm font-medium hover:bg-slate-50 transition-colors"
+                 className="w-full py-2 px-4 rounded-md border border-[var(--border-subtle)] text-[var(--text-secondary)] text-sm font-medium hover:bg-[var(--bg-muted)] transition-colors"
                >
                  Resetear Filtros
                </button>
@@ -649,26 +664,26 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
                 onMouseLeave={() => setHoveredTemplate(null)}
                 onClick={() => handleSelect(template.id)}
                 className={`
-                  group relative bg-white rounded-2xl overflow-hidden cursor-pointer transition-all duration-300
-                  ${hoveredTemplate === template.id ? 'ring-4 ring-blue-500/20 shadow-2xl scale-[1.02]' : 'border border-slate-200 shadow-sm hover:shadow-xl'}
+                  group relative bg-[var(--bg-panel)] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300
+                  ${hoveredTemplate === template.id ? 'ring-4 ring-blue-500/20 shadow-2xl scale-[1.02]' : 'border border-[var(--border-subtle)] shadow-lg hover:shadow-xl'}
                 `}
               >
                 {/* Badge */}
                 {template.badge && (
-                  <div className={`absolute top-4 right-4 z-20 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-sm ${template.badgeColor || 'bg-slate-900'}`}>
+                  <div className={`absolute top-4 right-4 z-20 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-sm ${template.badgeColor || 'bg-[var(--primary)]'}`}>
                     {template.badge}
                   </div>
                 )}
 
                 {/* Preview Container */}
-                <div className="h-64 w-full bg-slate-100 relative overflow-hidden">
+                <div className="h-64 w-full bg-[var(--bg-muted)] relative overflow-hidden">
                    {/* Live Mini Preview */}
                    <div className="absolute inset-4 rounded-lg shadow-sm overflow-hidden transition-transform duration-500 group-hover:scale-105">
                       <MiniCVPreview template={template} />
                    </div>
 
                    {/* Overlay Actions */}
-                   <div className={`absolute inset-0 bg-slate-900/60 flex items-center justify-center gap-4 transition-opacity duration-300 ${hoveredTemplate === template.id ? 'opacity-100' : 'opacity-0'}`}>
+                   <div className={`absolute inset-0 bg-black/60 flex items-center justify-center gap-4 transition-opacity duration-300 ${hoveredTemplate === template.id ? 'opacity-100' : 'opacity-0'}`}>
                       <button className="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm transform transition-transform hover:scale-105 flex items-center gap-2">
                         <Check size={16} /> Seleccionar
                       </button>
@@ -679,28 +694,28 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-2">
                     <div>
-                      <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                      <h3 className="text-xl font-bold text-[var(--text-main)] group-hover:text-blue-500 transition-colors">
                         {template.name}
                       </h3>
-                      <p className="text-sm font-medium text-slate-500 mb-2">{template.design_identity}</p>
+                      <p className="text-sm font-medium text-[var(--text-secondary)] mb-2">{template.design_identity}</p>
                     </div>
                   </div>
 
-                  <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-2">
+                  <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-4 line-clamp-2">
                     {template.description}
                   </p>
 
                   {/* Keywords Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {template.keywords.slice(0, 3).map((keyword, i) => (
-                      <span key={i} className="text-[10px] font-semibold bg-slate-100 text-slate-600 px-2 py-1 rounded-md">
+                      <span key={i} className="text-[10px] font-semibold bg-[var(--bg-muted)] text-[var(--text-secondary)] px-2 py-1 rounded-md">
                         {keyword}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                    <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
+                  <div className="flex items-center justify-between pt-4 border-t border-[var(--border-subtle)]">
+                    <div className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)]">
                       <div className={`w-2 h-2 rounded-full ${template.ats_score.includes('High') || template.ats_score.includes('Max') ? 'bg-emerald-500' : 'bg-amber-500'}`}></div>
                       ATS Score: {template.ats_score}
                     </div>
@@ -725,14 +740,14 @@ const TemplateSelectionOverlay = ({ onSelect, onClose, isModal = false }) => {
         {/* Empty State */}
         {filteredTemplates.length === 0 && (
           <div className="text-center py-24">
-            <div className="bg-slate-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="text-slate-400" size={24} />
+            <div className="bg-[var(--bg-muted)] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Search className="text-[var(--text-secondary)]" size={24} />
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">No se encontraron plantillas</h3>
-            <p className="text-slate-500">Intenta ajustar los filtros para ver más resultados.</p>
+            <h3 className="text-lg font-bold text-[var(--text-main)] mb-2">No se encontraron plantillas</h3>
+            <p className="text-[var(--text-secondary)]">Intenta ajustar los filtros para ver más resultados.</p>
             <button 
                onClick={() => { setActiveProfile('Todos'); setActiveRole('Todos'); setActiveLevel('Todos'); }}
-               className="mt-4 text-blue-600 font-medium hover:underline"
+               className="mt-4 text-blue-500 font-medium hover:underline"
             >
               Limpiar todos los filtros
             </button>

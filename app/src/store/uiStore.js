@@ -4,8 +4,8 @@ import { persist } from 'zustand/middleware';
 export const useUIStore = create(
   persist(
     (set) => ({
-      appTheme: 'hybrid', // 'hybrid', 'minimal', 'dark', 'neon', '3d'
-      setAppTheme: (theme) => set({ appTheme: theme }),
+      appTheme: 'dark', // Fixed to dark/modern as per requirement
+      // setAppTheme: (theme) => set({ appTheme: theme }), // Disabled logic
       
       toasts: [],
       addToast: (message, type = 'info') => {

@@ -1,14 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCVStore } from '../store/cvStore';
 import EditableText from '../components/ui/EditableText';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange } from '../utils/formatters';
+import { Palette } from 'lucide-react';
 
 const SwissGrid = ({ data, color }) => {
-  const { language, updatePersonal, design, themeColor } = useCVStore();
+  const { language, updatePersonal, design, themeColor, updateDesign } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, hardSkills, softSkills, certifications, languages, referencesAvailableOnRequest } = data;
   const accentColor = themeColor || color || '#000000';
+  const { sidebarWidth = 33.333, sidebarColor = 'transparent' } = design || {};
+
+  const [isResizing, setIsResizing] = useState(false);
+  const containerRef = useRef(null);
+
+  const startResizing = (e) => {
+    e.preventDefault();
+    setIsResizing(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isResizing || !containerRef.current) return;
+      
+      const containerRect = containerRef.current.getBoundingClientRect();
+      // Right sidebar logic
+      const newWidth = ((containerRect.right - e.clientX) / containerRect.width) * 100;
+      
+      if (newWidth > 20 && newWidth < 50) {
+        updateDesign({ sidebarWidth: newWidth });
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing, updateDesign]);
 
   const handlePersonalUpdate = (field, value) => {
     updatePersonal({ [field]: value });
@@ -33,10 +71,14 @@ const SwissGrid = ({ data, color }) => {
     >
       {/* Header Grid */}
       <div 
-        className="grid grid-cols-12 mb-16 border-t-8 pt-8" 
-        style={{ borderColor: accentColor, ...gridGapStyle }}
+        className="grid mb-16 border-t-8 pt-8" 
+        style={{ 
+            borderColor: accentColor, 
+            gridTemplateColumns: `1fr ${sidebarWidth}%`,
+            ...gridGapStyle 
+        }}
       >
-        <div className="col-span-8">
+        <div className="">
           <div className="text-6xl font-black tracking-tighter leading-none mb-4" style={{ color: accentColor }}>
             <EditableText
               value={personal.name}
@@ -46,7 +88,7 @@ const SwissGrid = ({ data, color }) => {
             />
           </div>
         </div>
-        <div className="col-span-4 text-sm font-medium space-y-1 text-right flex flex-col items-end">
+        <div className="text-sm font-medium space-y-1 text-right flex flex-col items-end">
           {personal.showPhoto && (
             <div className="w-24 h-24 mb-4 bg-gray-100 flex items-center justify-center overflow-hidden">
                {personal.photo ? (
@@ -67,10 +109,17 @@ const SwissGrid = ({ data, color }) => {
       </div>
 
       {/* Content Grid */}
-      <div className="grid grid-cols-12" style={gridGapStyle}>
+      <div 
+        ref={containerRef}
+        className="grid" 
+        style={{
+            gridTemplateColumns: `1fr ${sidebarWidth}%`,
+            ...gridGapStyle
+        }}
+      >
         
         {/* Left Column: Experience */}
-        <div className="col-span-8 space-y-12">
+        <div className="space-y-12">
           <section>
              <h2 className="text-xl font-bold uppercase tracking-widest mb-8 flex items-center gap-2" style={{ breakAfter: 'avoid' }}>
               <span className="w-4 h-4" style={{ backgroundColor: accentColor }}></span>
@@ -141,7 +190,36 @@ const SwissGrid = ({ data, color }) => {
         </div>
 
         {/* Right Column: Profile, Skills, Education */}
-        <div className="col-span-4 space-y-12">
+        <div 
+            className="space-y-12 relative group/sidebar p-4 -m-4 rounded transition-colors duration-300"
+            style={{ backgroundColor: sidebarColor }}
+        >
+           {/* Color Picker */}
+           <div className="absolute top-2 right-2 z-50 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 print:hidden">
+              <div className="relative">
+                  <label className="cursor-pointer bg-white/90 hover:bg-white p-1.5 pr-3 rounded-full shadow-lg border border-slate-200 flex items-center gap-2 transition-all hover:scale-105 group">
+                      <div className="p-1.5 rounded-full bg-slate-100 group-hover:bg-slate-200 transition-colors">
+                          <Palette size={14} className="text-slate-600" />
+                      </div>
+                      <span className="text-xs font-medium text-slate-600">Fondo</span>
+                      <input 
+                          type="color" 
+                          value={sidebarColor === 'transparent' ? '#ffffff' : sidebarColor}
+                          onChange={(e) => updateDesign({ sidebarColor: e.target.value })}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      />
+                  </label>
+              </div>
+           </div>
+
+           {/* Resize Handle */}
+           <div
+                className="absolute top-0 left-0 w-4 h-full cursor-col-resize flex items-center justify-center hover:bg-blue-500/10 transition-colors z-40 print:hidden group/handle -translate-x-1/2"
+                onMouseDown={startResizing}
+            >
+                <div className="w-1 h-8 bg-slate-300 rounded-full group-hover/handle:bg-blue-400 transition-colors" />
+            </div>
+
           <section className="break-inside-avoid">
             <h2 className="text-sm font-bold uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>
               {t.lblProfile}

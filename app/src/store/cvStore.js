@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { translateCVData } from '../utils/translator';
 
 // Helper to sort items by date (descending, with "Presente" first)
 const sortItemsByDate = (items, dateField) => {
@@ -164,13 +165,25 @@ export const useCVStore = create(
         fontSize: 16,
         fontFamily: 'Inter',
         titleFont: 'Inter',
-        fontColor: '#334155'
+        fontColor: '#334155',
+        sidebarWidth: 33.333,
+        sidebarColor: '#0f172a'
       },
       language: 'es',
-      activeTab: 'editor', // 'editor', 'templates'
       isSidebarOpen: true,
       
       setLanguage: (lang) => set({ language: lang }),
+
+      translateData: (targetLang) => set((state) => {
+        const fromLang = state.language;
+        if (fromLang === targetLang) return {};
+        
+        const newCvData = translateCVData(state.cvData, fromLang, targetLang);
+        return { 
+            language: targetLang,
+            cvData: newCvData
+        };
+      }),
       
       updateDesign: (designUpdate) => set((state) => ({
          design: { ...state.design, ...designUpdate }
@@ -182,7 +195,6 @@ export const useCVStore = create(
       
       setTemplate: (templateName) => set({ selectedTemplate: templateName }),
       setThemeColor: (color) => set({ themeColor: color }),
-      setActiveTab: (tab) => set({ activeTab: tab, isSidebarOpen: true }),
       toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
       
       addSkill: (skill) => set((state) => ({

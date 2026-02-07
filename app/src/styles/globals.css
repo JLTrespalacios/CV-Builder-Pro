@@ -32,8 +32,22 @@
 }
 
 @layer base {
-  /* TEMA: Modern (Default) - Indigo/Violet Vibes */
+  /* TEMA: Modern (Default) - Ahora es DARK por defecto para coincidir con Landing */
   :root {
+    --bg-app: #0B0F19; /* Deep Space Black */
+    --bg-panel: rgba(255, 255, 255, 0.03); /* Ultra Glass */
+    --bg-muted: rgba(255, 255, 255, 0.05);
+    --primary: #818cf8; /* Indigo 400 */
+    --primary-light: #312e81; /* Indigo 900 */
+    --text-main: #f8fafc; /* Slate 50 */
+    --text-secondary: #94a3b8; /* Slate 400 */
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+  }
+
+  /* TEMA: Light (Explicit) - Antiguo Default */
+  [data-theme="light"] {
     --bg-app: #f8fafc; /* Slate 50 */
     --bg-panel: #ffffff;
     --bg-muted: #f1f5f9; /* Slate 100 */
@@ -43,21 +57,35 @@
     --text-secondary: #64748b; /* Slate 500 */
     --border-subtle: #e2e8f0; /* Slate 200 */
     --glass-border: rgba(255, 255, 255, 0.5);
-    --shadow-color: rgba(79, 70, 229, 0.08); /* Indigo tinted shadow */
+    --shadow-color: rgba(79, 70, 229, 0.08);
   }
 
-  /* TEMA: Dark Modern */
+  /* TEMA: Hybrid (Alias de Dark por ahora para consistencia) */
+  [data-theme="hybrid"] {
+    --bg-app: #0B0F19;
+    --bg-panel: rgba(255, 255, 255, 0.03);
+    --bg-muted: rgba(255, 255, 255, 0.05);
+    --primary: #818cf8;
+    --primary-light: #312e81;
+    --text-main: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+  }
+
+  /* TEMA: Dark Modern (Premium Glass) */
   [data-theme="dark"] {
-    --bg-app: #0f172a; /* Slate 900 */
-    --bg-panel: #1e293b; /* Slate 800 */
-    --bg-muted: #334155; /* Slate 700 */
+    --bg-app: #0B0F19; /* Deep Space Black */
+    --bg-panel: rgba(255, 255, 255, 0.03); /* Ultra Glass */
+    --bg-muted: rgba(255, 255, 255, 0.05);
     --primary: #818cf8; /* Indigo 400 */
     --primary-light: #312e81; /* Indigo 900 */
-    --text-main: #f1f5f9; /* Slate 100 */
+    --text-main: #f8fafc; /* Slate 50 */
     --text-secondary: #94a3b8; /* Slate 400 */
-    --border-subtle: #334155; /* Slate 700 */
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --shadow-color: rgba(0, 0, 0, 0.4);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --shadow-color: rgba(0, 0, 0, 0.5);
   }
 
   body {

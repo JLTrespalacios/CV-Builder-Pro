@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCVStore } from '../store/cvStore';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
 import { EditableText } from '../components/ui/EditableText';
+import { Settings, GripVertical, Palette } from 'lucide-react';
 
 const ModernDark = ({ data, color }) => {
-  const { language, updatePersonal, cvData, design, themeColor } = useCVStore();
+  const { language, updatePersonal, cvData, design, themeColor, updateDesign } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, hardSkills, softSkills, certifications, languages, referencesAvailableOnRequest } = data;
   const accentColor = themeColor || color || '#2563eb';
@@ -15,15 +16,20 @@ const ModernDark = ({ data, color }) => {
     updatePersonal({ [field]: value });
   };
 
+  const sidebarWidth = design?.sidebarWidth || 33.333;
+  const sidebarColor = design?.sidebarColor || '#0f172a';
+
   const containerStyle = {
-    background: 'linear-gradient(to right, #0f172a 33.333%, #ffffff 33.333%)',
+    background: `linear-gradient(to right, ${sidebarColor} ${sidebarWidth}%, #ffffff ${sidebarWidth}%)`,
     WebkitPrintColorAdjust: 'exact',
     printColorAdjust: 'exact',
     paddingTop: `${design?.marginTop || 0}px`,
     fontSize: `${design?.fontSize || 16}px`,
     fontFamily: design?.fontFamily || 'Inter',
     color: design?.fontColor || '#334155',
-    lineHeight: design?.lineHeight || 1.5
+    lineHeight: design?.lineHeight || 1.5,
+    display: 'grid',
+    gridTemplateColumns: `${sidebarWidth}% 1fr`
   };
 
   const gapStyle = {
@@ -34,13 +40,70 @@ const ModernDark = ({ data, color }) => {
     fontFamily: design?.titleFont || design?.fontFamily || 'Inter'
   };
 
+  // Resizing Logic
+  const [isResizing, setIsResizing] = useState(false);
+  const containerRef = useRef(null);
+
+  const startResizing = (e) => {
+    e.preventDefault();
+    setIsResizing(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isResizing || !containerRef.current) return;
+      
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+      
+      // Limit width between 20% and 50%
+      if (newWidth > 20 && newWidth < 50) {
+        updateDesign({ sidebarWidth: newWidth });
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing, updateDesign]);
+
   return (
     <div 
-      className="w-full min-h-full text-gray-800 font-sans grid grid-cols-[1fr_2fr]"
+      ref={containerRef}
+      className="w-full min-h-full text-gray-800 font-sans relative group/container"
       style={containerStyle}
     >
       {/* Sidebar / Left Column */}
-      <div className="text-white p-6 flex flex-col" style={gapStyle}>
+      <div className="text-white p-6 flex flex-col relative group/sidebar" style={gapStyle}>
+        
+        {/* Color Picker Control (Visible on hover) */}
+        <div className="absolute top-2 left-2 z-50 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 print:hidden">
+            <div className="relative">
+                <label className="cursor-pointer bg-[#0B0F19]/90 hover:bg-[#1e293b] p-1.5 pr-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10 shadow-xl transition-all hover:scale-105 hover:border-indigo-500/50 group">
+                    <div className="p-1.5 rounded-full bg-indigo-500/20 group-hover:bg-indigo-500/40 transition-colors">
+                        <Palette size={14} className="text-indigo-300 group-hover:text-indigo-100" />
+                    </div>
+                    <span className="text-xs font-medium text-slate-300 group-hover:text-white">Fondo</span>
+                    <input 
+                        type="color" 
+                        value={sidebarColor}
+                        onChange={(e) => updateDesign({ sidebarColor: e.target.value })}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                </label>
+            </div>
+        </div>
+
         <div className="text-center break-inside-avoid">
           {/* Photo */}
           {personal.showPhoto && (
@@ -161,6 +224,18 @@ const ModernDark = ({ data, color }) => {
              </ul>
           </div>
         )}
+      </div>
+
+      {/* Resize Handle */}
+      <div 
+        className="absolute top-0 bottom-0 w-6 -ml-3 z-20 cursor-col-resize flex items-center justify-center group/handle print:hidden hover:bg-indigo-500/5 transition-colors"
+        style={{ left: `${sidebarWidth}%` }}
+        onMouseDown={startResizing}
+        title="Arrastra para ajustar el ancho"
+      >
+        <div className="w-1.5 h-12 bg-slate-800/60 rounded-full shadow-lg backdrop-blur-md border border-white/10 group-hover/handle:bg-indigo-500 group-hover/handle:shadow-[0_0_15px_rgba(99,102,241,0.6)] group-hover/handle:scale-110 group-hover/handle:border-indigo-400/50 transition-all flex items-center justify-center">
+            <GripVertical size={10} className="text-slate-400 opacity-0 group-hover/handle:opacity-100 group-hover/handle:text-white" />
+        </div>
       </div>
 
       {/* Main Content / Right Column */}

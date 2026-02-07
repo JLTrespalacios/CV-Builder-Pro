@@ -1,15 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCVStore } from '../store/cvStore';
 import { TRANSLATIONS } from '../constants/translations';
 import { formatDateRange, getDocumentTypeLabel } from '../utils/formatters';
 import { EditableText } from '../components/ui/EditableText';
+import { Palette } from 'lucide-react';
 
 const TechGamer = ({ data, color }) => {
-  const { language, updatePersonal, design, themeColor } = useCVStore();
+  const { language, updatePersonal, design, themeColor, updateDesign } = useCVStore();
   const t = TRANSLATIONS[language];
   const { personal, skills, experience, education, references, projects, certifications, languages, referencesAvailableOnRequest } = data;
 
   const accentColor = themeColor || color || '#00ff00'; // Default green
+  const { sidebarWidth = 33.333, sidebarColor = '#0f0f0f' } = design || {};
+
+  const [isResizing, setIsResizing] = useState(false);
+  const containerRef = useRef(null);
+
+  const startResizing = (e) => {
+    e.preventDefault();
+    setIsResizing(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isResizing || !containerRef.current) return;
+      
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+      
+      if (newWidth > 20 && newWidth < 50) {
+        updateDesign({ sidebarWidth: newWidth });
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing, updateDesign]);
 
   const handlePersonalUpdate = (field, value) => {
     updatePersonal({ [field]: value });
@@ -17,7 +54,7 @@ const TechGamer = ({ data, color }) => {
 
   const containerStyle = {
     borderTopColor: accentColor,
-    background: 'linear-gradient(to right, #0f0f0f 33.333%, #0a0a0a 33.333%)',
+    background: `linear-gradient(to right, ${sidebarColor} ${sidebarWidth}%, #0a0a0a ${sidebarWidth}%)`,
     WebkitPrintColorAdjust: 'exact',
     printColorAdjust: 'exact',
     paddingTop: `${design?.marginTop || 0}px`,
@@ -72,9 +109,41 @@ const TechGamer = ({ data, color }) => {
         )}
       </header>
 
-      <div className="flex flex-1">
+      <div className="flex flex-1" ref={containerRef}>
         {/* Sidebar */}
-        <aside className="w-1/3 p-6 border-r border-gray-800 flex flex-col" style={gapStyle}>
+        <aside 
+            className="p-6 border-r border-gray-800 flex flex-col relative group/sidebar" 
+            style={{ 
+                width: `${sidebarWidth}%`,
+                ...gapStyle 
+            }}
+        >
+          {/* Color Picker */}
+          <div className="absolute top-2 left-2 z-50 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 print:hidden">
+              <div className="relative">
+                  <label className="cursor-pointer bg-white/90 hover:bg-white p-1.5 pr-3 rounded-full shadow-lg border border-slate-200 flex items-center gap-2 transition-all hover:scale-105 group">
+                      <div className="p-1.5 rounded-full bg-slate-100 group-hover:bg-slate-200 transition-colors">
+                          <Palette size={14} className="text-slate-600" />
+                      </div>
+                      <span className="text-xs font-medium text-slate-600">Fondo</span>
+                      <input 
+                          type="color" 
+                          value={sidebarColor}
+                          onChange={(e) => updateDesign({ sidebarColor: e.target.value })}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      />
+                  </label>
+              </div>
+          </div>
+
+          {/* Resize Handle */}
+          <div
+              className="absolute top-0 right-0 w-4 h-full cursor-col-resize flex items-center justify-center hover:bg-green-500/10 transition-colors z-40 print:hidden group/handle translate-x-1/2"
+              onMouseDown={startResizing}
+          >
+              <div className="w-1 h-8 bg-gray-700 rounded-full group-hover/handle:bg-green-400 transition-colors" />
+          </div>
+
           <div className="break-inside-avoid">
             <h3 className="text-white font-bold uppercase mb-4 text-xs tracking-[0.2em] flex items-center gap-2" style={titleStyle}>
               <span className="w-2 h-2 rounded-sm" style={{ backgroundColor: accentColor }}></span>

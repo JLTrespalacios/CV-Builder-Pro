@@ -63,16 +63,16 @@ const CVPreview = forwardRef((props, ref) => {
   }, [cvData, selectedTemplate]); // Re-calculate when data changes
 
   return (
-    <div className="w-full h-full bg-gray-200 overflow-auto flex justify-center p-8 print:p-0 print:bg-white print:overflow-visible relative">
+    <div className="w-full h-full bg-transparent overflow-auto flex justify-center p-8 print:p-0 print:bg-white print:overflow-visible relative">
       {/* Page Guidelines Overlay */}
       <div className="absolute top-8 pointer-events-none z-10 print:hidden" style={{ width: '210mm' }}>
          {pages.map((page) => (
              <div 
                key={page} 
-               className="border-b-2 border-dashed border-red-400 opacity-50 w-full relative"
+               className="border-b-2 border-dashed border-red-400/30 opacity-50 w-full relative"
                style={{ height: '297mm' }}
              >
-                 <span className="absolute bottom-0 right-0 bg-red-400 text-white text-xs px-2 py-1 rounded-tl">
+                 <span className="absolute bottom-0 right-0 bg-red-400/80 text-white text-xs px-2 py-1 rounded-tl backdrop-blur-sm">
                     Fin de Página {page}
                  </span>
              </div>
@@ -81,7 +81,7 @@ const CVPreview = forwardRef((props, ref) => {
 
       <div 
         ref={ref}
-        className="bg-white shadow-2xl w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:shadow-none print:w-[210mm] print:min-h-[297mm] print:scale-100 relative z-0"
+        className="bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:shadow-none print:w-[210mm] print:min-h-[297mm] print:scale-100 relative z-0"
       >
         <div ref={containerRef}>
              <TemplateComponent data={cvData} color={themeColor} />
