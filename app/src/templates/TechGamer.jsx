@@ -41,7 +41,7 @@ const TechGamer = ({ data, color }) => {
       style={containerStyle}
     >
       {/* Header */}
-      <header className="p-6 print:p-0 flex items-center justify-between border-b border-gray-800 bg-[#111] z-10 relative">
+      <header className="p-6 flex items-center justify-between border-b border-gray-800 bg-[#111] z-10 relative">
         <div>
           <h1 className="text-4xl font-bold text-white mb-1 tracking-tighter flex items-center" style={titleStyle}>
             <span style={{ color: accentColor }}>&lt;</span>
@@ -74,7 +74,7 @@ const TechGamer = ({ data, color }) => {
 
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-1/3 p-6 print:p-0 border-r border-gray-800 flex flex-col" style={gapStyle}>
+        <aside className="w-1/3 p-6 border-r border-gray-800 flex flex-col" style={gapStyle}>
           <div className="break-inside-avoid">
             <h3 className="text-white font-bold uppercase mb-4 text-xs tracking-[0.2em] flex items-center gap-2" style={titleStyle}>
               <span className="w-2 h-2 rounded-sm" style={{ backgroundColor: accentColor }}></span>
@@ -83,11 +83,12 @@ const TechGamer = ({ data, color }) => {
             <div className="space-y-4 text-sm font-light">
               <div className="bg-[#1a1a1a] p-3 rounded border border-gray-800">
                 <span className="text-gray-500 block text-xs uppercase mb-1">{t.lblEmail}</span>
-                <span className="text-white break-all">
+                <span className="text-white block overflow-hidden">
                     <EditableText
                         value={personal.email}
                         onChange={(val) => handlePersonalUpdate('email', val)}
                         placeholder="Email"
+                        className="whitespace-nowrap overflow-hidden text-ellipsis"
                     />
                 </span>
               </div>
@@ -206,12 +207,12 @@ const TechGamer = ({ data, color }) => {
         </aside>
 
         {/* Main Content */}
-        <main className="w-2/3 p-8 print:p-0">
+        <main className="w-2/3 p-8">
           <section className="mb-10 break-inside-avoid">
             <h3 className="text-white font-bold uppercase mb-6 text-sm tracking-[0.2em] border-b border-gray-800 pb-2">
               // {t.lblProfile}
             </h3>
-            <div className="text-gray-400 text-sm leading-relaxed p-4 bg-[#111] border-l-2" style={{ borderLeftColor: accentColor }}>
+            <div className="text-gray-400 text-sm leading-loose text-left p-4 bg-[#111] border-l-2" style={{ borderLeftColor: accentColor }}>
               {personal.summary || t.pendingSummary}
             </div>
           </section>

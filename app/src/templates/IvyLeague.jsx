@@ -34,7 +34,7 @@ const IvyLeague = ({ data, color }) => {
 
   return (
     <div 
-      className="w-full h-full bg-white text-black font-serif p-8 print:p-0 min-h-full text-sm leading-snug"
+      className="w-full h-full bg-white text-black font-serif p-8 min-h-full text-sm leading-snug"
       style={containerStyle}
     >
       {/* Header */}
@@ -60,7 +60,7 @@ const IvyLeague = ({ data, color }) => {
           <span>•</span>
           <EditableText value={personal.phone} onChange={(val) => handlePersonalUpdate('phone', val)} placeholder="Phone" />
           <span>•</span>
-          <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" />
+          <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" className="whitespace-nowrap" />
           {personal.linkedin && <span>• <a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.linkedin.replace(/^https?:\/\//, '')}</a></span>}
           {personal.github && <span>• <a href={personal.github.startsWith('http') ? personal.github : `https://${personal.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.github.replace(/^https?:\/\//, '')}</a></span>}
         </div>
@@ -127,7 +127,7 @@ const IvyLeague = ({ data, color }) => {
                   )}
                 </div>
                 {proj.technologies && <div className="italic text-xs mb-1">{proj.technologies}</div>}
-                <p className="text-justify text-gray-800">
+                <p className="text-left text-gray-800">
                   {proj.description}
                 </p>
               </div>
@@ -167,7 +167,7 @@ const IvyLeague = ({ data, color }) => {
           )}
 
           {personal.summary && (
-            <div className="mt-2">
+            <div className="mt-2 text-left leading-loose">
               <span className="font-bold">{t.lblProfile}:</span>
               <EditableText
                 value={personal.summary}

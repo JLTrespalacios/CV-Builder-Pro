@@ -36,7 +36,7 @@ const CorporateBlue = ({ data, color }) => {
       style={containerStyle}
     >
       {/* Header */}
-      <header className="text-white p-8 print:p-0 flex justify-between items-center" style={{ backgroundColor: accentColor }}>
+      <header className="text-white p-8 flex justify-between items-center" style={{ backgroundColor: accentColor }}>
         <div>
           <div className="mb-2" style={titleStyle}>
             <EditableText
@@ -80,7 +80,7 @@ const CorporateBlue = ({ data, color }) => {
                     value={personal.email}
                     onChange={(val) => handlePersonalUpdate('email', val)}
                     placeholder="Email"
-                    className="text-xs break-words"
+                    className="text-xs whitespace-nowrap overflow-hidden text-ellipsis"
                 />
               </div>
               <div className="flex flex-col">
@@ -201,7 +201,7 @@ const CorporateBlue = ({ data, color }) => {
         </aside>
 
         {/* Right Column (Experience & Education) */}
-        <main className="w-2/3 p-6 print:p-0 flex flex-col" style={gapStyle}>
+        <main className="w-2/3 p-6 flex flex-col" style={gapStyle}>
           <section>
             <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>
               <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblProfile}
@@ -215,6 +215,29 @@ const CorporateBlue = ({ data, color }) => {
               />
             </div>
           </section>
+
+          {data.projects && data.projects.length > 0 && (
+            <section>
+              <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
+                <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblProjects}
+              </h3>
+              <div className="space-y-6">
+                {data.projects.map((proj, i) => (
+                  <div key={i} className="relative pl-6 border-l-2 border-slate-200 break-inside-avoid">
+                    <div className="absolute -left-[9px] top-1 w-4 h-4 bg-white border-2 rounded-full" style={{ borderColor: accentColor }}></div>
+                    <div className="flex justify-between items-baseline">
+                      <h4 className="font-bold text-lg text-slate-800">{proj.name}</h4>
+                      {proj.link && <a href={proj.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline">{proj.link}</a>}
+                    </div>
+                    <p className="text-xs font-semibold text-slate-500 mb-2">{proj.technologies}</p>
+                    <p className="text-slate-600 text-sm leading-loose">
+                      {proj.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section>
             <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
@@ -231,7 +254,7 @@ const CorporateBlue = ({ data, color }) => {
                     <div className="font-semibold text-sm mb-2" style={{ color: accentColor }}>
                       {exp.company} | {exp.duration}
                     </div>
-                    <p className="text-slate-600 text-sm leading-relaxed">
+                    <p className="text-slate-600 text-sm leading-loose">
                       {exp.description}
                     </p>
                   </div>

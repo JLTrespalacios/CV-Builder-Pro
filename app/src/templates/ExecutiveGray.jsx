@@ -39,7 +39,7 @@ const ExecutiveGray = ({ data, color }) => {
     <div className="w-full h-full bg-white text-gray-800 font-sans grid grid-cols-[1fr_2fr] min-h-full" style={rootStyle}>
       
       {/* Sidebar */}
-      <div className="bg-gray-100 p-6 print:p-0 border-r border-gray-200 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
+      <div className="bg-gray-100 p-6 border-r border-gray-200 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
         
         {/* Photo & Contact */}
         <div className="text-center break-inside-avoid">
@@ -57,7 +57,7 @@ const ExecutiveGray = ({ data, color }) => {
             <div className="flex items-center gap-3">
               <span className="font-bold text-gray-900 w-16">{t.lblEmail}</span>
               <div className="flex-1 overflow-hidden">
-                <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" />
+                <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" className="whitespace-nowrap overflow-hidden text-ellipsis" />
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -201,7 +201,7 @@ const ExecutiveGray = ({ data, color }) => {
       </div>
 
       {/* Main Content */}
-      <div className="p-8 print:p-0 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
+      <div className="p-8 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
         {/* Header */}
         <header className="border-b-4 pb-6" style={{ borderColor: accentColor }}>
           <div className="text-4xl font-serif font-bold text-gray-900 mb-2 tracking-tight" style={titleStyle}>
@@ -222,7 +222,7 @@ const ExecutiveGray = ({ data, color }) => {
           <h2 className="text-lg font-bold uppercase tracking-wider mb-4 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid' }}>
             {t.lblProfile}
           </h2>
-          <div className="text-gray-600 leading-relaxed text-lg font-light">
+          <div className="text-gray-600 leading-loose text-left text-lg font-light">
              <EditableText 
                 value={personal.summary} 
                 onChange={(val) => handlePersonalUpdate('summary', val)} 

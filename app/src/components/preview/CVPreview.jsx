@@ -81,7 +81,7 @@ const CVPreview = forwardRef((props, ref) => {
 
       <div 
         ref={ref}
-        className="bg-white shadow-2xl w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:shadow-none print:w-full print:min-h-0 print:scale-100 relative z-0"
+        className="bg-white shadow-2xl w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:shadow-none print:w-[210mm] print:min-h-[297mm] print:scale-100 relative z-0"
       >
         <div ref={containerRef}>
              <TemplateComponent data={cvData} color={themeColor} />

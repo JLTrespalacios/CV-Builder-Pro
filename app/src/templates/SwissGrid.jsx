@@ -28,7 +28,7 @@ const SwissGrid = ({ data, color }) => {
 
   return (
     <div 
-      className="w-full h-full bg-white text-black font-sans p-8 print:p-0 min-h-full"
+      className="w-full h-full bg-white text-black font-sans p-8 min-h-full"
       style={containerStyle}
     >
       {/* Header Grid */}
@@ -57,7 +57,7 @@ const SwissGrid = ({ data, color }) => {
             </div>
           )}
           <EditableText value={personal.role} onChange={(val) => handlePersonalUpdate('role', val)} placeholder="Role" />
-          <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" />
+          <EditableText value={personal.email} onChange={(val) => handlePersonalUpdate('email', val)} placeholder="Email" className="whitespace-nowrap" />
           <EditableText value={personal.phone} onChange={(val) => handlePersonalUpdate('phone', val)} placeholder="Phone" />
           <EditableText value={personal.location} onChange={(val) => handlePersonalUpdate('location', val)} placeholder="Location" />
           {personal.linkedin && <p><a href={personal.linkedin.startsWith('http') ? personal.linkedin : `https://${personal.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{personal.linkedin.replace(/^https?:\/\//, '')}</a></p>}
@@ -103,7 +103,7 @@ const SwissGrid = ({ data, color }) => {
                   <div className="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-white border-4" style={{ borderColor: accentColor }}></div>
                   <h3 className="text-2xl font-bold leading-none mb-1">{exp.role}</h3>
                   <p className="text-gray-500 font-medium mb-4">{exp.company} <span className="mx-2">/</span> {formatDateRange(exp.duration, t, language)}</p>
-                  <p className="text-lg leading-relaxed text-gray-800 font-light">
+                  <p className="text-lg leading-loose text-gray-800 font-light">
                     {exp.description}
                   </p>
                 </div>
@@ -146,7 +146,7 @@ const SwissGrid = ({ data, color }) => {
             <h2 className="text-sm font-bold uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>
               {t.lblProfile}
             </h2>
-            <div className="text-lg font-light leading-relaxed">
+            <div className="text-lg font-light leading-loose text-left">
                <EditableText
                 value={personal.summary}
                 onChange={(val) => handlePersonalUpdate('summary', val)}

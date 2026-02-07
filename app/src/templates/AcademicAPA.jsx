@@ -36,7 +36,7 @@ const AcademicAPA = ({ data, color }) => {
   
   return (
     <div 
-      className="w-full min-h-full bg-white text-black font-serif p-12 print:p-0 leading-relaxed"
+      className="w-full min-h-full bg-white text-black font-serif p-12 leading-relaxed"
       style={{ ...containerStyle, ...gapStyle }}
     >
       {/* Header / Personal Info */}
@@ -75,6 +75,7 @@ const AcademicAPA = ({ data, color }) => {
               value={personal.email}
               onChange={(val) => handlePersonalUpdate('email', val)}
               placeholder="Email"
+              className="whitespace-nowrap"
             />
           </p>
           {personal.linkedin && (
@@ -100,7 +101,7 @@ const AcademicAPA = ({ data, color }) => {
       {/* Professional Summary */}
       <section>
         <h2 className="text-lg font-bold border-b-2 mb-4" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>{t.lblProfile}</h2>
-        <div className="text-justify indent-8">
+        <div className="text-left indent-8 leading-loose">
           <EditableText
             value={personal.summary}
             onChange={(val) => handlePersonalUpdate('summary', val)}
@@ -124,7 +125,7 @@ const AcademicAPA = ({ data, color }) => {
                   <span className="text-sm">{exp.duration}</span>
                 </div>
                 <p className="italic mb-2">{exp.company}</p>
-                <p className="text-justify indent-8">
+                <p className="text-left indent-8">
                   {exp.description}
                 </p>
               </div>
@@ -145,7 +146,7 @@ const AcademicAPA = ({ data, color }) => {
                    {proj.link && <a href={proj.link} className="text-sm underline" style={{ color: accentColor }}>{proj.link}</a>}
                  </div>
                  <p className="italic mb-1 text-sm">{proj.technologies}</p>
-                 <p className="text-justify indent-8">
+                 <p className="text-left indent-8">
                    {proj.description}
                  </p>
                </div>

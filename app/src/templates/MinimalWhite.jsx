@@ -32,7 +32,7 @@ const MinimalWhite = ({ data, color }) => {
 
   return (
     <div 
-      className="w-full min-h-full bg-white text-gray-800 font-sans p-8 print:p-0"
+      className="w-full min-h-full bg-white text-gray-800 font-sans p-8"
       style={containerStyle}
     >
       {/* Header */}
@@ -60,6 +60,7 @@ const MinimalWhite = ({ data, color }) => {
                 value={personal.email}
                 onChange={(val) => handlePersonalUpdate('email', val)}
                 placeholder="Email"
+                className="whitespace-nowrap"
             />
             <span>•</span>
             <EditableText
@@ -98,7 +99,7 @@ const MinimalWhite = ({ data, color }) => {
           {/* Profile */}
           <section className="mb-10" style={{ marginBottom: gapStyle.gap }}>
             <h2 className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: accentColor, breakAfter: 'avoid' }}>{t.lblProfile}</h2>
-            <div className="text-gray-700 leading-relaxed text-lg whitespace-pre-line">
+            <div className="text-gray-700 leading-loose text-left text-lg whitespace-pre-line">
                <EditableText
                 value={personal.summary}
                 onChange={(val) => handlePersonalUpdate('summary', val)}
@@ -142,7 +143,7 @@ const MinimalWhite = ({ data, color }) => {
                           {proj.link && <a href={proj.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline">{proj.link}</a>}
                       </div>
                       <p className="text-sm font-semibold text-gray-500 mb-2">{proj.technologies}</p>
-                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                      <p className="text-gray-700 leading-loose whitespace-pre-line">
                         {proj.description}
                       </p>
                     </div>
