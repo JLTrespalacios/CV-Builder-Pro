@@ -26,7 +26,7 @@ const ModernDark = ({ data, color }) => {
   };
 
   const gapStyle = {
-      gap: `${design?.sectionGap || 32}px`
+      gap: `${design?.sectionGap || 24}px`
   };
 
   const titleStyle = {
@@ -39,7 +39,7 @@ const ModernDark = ({ data, color }) => {
       style={containerStyle}
     >
       {/* Sidebar / Left Column */}
-      <div className="text-white p-8 print:p-0 flex flex-col" style={gapStyle}>
+      <div className="text-white p-6 print:p-0 flex flex-col" style={gapStyle}>
         <div className="text-center break-inside-avoid">
           {/* Photo */}
           {personal.showPhoto && (
@@ -56,7 +56,7 @@ const ModernDark = ({ data, color }) => {
             <EditableText 
               value={personal.email} 
               onChange={(val) => handlePersonalUpdate('email', val)}
-              className="block"
+              className="block break-all"
               placeholder="Email"
             />
             <EditableText 
@@ -163,7 +163,7 @@ const ModernDark = ({ data, color }) => {
       </div>
 
       {/* Main Content / Right Column */}
-      <div className="p-8 print:p-0 flex flex-col" style={gapStyle}>
+      <div className="p-6 print:p-0 flex flex-col" style={gapStyle}>
         <div className="mb-10 break-inside-avoid">
           <h1 className="text-5xl font-bold text-slate-900 leading-tight mb-2" style={{ color: accentColor, ...titleStyle }}>
             <EditableText 

@@ -27,7 +27,7 @@ const TechGamer = ({ data, color }) => {
   };
 
   const gapStyle = {
-      gap: `${design?.sectionGap || 32}px`
+      gap: `${design?.sectionGap || 24}px`
   };
 
   const titleStyle = {
@@ -40,7 +40,7 @@ const TechGamer = ({ data, color }) => {
       style={containerStyle}
     >
       {/* Header */}
-      <header className="p-8 print:p-0 flex items-center justify-between border-b border-gray-800 bg-[#111] z-10 relative">
+      <header className="p-6 print:p-0 flex items-center justify-between border-b border-gray-800 bg-[#111] z-10 relative">
         <div>
           <h1 className="text-4xl font-bold text-white mb-1 tracking-tighter flex items-center" style={titleStyle}>
             <span style={{ color: accentColor }}>&lt;</span>

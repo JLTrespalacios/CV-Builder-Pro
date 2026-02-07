@@ -33,7 +33,7 @@ const IvyLeague = ({ data, color }) => {
 
   return (
     <div 
-      className="w-full h-full bg-white text-black font-serif p-10 print:p-0 min-h-full text-sm leading-snug"
+      className="w-full h-full bg-white text-black font-serif p-8 print:p-0 min-h-full text-sm leading-snug"
       style={containerStyle}
     >
       {/* Header */}

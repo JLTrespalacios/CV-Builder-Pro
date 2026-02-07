@@ -22,7 +22,7 @@ const AcademicAPA = ({ data, color }) => {
   };
 
   const gapStyle = {
-    gap: `${design?.sectionGap || 32}px`,
+    gap: `${design?.sectionGap || 24}px`,
     display: 'flex',
     flexDirection: 'column'
   };
@@ -35,7 +35,7 @@ const AcademicAPA = ({ data, color }) => {
   
   return (
     <div 
-      className="w-full min-h-full bg-white text-black font-serif p-[2.54cm] print:p-0 leading-relaxed"
+      className="w-full min-h-full bg-white text-black font-serif p-12 print:p-0 leading-relaxed"
       style={{ ...containerStyle, ...gapStyle }}
     >
       {/* Header / Personal Info */}

@@ -22,7 +22,7 @@ const CorporateBlue = ({ data, color }) => {
   };
 
   const gapStyle = {
-      gap: `${design?.sectionGap || 32}px`
+      gap: `${design?.sectionGap || 24}px`
   };
 
   const titleStyle = {
@@ -35,7 +35,7 @@ const CorporateBlue = ({ data, color }) => {
       style={containerStyle}
     >
       {/* Header */}
-      <header className="text-white p-10 print:p-0 flex justify-between items-center" style={{ backgroundColor: accentColor }}>
+      <header className="text-white p-8 print:p-0 flex justify-between items-center" style={{ backgroundColor: accentColor }}>
         <div>
           <div className="mb-2" style={titleStyle}>
             <EditableText
@@ -67,7 +67,7 @@ const CorporateBlue = ({ data, color }) => {
 
       <div className="flex flex-1">
         {/* Left Column (Contact & Skills) */}
-        <aside className="w-1/3 bg-slate-100 p-8 border-r border-slate-200 flex flex-col" style={gapStyle}>
+        <aside className="w-1/3 bg-slate-100 p-6 border-r border-slate-200 flex flex-col" style={gapStyle}>
           <div className="break-inside-avoid">
             <h3 className="font-bold uppercase tracking-wider mb-4 border-b-2 pb-2" style={{ color: accentColor, borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>
               {t.lblContact}
@@ -79,6 +79,7 @@ const CorporateBlue = ({ data, color }) => {
                     value={personal.email}
                     onChange={(val) => handlePersonalUpdate('email', val)}
                     placeholder="Email"
+                    className="break-all"
                 />
               </div>
               <div className="flex flex-col">
@@ -199,7 +200,7 @@ const CorporateBlue = ({ data, color }) => {
         </aside>
 
         {/* Right Column (Experience & Education) */}
-        <main className="w-2/3 p-8 print:p-0 flex flex-col" style={gapStyle}>
+        <main className="w-2/3 p-6 print:p-0 flex flex-col" style={gapStyle}>
           <section>
             <h3 className="font-bold uppercase tracking-wider mb-6 flex items-center gap-3" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>
               <span className="w-8 h-1" style={{ backgroundColor: accentColor }}></span> {t.lblProfile}

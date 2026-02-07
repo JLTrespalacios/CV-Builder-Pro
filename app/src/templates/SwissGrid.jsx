@@ -22,12 +22,12 @@ const SwissGrid = ({ data, color }) => {
   };
 
   const gridGapStyle = {
-    gap: `${design?.sectionGap || 32}px`
+    gap: `${design?.sectionGap || 24}px`
   };
 
   return (
     <div 
-      className="w-full h-full bg-white text-black font-sans p-12 print:p-0 min-h-full"
+      className="w-full h-full bg-white text-black font-sans p-8 print:p-0 min-h-full"
       style={containerStyle}
     >
       {/* Header Grid */}

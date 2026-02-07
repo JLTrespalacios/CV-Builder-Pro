@@ -25,7 +25,7 @@ const ExecutiveGray = ({ data, color }) => {
   };
   
   const gapStyle = {
-    gap: `${design?.sectionGap || 40}px`,
+    gap: `${design?.sectionGap || 28}px`,
     display: 'flex',
     flexDirection: 'column'
   };
@@ -38,7 +38,7 @@ const ExecutiveGray = ({ data, color }) => {
     <div className="w-full h-full bg-white text-gray-800 font-sans grid grid-cols-[1fr_2fr] min-h-full" style={rootStyle}>
       
       {/* Sidebar */}
-      <div className="bg-gray-100 p-8 print:p-0 border-r border-gray-200 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
+      <div className="bg-gray-100 p-6 print:p-0 border-r border-gray-200 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
         
         {/* Photo & Contact */}
         <div className="text-center break-inside-avoid">
@@ -200,8 +200,8 @@ const ExecutiveGray = ({ data, color }) => {
       </div>
 
       {/* Main Content */}
-      <div className="p-10 print:p-0 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
-        {/* Header */}
+      <div className="p-8 print:p-0 flex flex-col" style={{ ...gapStyle, ...paddingTopStyle }}>
+        <div className="break-inside-avoid">Header */}
         <header className="border-b-4 pb-6" style={{ borderColor: accentColor }}>
           <div className="text-4xl font-serif font-bold text-gray-900 mb-2 tracking-tight" style={titleStyle}>
             <EditableText 

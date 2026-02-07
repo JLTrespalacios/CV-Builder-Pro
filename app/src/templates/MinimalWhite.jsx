@@ -22,7 +22,7 @@ const MinimalWhite = ({ data, color }) => {
   };
 
   const gapStyle = {
-      gap: `${design?.sectionGap || 40}px` // 40px default for MinimalWhite (gap-10)
+      gap: `${design?.sectionGap || 28}px` // 40px default for MinimalWhite (gap-10)
   };
 
   const titleStyle = {
@@ -31,7 +31,7 @@ const MinimalWhite = ({ data, color }) => {
 
   return (
     <div 
-      className="w-full min-h-full bg-white text-gray-800 font-sans p-12 print:p-0"
+      className="w-full min-h-full bg-white text-gray-800 font-sans p-8 print:p-0"
       style={containerStyle}
     >
       {/* Header */}
