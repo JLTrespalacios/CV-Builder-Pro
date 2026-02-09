@@ -180,6 +180,12 @@
   animation: fadeIn 0.4s ease-out forwards;
 }
 
+  /* Define page size to remove default browser margins */
+  @page {
+    size: A4;
+    margin: 0mm;
+  }
+
 @media print {
   body * {
     visibility: hidden;
@@ -198,12 +204,6 @@
   .h-screen, .h-full, .overflow-hidden {
     height: auto !important;
     overflow: visible !important;
-  }
-
-  /* Define page size to remove default browser margins */
-  @page {
-    size: A4;
-    margin: 0mm;
   }
 
   #cv-print-area,
