@@ -129,20 +129,20 @@ const EditorView = () => {
          </div>
 
          <div ref={containerRef} className="flex-1 overflow-hidden relative flex flex-col lg:flex-row pt-0 print:pt-0">
-            {/* Editor Section */}
-            <div 
-              className={`relative z-20 h-full border-r border-[var(--border-subtle)] bg-[var(--bg-panel)]/30 backdrop-blur-sm print:hidden overflow-hidden
-                ${isResizing ? 'transition-none' : 'transition-all duration-300 ease-in-out'}
-                ${activeMobileTab === 'editor' ? 'block w-full' : 'hidden'} 
-                lg:block lg:w-[var(--editor-dynamic-width)] lg:min-w-[var(--editor-min-width)]
-                ${!isEditorOpen ? 'lg:border-none' : ''}`}
-              style={{ 
-                '--editor-dynamic-width': isEditorOpen ? `${editorWidth}%` : '0px',
-                '--editor-min-width': isEditorOpen ? '280px' : '0px'
-              }}
-            >
-               <div className={`h-full overflow-y-auto custom-scrollbar p-6 pb-40 lg:pb-40 lg:pt-[96px] ${!isEditorOpen && activeMobileTab !== 'editor' ? 'hidden' : ''}`}>
-                   <div className="max-w-3xl mx-auto space-y-6">
+            {/* Resizable Editor Section */}
+      <div 
+        className={`relative z-20 h-full border-r border-[var(--border-subtle)] bg-[var(--bg-panel)]/30 backdrop-blur-sm print:hidden overflow-hidden pt-0 lg:pt-[72px]
+          ${isResizing ? 'transition-none' : 'transition-all duration-300 ease-in-out'}
+          ${activeMobileTab === 'editor' ? 'block w-full' : 'hidden'} 
+          lg:block lg:w-[var(--editor-dynamic-width)] lg:min-w-[var(--editor-min-width)]
+          ${!isEditorOpen ? 'lg:border-none' : ''}`}
+        style={{ 
+          '--editor-dynamic-width': isEditorOpen ? `${editorWidth}%` : '0px',
+          '--editor-min-width': isEditorOpen ? '280px' : '0px'
+        }}
+      >
+        <div className={`h-full overflow-y-auto custom-scrollbar p-6 pb-40 lg:pb-40 ${!isEditorOpen && activeMobileTab !== 'editor' ? 'hidden' : ''}`}>
+          <div className="max-w-3xl mx-auto space-y-6">
                  
                  {/* Header */}
                  <div className="mb-2">
@@ -261,12 +261,12 @@ const EditorView = () => {
 
             {/* Preview Section */}
             <div 
-               className={`h-full bg-[var(--bg-canvas)] overflow-hidden relative flex flex-col z-0
+               className={`h-full bg-[var(--bg-canvas)] overflow-hidden relative flex flex-col z-0 pt-0 lg:pt-[72px]
                   ${activeMobileTab === 'preview' ? 'block w-full' : 'hidden'} 
                   lg:block lg:flex-1
                `}
             >
-               <div className="flex-1 overflow-auto custom-scrollbar p-4 pb-40 lg:p-8 lg:pb-40 lg:pt-[104px] print:overflow-visible print:p-0">
+               <div className="flex-1 overflow-auto custom-scrollbar p-4 pb-40 lg:p-8 lg:pb-40 print:overflow-visible print:p-0">
                   <CVPreview />
                </div>
             </div>
