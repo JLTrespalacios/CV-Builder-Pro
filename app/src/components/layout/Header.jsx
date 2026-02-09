@@ -94,7 +94,7 @@ const Header = ({ onDownload }) => {
   const dropdownIconContainerClasses = (colorClass, bgClass) => `p-2 ${bgClass} ${colorClass} rounded-lg group-hover:scale-110 transition-all`;
 
   return (
-    <header className="h-[72px] flex items-center justify-between px-6 absolute top-0 right-0 left-0 z-50 transition-all duration-300 backdrop-blur-[14px] shadow-lg shadow-black/20"
+    <header className="h-[72px] flex items-center justify-between px-6 absolute top-0 right-0 left-0 z-50 transition-all duration-300 backdrop-blur-[14px] shadow-lg shadow-black/20 pointer-events-none"
       style={{
         background: 'linear-gradient(180deg, rgba(15,20,40,0.85), rgba(10,15,30,0.75))',
         borderBottom: '1px solid rgba(129, 140, 248, 0.15)' // Subtle indigo tint
@@ -104,7 +104,7 @@ const Header = ({ onDownload }) => {
         <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-70" />
 
       {/* Left: Logo & Branding */}
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-5 pointer-events-auto">
         {!isSidebarOpen && (
           <button 
             onClick={toggleSidebar}
@@ -152,7 +152,7 @@ const Header = ({ onDownload }) => {
       </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 pointer-events-auto">
         {/* Reset Button (Subtle) */}
         <button 
           onClick={handleReset}

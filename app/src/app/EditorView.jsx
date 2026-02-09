@@ -266,7 +266,7 @@ const EditorView = () => {
                   lg:block lg:flex-1
                `}
             >
-               <div className="flex-1 overflow-auto custom-scrollbar p-4 pb-40 lg:p-8 lg:pb-40 lg:pt-[104px]">
+               <div className="flex-1 overflow-auto custom-scrollbar p-4 pb-40 lg:p-8 lg:pb-40 lg:pt-[104px] print:overflow-visible print:p-0">
                   <CVPreview />
                </div>
             </div>
