@@ -188,7 +188,7 @@
 
 @media print {
   body * {
-    visibility: hidden;
+    visibility: hidden !important;
   }
 
   /* RESET PARENTS: Ensure the print area is not clipped by app containers */
@@ -206,36 +206,26 @@
     overflow: visible !important;
   }
 
-  #cv-print-area,
-  #cv-print-area * {
-    visibility: visible;
+  #cv-print-root,
+  #cv-print-root * {
+    visibility: visible !important;
   }
 
-  #cv-print-area {
+  #cv-print-root {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     background: white;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    z-index: 9999; /* Ensure it sits on top */
+    z-index: 9999;
   }
 
   .cv-page {
     width: 210mm;
     min-height: 297mm;
-    padding: 0; /* Adjusted to 0 as padding is likely handled inside content or should be 0 for full bleed */
+    padding: 20mm;
     page-break-after: always;
-    box-shadow: none;
-    margin: 0;
-    display: block;
-  }
-
-  /* Ensure content inside page fits */
-  .cv-page > div {
-     box-shadow: none !important;
-     margin: 0 !important;
+    box-shadow: none !important;
+    background: white;
   }
 }

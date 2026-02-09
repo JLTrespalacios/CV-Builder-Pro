@@ -34,7 +34,27 @@ const EditorView = () => {
     setOpenSection(openSection === section ? null : section);
   };
 
-  const handlePrint = () => window.print();
+  const handlePrint = () => {
+    const cvContent = document.getElementById("cv-preview");
+    const printRoot = document.getElementById("cv-print-root");
+
+    if (!cvContent || !printRoot) return;
+
+    // Clonamos el CV real
+    printRoot.innerHTML = "";
+    const clone = cvContent.cloneNode(true);
+
+    printRoot.appendChild(clone);
+    printRoot.style.display = "block";
+
+    window.print();
+
+    // Limpieza después de imprimir
+    setTimeout(() => {
+      printRoot.style.display = "none";
+      printRoot.innerHTML = "";
+    }, 500);
+  };
 
   // Resizing Logic
   const [isResizing, setIsResizing] = useState(false);
@@ -294,6 +314,7 @@ const EditorView = () => {
             </button>
          </div>
       </main>
+      <div id="cv-print-root" style={{ display: "none" }}></div>
     </div>
   );
 };
