@@ -4,14 +4,14 @@ export default function CVPage({ children, pageNumber }) {
   return (
     <div className="cv-page flex flex-col items-center">
       <div 
-        className="bg-white p-0 text-gray-900 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] print:shadow-none transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+        className="bg-white p-0 text-gray-900 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] print:shadow-none transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex flex-col"
         style={{
           width: '210mm',
           minHeight: '297mm',
           position: 'relative',
         }}
       >
-        <div className="h-full w-full">
+        <div className="flex-1 w-full flex flex-col">
           {children}
         </div>
       </div>

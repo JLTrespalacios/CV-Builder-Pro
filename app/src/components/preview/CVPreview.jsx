@@ -58,7 +58,7 @@ const CVPreview = forwardRef((props, ref) => {
         {/* Currently treating the whole CV as one continuous visual block wrapped in the page style */}
         {/* In the future, 'pages.map' would render distinct slices of content */}
         <CVPage pageNumber={1}>
-          <div ref={ref} className="print:w-full">
+          <div ref={ref} className="print:w-full flex-1">
              <TemplateComponent data={cvData} color={themeColor} />
           </div>
         </CVPage>
