@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCVStore } from '../../store/cvStore';
-import { Droplet, Layout, ChevronDown, Type } from 'lucide-react';
+import { Droplet, Layout, ChevronDown, Type, AlignLeft, AlignCenter, AlignRight, AlignJustify, IndentDecrease, IndentIncrease } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const PRESET_COLORS = [
@@ -277,6 +277,66 @@ const DesignControls = () => {
             onChange={(e) => updateDesign({ sectionGap: parseInt(e.target.value) })}
             className="w-full h-1.5 bg-slate-700 rounded-full appearance-none cursor-pointer accent-indigo-500 hover:accent-indigo-400 transition-all"
           />
+        </div>
+      </div>
+
+      {/* Sidebar Settings */}
+      <div className="space-y-4">
+        <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+          <Layout size={12} className="text-indigo-500" />
+          Barra Lateral
+        </h3>
+        
+        <div className="space-y-4">
+          {/* Alignment */}
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-400">Alineación de Texto</label>
+            <div className="flex bg-white/5 rounded-lg p-1 gap-1 border border-white/10">
+              {[
+                { icon: AlignLeft, value: 'left' },
+                { icon: AlignCenter, value: 'center' },
+                { icon: AlignRight, value: 'right' },
+                { icon: AlignJustify, value: 'justify' }
+              ].map(({ icon: Icon, value }) => (
+                <button
+                  key={value}
+                  onClick={() => updateDesign({ sidebarTextAlign: value })}
+                  className={`flex-1 p-2 rounded-md transition-all ${
+                    (design.sidebarTextAlign || 'center') === value 
+                      ? 'bg-indigo-500 text-white shadow-lg' 
+                      : 'text-slate-400 hover:text-white hover:bg-white/10'
+                  }`}
+                  title={`Alinear ${value === 'left' ? 'Izquierda' : value === 'center' ? 'Centro' : value === 'right' ? 'Derecha' : 'Justificar'}`}
+                >
+                  <Icon size={16} className="mx-auto" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Indentation */}
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-400">Sangría / Margen</label>
+            <div className="flex bg-white/5 rounded-lg p-1 gap-1 border border-white/10">
+              <button
+                onClick={() => updateDesign({ sidebarIndent: Math.max(0, (design.sidebarIndent || 0) - 4) })}
+                className="flex-1 p-2 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-all"
+                title="Disminuir sangría"
+              >
+                <IndentDecrease size={16} className="mx-auto" />
+              </button>
+              <div className="flex items-center justify-center w-12 text-sm font-mono text-slate-300">
+                {design.sidebarIndent || 0}px
+              </div>
+              <button
+                onClick={() => updateDesign({ sidebarIndent: Math.min(48, (design.sidebarIndent || 0) + 4) })}
+                className="flex-1 p-2 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-all"
+                title="Aumentar sangría"
+              >
+                <IndentIncrease size={16} className="mx-auto" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

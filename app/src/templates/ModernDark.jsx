@@ -18,6 +18,8 @@ const ModernDark = ({ data, color }) => {
 
   const sidebarWidth = design?.sidebarWidth || 33.333;
   const sidebarColor = design?.sidebarColor || '#0f172a';
+  const sidebarTextAlign = design?.sidebarTextAlign || 'center';
+  const sidebarIndent = design?.sidebarIndent || 0;
 
   const gap = design?.sectionGap || 24;
 
@@ -47,6 +49,15 @@ const ModernDark = ({ data, color }) => {
   const sectionStyle = {
     marginBottom: `${gap}px`
   };
+
+  const sidebarSectionStyle = {
+    ...sectionStyle,
+    textAlign: sidebarTextAlign,
+    paddingLeft: `${sidebarIndent}px`,
+    paddingRight: `${sidebarIndent}px`
+  };
+
+  const justifyClass = sidebarTextAlign === 'center' ? 'justify-center' : sidebarTextAlign === 'right' ? 'justify-end' : 'justify-start';
 
   // Resizing Logic
   const [isResizing, setIsResizing] = useState(false);
@@ -112,10 +123,10 @@ const ModernDark = ({ data, color }) => {
             </div>
         </div>
 
-        <div className="text-center break-inside-avoid" style={sectionStyle}>
+        <div className="break-inside-avoid" style={sidebarSectionStyle}>
           {/* Photo */}
           {personal.showPhoto && (
-            <div className="w-32 h-32 mx-auto mb-4 bg-slate-700 rounded-full overflow-hidden flex items-center justify-center border-4 print:w-[32mm] print:h-[32mm] shrink-0" style={{ borderColor: accentColor }}>
+            <div className={`w-32 h-32 mb-4 bg-slate-700 rounded-full overflow-hidden flex items-center justify-center border-4 print:w-[32mm] print:h-[32mm] shrink-0 ${sidebarTextAlign === 'center' ? 'mx-auto' : sidebarTextAlign === 'right' ? 'ml-auto' : ''}`} style={{ borderColor: accentColor }}>
               {personal.photo ? (
                 <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
               ) : (
@@ -179,7 +190,7 @@ const ModernDark = ({ data, color }) => {
 
         {/* Skills Section (Hard & Soft) */}
         {(skills.length > 0 || (hardSkills && hardSkills.length > 0)) && (
-          <div className="break-inside-avoid" style={sectionStyle}>
+          <div className="break-inside-avoid" style={sidebarSectionStyle}>
             <h2 className="text-[1.25em] font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblHardSkills || t.lblSkills}</h2>
             
             {/* Categorized Hard Skills */}
@@ -194,7 +205,7 @@ const ModernDark = ({ data, color }) => {
               </div>
             ) : (
               /* Legacy Simple Skills */
-              <div className="flex flex-wrap gap-2">
+              <div className={`flex flex-wrap gap-2 ${justifyClass}`}>
                 {skills.map((skill, index) => (
                   <span key={index} className="bg-slate-800 px-3 py-1 rounded text-[0.875em] text-slate-200" style={{ borderLeft: `2px solid ${accentColor}` }}>
                     {skill}
@@ -206,9 +217,9 @@ const ModernDark = ({ data, color }) => {
         )}
 
         {softSkills && softSkills.length > 0 && (
-          <div className="break-inside-avoid" style={sectionStyle}>
+          <div className="break-inside-avoid" style={sidebarSectionStyle}>
             <h2 className="text-[1.25em] font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblSoftSkills}</h2>
-             <div className="flex flex-wrap gap-2">
+             <div className={`flex flex-wrap gap-2 ${justifyClass}`}>
                 {softSkills.map((skill, index) => (
                   <span key={index} className="bg-slate-800 px-3 py-1 rounded text-[0.875em] text-slate-200" style={{ borderLeft: `2px solid ${accentColor}` }}>
                     {skill}
@@ -220,7 +231,7 @@ const ModernDark = ({ data, color }) => {
         
         {/* Languages */}
         {languages && languages.length > 0 && (
-          <div className="break-inside-avoid" style={sectionStyle}>
+          <div className="break-inside-avoid" style={sidebarSectionStyle}>
              <h2 className="text-[1.25em] font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblLanguages}</h2>
              <ul className="space-y-2 text-[0.875em] text-slate-300">
                {languages.map((lang, idx) => (
