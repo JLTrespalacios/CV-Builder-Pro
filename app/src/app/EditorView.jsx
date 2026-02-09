@@ -259,14 +259,20 @@ const EditorView = () => {
                <div className={`w-0.5 h-8 rounded-full transition-all duration-300 ${isResizing ? 'bg-indigo-500 h-12 shadow-[0_0_10px_rgba(99,102,241,0.5)]' : 'bg-[var(--border-subtle)] group-hover:bg-indigo-400'}`}></div>
             </div>
 
-            {/* Preview Section */}
+            {/* Preview Section - Isolated Module */}
             <div 
-               className={`h-full bg-gradient-to-br from-slate-900 to-slate-950 overflow-hidden relative flex flex-col z-0 pt-0 lg:pt-[72px]
+               className={`h-full bg-gradient-to-br from-slate-900 to-slate-950 overflow-hidden relative flex flex-col z-0
                   ${activeMobileTab === 'preview' ? 'block w-full' : 'hidden'} 
                   lg:block lg:flex-1
                `}
             >
-               <div className="flex-1 overflow-auto custom-scrollbar p-4 pb-40 lg:p-8 lg:pb-40 print:overflow-visible print:p-0">
+               {/* 
+                  Canvas Container:
+                  - pt-[72px] ensures it starts below the header without using padding on the main container
+                  - h-full and overflow-hidden ensures it stays within bounds
+                  - CVPreview handles its own internal scrolling
+               */}
+               <div className="h-full w-full relative pt-[72px]">
                   <CVPreview />
                </div>
             </div>

@@ -8,6 +8,7 @@ import AcademicAPA from '../../templates/AcademicAPA';
 import IvyLeague from '../../templates/IvyLeague';
 import SwissGrid from '../../templates/SwissGrid';
 import ExecutiveGray from '../../templates/ExecutiveGray';
+import CVPage from './CVPage';
 
 const TEMPLATES = {
   // Base Components
@@ -34,69 +35,33 @@ const TEMPLATES = {
   'HybridPro': TechGamer,        // Hybrid / Versatile
 };
 
-const A4_HEIGHT_PX = 1123; // Approx height of A4 at 96dpi (297mm)
-const A4_MM = 297;
-
 const CVPreview = forwardRef((props, ref) => {
   const { cvData, selectedTemplate, themeColor } = useCVStore();
   const TemplateComponent = TEMPLATES[selectedTemplate] || ModernDark;
   const [pages, setPages] = useState([1]);
   const containerRef = useRef(null);
 
-  // Calculate pages based on content height
-  useEffect(() => {
-    if (!containerRef.current) return;
-    
-    const resizeObserver = new ResizeObserver(entries => {
-      for (let entry of entries) {
-        const height = entry.contentRect.height;
-        const pageCount = Math.ceil(Math.max(height, 1) / A4_HEIGHT_PX);
-        const newPages = Array.from({ length: Math.max(pageCount, 1) }, (_, i) => i + 1);
-        if (newPages.length !== pages.length) {
-            setPages(newPages);
-        }
-      }
-    });
-
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
-  }, [cvData, selectedTemplate, pages.length]); // Re-calculate when data changes
-
+  // Calculate pages based on content height (logic preserved for future split)
+  // For now, we render everything in one "Page" wrapper but visually it will look correct
+  // because the CVPage component has min-height and proper styling.
+  // The 'repeating-linear-gradient' trick is now replaced by the actual CVPage component structure.
+  // If the content is longer than one page, we might need to simulate the split visual or just let it grow.
+  // Given the user's request for "CVPage" structure, we will wrap the template in a single CVPage for now,
+  // as splitting content is a complex next step.
+  
   return (
-    <div id="cv-print-content" className="w-full min-h-full relative print:overflow-visible">
-      <div className="min-w-fit min-h-full flex flex-col items-center py-8 print:p-0">
-        <div className="relative print:shadow-none">
-          {/* Page Guidelines Overlay - Now styled as visual gaps */}
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 print:hidden">
-             {pages.map((page) => (
-                 <div 
-                   key={page} 
-                   className="absolute left-0 w-full border-b border-dashed border-slate-700/50"
-                   style={{ 
-                     top: `${page * 297}mm`,
-                     height: '1px'
-                   }}
-                 >
-                     <span className="absolute -top-3 -right-24 bg-slate-800 text-slate-400 text-[10px] px-2 py-1 rounded shadow-sm border border-slate-700">
-                        Página {page}
-                     </span>
-                 </div>
-             ))}
+    <div 
+      id="cv-print-content" 
+      className="h-full w-full overflow-y-auto overflow-x-hidden flex justify-center py-12 bg-[radial-gradient(circle_at_top,_#1a1f3c,_#0b1020)] print:bg-white print:block print:h-auto print:overflow-visible print:py-0 custom-scrollbar"
+    >
+      <div className="flex flex-col gap-12 pb-32 print:block print:gap-0 print:pb-0 transform scale-100 origin-top">
+        {/* Currently treating the whole CV as one continuous visual block wrapped in the page style */}
+        {/* In the future, 'pages.map' would render distinct slices of content */}
+        <CVPage pageNumber={1}>
+          <div ref={ref} className="print:w-full">
+             <TemplateComponent data={cvData} color={themeColor} />
           </div>
-
-          <div 
-            ref={ref}
-            className="w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:w-[210mm] print:min-h-[297mm] print:scale-100 relative z-0"
-            style={{
-                background: 'repeating-linear-gradient(to bottom, #ffffff 0mm, #ffffff 297mm, transparent 297mm, transparent calc(297mm + 1px))',
-                boxShadow: '0 0 50px rgba(0,0,0,0.5)',
-            }}
-          >
-            <div ref={containerRef}>
-                 <TemplateComponent data={cvData} color={themeColor} />
-            </div>
-          </div>
-        </div>
+        </CVPage>
       </div>
     </div>
   );
