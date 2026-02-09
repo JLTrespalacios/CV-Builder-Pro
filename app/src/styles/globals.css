@@ -185,6 +185,24 @@
     visibility: hidden;
   }
 
+  /* RESET PARENTS: Ensure the print area is not clipped by app containers */
+  html, body, #root, main {
+    background: white !important;
+    height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+    display: block !important;
+  }
+
+  /* Explicitly reset common layout constraints that block printing */
+  .h-screen, .h-full, .w-full, .overflow-hidden, .flex, .relative, .grid {
+    height: auto !important;
+    width: 100% !important;
+    overflow: visible !important;
+    position: static !important;
+    display: block !important;
+  }
+
   #cv-print-area,
   #cv-print-area * {
     visibility: visible;
@@ -199,6 +217,7 @@
     margin: 0;
     padding: 0;
     overflow: visible;
+    z-index: 9999; /* Ensure it sits on top */
   }
 
   .cv-page {
