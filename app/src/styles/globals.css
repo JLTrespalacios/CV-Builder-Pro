@@ -244,4 +244,22 @@
     gap: 0 !important;
     transform: none !important;
   }
+
+  /* Force break avoidance */
+  .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Prevent headings from being separated from content */
+  h1, h2, h3 {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+  
+  /* Ensure images don't get cut */
+  img {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
 }

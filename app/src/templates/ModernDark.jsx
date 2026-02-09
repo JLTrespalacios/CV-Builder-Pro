@@ -19,6 +19,8 @@ const ModernDark = ({ data, color }) => {
   const sidebarWidth = design?.sidebarWidth || 33.333;
   const sidebarColor = design?.sidebarColor || '#0f172a';
 
+  const gap = design?.sectionGap || 24;
+
   const containerStyle = {
     background: `linear-gradient(to right, ${sidebarColor} ${sidebarWidth}%, #ffffff ${sidebarWidth}%)`,
     WebkitPrintColorAdjust: 'exact',
@@ -32,12 +34,18 @@ const ModernDark = ({ data, color }) => {
     gridTemplateColumns: `${sidebarWidth}% 1fr`
   };
 
-  const gapStyle = {
-      gap: `${design?.sectionGap || 24}px`
-  };
-
   const titleStyle = {
     fontFamily: design?.titleFont || design?.fontFamily || 'Inter'
+  };
+
+  // Common styles for print spacing
+  const columnStyle = {
+    WebkitBoxDecorationBreak: 'clone',
+    boxDecorationBreak: 'clone'
+  };
+
+  const sectionStyle = {
+    marginBottom: `${gap}px`
   };
 
   // Resizing Logic
@@ -84,7 +92,7 @@ const ModernDark = ({ data, color }) => {
       style={containerStyle}
     >
       {/* Sidebar / Left Column */}
-      <div className="text-white p-6 flex flex-col relative group/sidebar" style={gapStyle}>
+      <div className="text-white p-6 flex flex-col relative group/sidebar print:block" style={columnStyle}>
         
         {/* Color Picker Control (Visible on hover) */}
         <div className="absolute top-2 left-2 z-50 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 print:hidden">
@@ -104,7 +112,7 @@ const ModernDark = ({ data, color }) => {
             </div>
         </div>
 
-        <div className="text-center break-inside-avoid">
+        <div className="text-center break-inside-avoid" style={sectionStyle}>
           {/* Photo */}
           {personal.showPhoto && (
             <div className="w-32 h-32 mx-auto mb-4 bg-slate-700 rounded-full overflow-hidden flex items-center justify-center border-4" style={{ borderColor: accentColor }}>
@@ -171,7 +179,7 @@ const ModernDark = ({ data, color }) => {
 
         {/* Skills Section (Hard & Soft) */}
         {(skills.length > 0 || (hardSkills && hardSkills.length > 0)) && (
-          <div className="break-inside-avoid">
+          <div className="break-inside-avoid" style={sectionStyle}>
             <h2 className="text-[1.25em] font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblHardSkills || t.lblSkills}</h2>
             
             {/* Categorized Hard Skills */}
@@ -198,7 +206,7 @@ const ModernDark = ({ data, color }) => {
         )}
 
         {softSkills && softSkills.length > 0 && (
-          <div className="break-inside-avoid">
+          <div className="break-inside-avoid" style={sectionStyle}>
             <h2 className="text-[1.25em] font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblSoftSkills}</h2>
              <div className="flex flex-wrap gap-2">
                 {softSkills.map((skill, index) => (
@@ -212,7 +220,7 @@ const ModernDark = ({ data, color }) => {
         
         {/* Languages */}
         {languages && languages.length > 0 && (
-          <div className="break-inside-avoid">
+          <div className="break-inside-avoid" style={sectionStyle}>
              <h2 className="text-[1.25em] font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-2" style={{ color: accentColor, breakAfter: 'avoid', ...titleStyle }}>{t.lblLanguages}</h2>
              <ul className="space-y-2 text-[0.875em] text-slate-300">
                {languages.map((lang, idx) => (
@@ -239,8 +247,8 @@ const ModernDark = ({ data, color }) => {
       </div>
 
       {/* Main Content / Right Column */}
-      <div className="p-6 flex flex-col" style={gapStyle}>
-        <div className="mb-10 break-inside-avoid">
+      <div className="p-6 flex flex-col print:block" style={columnStyle}>
+        <div className="mb-10 break-inside-avoid" style={{ marginBottom: `calc(${gap}px + 40px)` }}>
           <h1 className="text-[3em] font-bold text-slate-900 leading-tight mb-2" style={{ color: design?.nameColor || accentColor, ...titleStyle }}>
             <EditableText 
               value={personal.name} 
@@ -257,7 +265,7 @@ const ModernDark = ({ data, color }) => {
           </div>
         </div>
 
-        <div className="mb-8 break-inside-avoid">
+        <div className="mb-8 break-inside-avoid" style={{ marginBottom: `calc(${gap}px + 32px)` }}>
           <h2 className="text-[1.5em] font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid', ...titleStyle }}>
             {t.lblProfile}
           </h2>
@@ -271,7 +279,7 @@ const ModernDark = ({ data, color }) => {
           </div>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-8" style={{ marginBottom: `calc(${gap}px + 32px)` }}>
           <h2 className="text-[1.5em] font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>
             {t.lblExperience}
           </h2>
@@ -290,7 +298,7 @@ const ModernDark = ({ data, color }) => {
 
         {/* Featured Projects */}
         {projects && projects.length > 0 && (
-          <div className="mb-8">
+          <div className="mb-8" style={{ marginBottom: `calc(${gap}px + 32px)` }}>
              <h2 className="text-[1.5em] font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>
                {t.lblProjects}
              </h2>
@@ -312,7 +320,7 @@ const ModernDark = ({ data, color }) => {
           </div>
         )}
 
-        <div className="mb-8">
+        <div className="mb-8" style={{ marginBottom: `calc(${gap}px + 32px)` }}>
           <h2 className="text-[1.5em] font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor, breakAfter: 'avoid' }}>
             {t.lblEducation}
           </h2>
@@ -330,7 +338,7 @@ const ModernDark = ({ data, color }) => {
 
         {/* Certifications */}
         {certifications && certifications.length > 0 && (
-          <div className="mb-8">
+          <div className="mb-8" style={{ marginBottom: `calc(${gap}px + 32px)` }}>
              <h2 className="text-[1.5em] font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor }}>
                {t.lblCertifications}
              </h2>
@@ -344,7 +352,7 @@ const ModernDark = ({ data, color }) => {
         )}
 
         {(referencesAvailableOnRequest || (references && references.length > 0)) && (
-          <div className="mb-8">
+          <div className="mb-8" style={{ marginBottom: `calc(${gap}px + 32px)` }}>
             <h2 className="text-[1.5em] font-bold text-slate-800 uppercase tracking-widest mb-4 border-b-2 pb-2" style={{ borderColor: accentColor }}>
               {t.lblReferences}
             </h2>
