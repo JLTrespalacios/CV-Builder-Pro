@@ -195,12 +195,15 @@
   }
 
   /* Explicitly reset common layout constraints that block printing */
-  .h-screen, .h-full, .w-full, .overflow-hidden, .flex, .relative, .grid {
+  .h-screen, .h-full, .overflow-hidden {
     height: auto !important;
-    width: 100% !important;
     overflow: visible !important;
-    position: static !important;
-    display: block !important;
+  }
+
+  /* Define page size to remove default browser margins */
+  @page {
+    size: A4;
+    margin: 0mm;
   }
 
   #cv-print-area,
