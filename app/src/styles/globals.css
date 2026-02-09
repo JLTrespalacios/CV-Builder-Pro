@@ -223,9 +223,25 @@
   .cv-page {
     width: 210mm;
     min-height: 297mm;
-    padding: 20mm;
+    padding: 0 !important;
     page-break-after: always;
     box-shadow: none !important;
     background: white;
+    margin: 0 !important;
+  }
+
+  /* Reset layout wrappers inside the cloned content */
+  #cv-print-root #cv-preview {
+    padding: 0 !important;
+    background: white !important;
+    height: auto !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  #cv-print-root #cv-preview > div {
+    padding: 0 !important;
+    gap: 0 !important;
+    transform: none !important;
   }
 }
