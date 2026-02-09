@@ -141,7 +141,7 @@ const EditorView = () => {
                 '--editor-min-width': isEditorOpen ? '280px' : '0px'
               }}
             >
-               <div className={`h-full overflow-y-auto custom-scrollbar p-6 pb-24 lg:pb-6 lg:pt-[96px] ${!isEditorOpen && activeMobileTab !== 'editor' ? 'hidden' : ''}`}>
+               <div className={`h-full overflow-y-auto custom-scrollbar p-6 pb-24 lg:pb-6 lg:mt-[72px] ${!isEditorOpen && activeMobileTab !== 'editor' ? 'hidden' : ''}`}>
                    <div className="max-w-3xl mx-auto space-y-6">
                  
                  {/* Header */}
@@ -261,12 +261,12 @@ const EditorView = () => {
 
             {/* Preview Section */}
             <div 
-               className={`h-full bg-[var(--bg-canvas)] overflow-hidden relative flex flex-col
+               className={`h-full bg-[var(--bg-canvas)] overflow-hidden relative flex flex-col z-0
                   ${activeMobileTab === 'preview' ? 'block w-full' : 'hidden'} 
                   lg:block lg:flex-1
                `}
             >
-               <div className="flex-1 overflow-auto custom-scrollbar p-4 lg:p-8 lg:pt-[104px]">
+               <div className="flex-1 overflow-auto custom-scrollbar p-4 lg:p-8 lg:mt-[72px]">
                   <CVPreview />
                </div>
             </div>

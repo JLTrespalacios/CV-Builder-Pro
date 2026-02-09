@@ -63,7 +63,7 @@ const CVPreview = forwardRef((props, ref) => {
   }, [cvData, selectedTemplate, pages.length]); // Re-calculate when data changes
 
   return (
-    <div className="w-full min-h-full bg-transparent print:overflow-visible relative">
+    <div id="cv-print-content" className="w-full min-h-full bg-transparent print:overflow-visible relative">
       <div className="min-w-fit min-h-full flex flex-col items-center py-8 print:p-0">
         <div className="relative shadow-[0_0_50px_rgba(0,0,0,0.3)] print:shadow-none">
           {/* Page Guidelines Overlay */}
