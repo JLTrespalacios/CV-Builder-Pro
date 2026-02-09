@@ -1,3 +1,9 @@
+<img width="918" height="862" alt="image" src="https://github.com/user-attachments/assets/28c0949a-3d54-43a2-84a5-f829bd2d4177" />
+<img width="935" height="866" alt="image" src="https://github.com/user-attachments/assets/9e23bb4c-2606-4202-a183-778f2367dc33" />
+<img width="1922" height="867" alt="image" src="https://github.com/user-attachments/assets/160248fd-9ffb-48a6-98df-a8d0bd73300e" />
+
+
+
 # CV Builder Pro - Sistema de Currículums por Rol 🚀  
 
 ![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat&logo=react)
