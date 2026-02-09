@@ -153,6 +153,15 @@ const Header = ({ onDownload }) => {
 
       {/* Right: Actions */}
       <div className="flex items-center gap-4 pointer-events-auto">
+        {/* Download PDF Button */}
+        <button 
+          onClick={onDownload}
+          className="hidden sm:flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg font-bold text-xs transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
+        >
+          <Download size={14} />
+          {t.downloadPDF || 'Descargar PDF'}
+        </button>
+
         {/* Reset Button (Subtle) */}
         <button 
           onClick={handleReset}

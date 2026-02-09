@@ -51,7 +51,7 @@ const CVPreview = forwardRef((props, ref) => {
   
   return (
     <div 
-      id="cv-print-content" 
+      id="cv-print-area" 
       className="h-full w-full overflow-y-auto overflow-x-hidden flex justify-center py-12 bg-[radial-gradient(circle_at_top,_#1a1f3c,_#0b1020)] print:bg-white print:block print:h-auto print:overflow-visible print:py-0 custom-scrollbar"
     >
       <div className="flex flex-col gap-12 pb-32 print:block print:gap-0 print:pb-0 transform scale-100 origin-top">

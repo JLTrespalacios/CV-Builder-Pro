@@ -181,53 +181,39 @@
 }
 
 @media print {
-  @page {
-    margin: 0mm;
-    size: auto;
-  }
-  
-  /* Reset body styling */
-  body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    background-color: white !important;
-    margin: 0;
-    padding: 0;
-    overflow: visible !important;
-  }
-
-  /* Hide everything by default */
   body * {
     visibility: hidden;
   }
 
-  /* Show only print content and its children */
-  #cv-print-content, #cv-print-content * {
+  #cv-print-area,
+  #cv-print-area * {
     visibility: visible;
   }
 
-  /* Position print content absolutely to top-left to ignore hidden siblings layout */
-  #cv-print-content {
-    position: fixed !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100% !important;
-    height: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    z-index: 9999 !important;
-    background-color: white !important;
+  #cv-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
   }
 
-  /* Ensure containers don't clip content */
-  #root, main, .page-container {
-    overflow: visible !important;
-    height: auto !important;
-    display: block !important;
+  .cv-page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 0; /* Adjusted to 0 as padding is likely handled inside content or should be 0 for full bleed */
+    page-break-after: always;
+    box-shadow: none;
+    margin: 0;
+    display: block;
   }
 
-  /* Hide guidelines specifically */
-  .print-hidden, .no-print {
-    display: none !important;
+  /* Ensure content inside page fits */
+  .cv-page > div {
+     box-shadow: none !important;
+     margin: 0 !important;
   }
 }

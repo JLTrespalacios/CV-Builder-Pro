@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useCVStore } from '../../store/cvStore';
 import { TRANSLATIONS } from '../../constants/translations';
 import { TEMPLATE_CONFIG } from '../../constants/templatesConfig';
-import { Upload, CreditCard, MapPin, Fingerprint, Eye, EyeOff, Info, CheckCircle, XCircle, Camera } from 'lucide-react';
+import { Upload, CreditCard, MapPin, Fingerprint, Eye, EyeOff, Info, CheckCircle, XCircle, Camera, Trash2 } from 'lucide-react';
 
 const PersonalForm = () => {
   const { cvData, updatePersonal, language, template: templateId } = useCVStore();
@@ -39,6 +39,10 @@ const PersonalForm = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleRemovePhoto = () => {
+    updatePersonal({ photo: null });
   };
 
   return (
@@ -152,7 +156,7 @@ const PersonalForm = () => {
                 
                 <div className="flex-1">
                   <div className="flex gap-3">
-                    <label className="cursor-pointer bg-[var(--text-main)] text-[var(--bg-app)] px-4 py-2 rounded-lg hover:opacity-90 flex items-center gap-2 text-xs font-bold transition-all shadow-sm active:scale-95">
+                    <label className="cursor-pointer bg-[var(--primary)] text-white px-4 py-2 rounded-lg hover:opacity-90 flex items-center gap-2 text-xs font-bold transition-all shadow-sm active:scale-95">
                       <Upload size={14} />
                       {cvData.personal.photo ? t.changePhoto : t.uploadPhoto}
                       <input 
@@ -165,9 +169,10 @@ const PersonalForm = () => {
                     {cvData.personal.photo && (
                       <button
                         type="button"
-                        onClick={() => updatePersonal({ photo: null })}
-                        className="text-xs text-red-500 hover:text-red-600 font-medium px-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                        onClick={handleRemovePhoto}
+                        className="text-xs text-red-500 hover:text-red-600 font-medium px-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors flex items-center gap-1"
                       >
+                        <Trash2 size={14} />
                         {t.deletePhoto}
                       </button>
                     )}
@@ -200,130 +205,40 @@ const PersonalForm = () => {
                 <EyeOff size={16} />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-[var(--text-main)] mb-0.5">Modo ATS (Sin foto)</h4>
-                <p className="text-[10px] text-[var(--text-secondary)] leading-relaxed">
-                  Tu CV se generará sin foto, priorizando el contenido textual para máxima compatibilidad con sistemas de reclutamiento (ATS).
-                </p>
+                <p className="text-sm font-medium text-[var(--text-main)]">{t.hidden || "Oculta"}</p>
+                <p className="text-xs text-[var(--text-secondary)]">{t.photoHiddenNote}</p>
               </div>
             </div>
           )}
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.lblEmail}</label>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.email}</label>
             <input
               {...register("email")}
-              className="modern-input"
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
               placeholder={t.emailPlaceholder}
             />
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.lblPhone}</label>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.phone}</label>
             <input
               {...register("phone")}
-              className="modern-input"
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
               placeholder={t.phonePlaceholder}
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.lblLocation}</label>
-          <div className="relative">
-            <input
-              {...register("location")}
-              className="modern-input pl-10"
-              placeholder={t.locationPlaceholder}
-            />
-            <MapPin size={16} className="absolute left-3.5 top-3.5 text-[var(--text-secondary)]" />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.linkedin}</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.location}</label>
           <input
-            {...register("linkedin")}
-            className="modern-input"
-            placeholder={t.linkedinPlaceholder}
+            {...register("location")}
+            className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
+            placeholder={t.locationPlaceholder}
           />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.github}</label>
-          <input
-            {...register("github")}
-            className="modern-input"
-            placeholder="github.com/username"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.lblWebsite}</label>
-          <input
-            {...register("website")}
-            className="modern-input"
-            placeholder={t.websitePlaceholder}
-          />
-        </div>
-
-        {/* Document Identification Module */}
-        <div className="bg-[var(--bg-muted)]/50 p-5 rounded-xl border border-[var(--border-subtle)] mt-2 hover:border-[var(--primary)]/20 transition-colors">
-          <h4 className="text-sm font-bold text-[var(--text-main)] mb-4 flex items-center gap-2">
-            <div className="p-1.5 bg-[var(--bg-panel)] rounded-lg shadow-sm">
-              <CreditCard size={14} className="text-[var(--primary)]" />
-            </div>
-            {t.idDocument}
-          </h4>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">{t.idType}</label>
-              <div className="relative">
-                <select
-                  {...register("documentType")}
-                  className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all appearance-none"
-                >
-                  <option value="" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.select}</option>
-                  <option value="C.C." className="bg-[var(--bg-input)] text-[var(--text-main)]">Cédula (C.C.)</option>
-                  <option value="NIT" className="bg-[var(--bg-input)] text-[var(--text-main)]">NIT</option>
-                  <option value="Pasaporte" className="bg-[var(--bg-input)] text-[var(--text-main)]">Pasaporte</option>
-                  <option value="C.E." className="bg-[var(--bg-input)] text-[var(--text-main)]">Cédula Ext.</option>
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[var(--text-secondary)]">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">{t.idNumber}</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Fingerprint size={14} className="text-[var(--text-secondary)]" />
-                </div>
-                <input
-                  {...register("documentNumber")}
-                  className="w-full pl-9 pr-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all font-mono"
-                  placeholder={t.idNumberPlaceholder}
-                />
-              </div>
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">{t.expeditionPlace}</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MapPin size={14} className="text-[var(--text-secondary)]" />
-                </div>
-                <input
-                  {...register("expeditionPlace")}
-                  className="w-full pl-9 pr-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
-                  placeholder={t.expeditionPlaceholder}
-                />
-              </div>
-            </div>
-          </div>
         </div>
 
         <div>
@@ -331,10 +246,80 @@ const PersonalForm = () => {
           <textarea
             {...register("summary")}
             rows={4}
-            className="w-full px-4 py-3 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all resize-y"
+            className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all resize-none"
             placeholder={t.summaryPlaceholder}
           />
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+           <div>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.linkedin || "LinkedIn"}</label>
+            <input
+              {...register("linkedin")}
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
+              placeholder={t.linkedinPlaceholder}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.website || "Sitio Web"}</label>
+            <input
+              {...register("website")}
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
+              placeholder={t.websitePlaceholder}
+            />
+          </div>
+        </div>
+        
+        <div>
+           <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.github || "GitHub"}</label>
+            <input
+              {...register("github")}
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
+              placeholder="github.com/usuario"
+            />
+        </div>
+
+        {/* Document ID Section */}
+        <div className="pt-4 border-t border-[var(--border-subtle)]">
+            <h4 className="text-sm font-bold text-[var(--text-main)] mb-3 flex items-center gap-2">
+                <CreditCard size={14} className="text-[var(--primary)]" />
+                {t.idDocument}
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                 <div>
+                    <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">{t.idType}</label>
+                    <select
+                        {...register("documentType")}
+                        className="w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
+                    >
+                        <option value="DNI">DNI / NIF</option>
+                        <option value="NIE">NIE</option>
+                        <option value="PASSPORT">{t.passport}</option>
+                        <option value="CC">{t.idCard}</option>
+                        <option value="CE">{t.foreignId}</option>
+                        <option value="NIT">{t.nit}</option>
+                        <option value="RUT">RUT</option>
+                    </select>
+                </div>
+                <div>
+                    <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">{t.idNumber}</label>
+                    <input
+                        {...register("documentNumber")}
+                        className="w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
+                        placeholder={t.idNumberPlaceholder}
+                    />
+                </div>
+                 <div>
+                    <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">{t.expeditionPlace}</label>
+                    <input
+                        {...register("expeditionPlace")}
+                        className="w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
+                        placeholder={t.expeditionPlaceholder}
+                    />
+                </div>
+            </div>
+        </div>
+
       </form>
     </div>
   );
