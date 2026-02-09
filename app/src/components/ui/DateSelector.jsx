@@ -94,9 +94,9 @@ const DateSelector = ({
             onChange={handleModeChange}
             className="text-xs border border-[var(--border-subtle)] bg-[var(--bg-muted)] rounded-lg px-2 py-1 text-[var(--text-secondary)] focus:outline-none focus:border-[var(--primary)] cursor-pointer hover:bg-[var(--bg-panel)] transition-colors appearance-none"
           >
-            <option value="range">Rango</option>
-            {allowPresent && <option value="present">Actualidad</option>}
-            <option value="single">Fecha única</option>
+            <option value="range" className="bg-[var(--bg-input)] text-[var(--text-main)]">Rango</option>
+            {allowPresent && <option value="present" className="bg-[var(--bg-input)] text-[var(--text-main)]">Actualidad</option>}
+            <option value="single" className="bg-[var(--bg-input)] text-[var(--text-main)]">Fecha única</option>
           </select>
         )}
       </div>

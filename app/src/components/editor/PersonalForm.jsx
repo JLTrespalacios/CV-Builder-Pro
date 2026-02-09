@@ -52,7 +52,7 @@ const PersonalForm = () => {
           <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.fullName}</label>
           <input
             {...register("name")}
-            className="modern-input"
+            className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
             placeholder={t.yourName}
           />
         </div>
@@ -61,7 +61,7 @@ const PersonalForm = () => {
           <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.professionalTitle}</label>
           <input
             {...register("role")}
-            className="modern-input"
+            className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
             placeholder={t.titlePlaceholder}
           />
         </div>
@@ -71,15 +71,15 @@ const PersonalForm = () => {
           <div className="relative">
             <select
               {...register("professionalLevel")}
-              className="modern-input appearance-none"
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all appearance-none"
             >
-              <option value="">{t.selectLevel}</option>
-              <option value="Junior">{t.levelJunior}</option>
-              <option value="Semi-Senior">{t.levelSemiSenior}</option>
-              <option value="Senior">{t.levelSenior}</option>
-              <option value="Tech Lead">{t.levelTechLead}</option>
-              <option value="Architect">{t.levelArchitect}</option>
-              <option value="Manager">{t.levelManager}</option>
+              <option value="" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.selectLevel}</option>
+              <option value="Junior" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.levelJunior}</option>
+              <option value="Semi-Senior" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.levelSemiSenior}</option>
+              <option value="Senior" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.levelSenior}</option>
+              <option value="Tech Lead" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.levelTechLead}</option>
+              <option value="Architect" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.levelArchitect}</option>
+              <option value="Manager" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.levelManager}</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[var(--text-secondary)]">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -124,13 +124,13 @@ const PersonalForm = () => {
               type="button"
               onClick={() => updatePersonal({ showPhoto: !cvData.personal.showPhoto })}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2 ${
-                cvData.personal.showPhoto ? 'bg-[var(--primary)]' : 'bg-gray-300'
+                cvData.personal.showPhoto ? 'bg-[var(--primary)]' : 'bg-slate-200 dark:bg-slate-700'
               }`}
             >
               <span
                 className={`${
                   cvData.personal.showPhoto ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm`}
               />
             </button>
           </div>
@@ -152,7 +152,7 @@ const PersonalForm = () => {
                 
                 <div className="flex-1">
                   <div className="flex gap-3">
-                    <label className="cursor-pointer bg-[var(--text-main)] text-[var(--bg-panel)] px-4 py-2 rounded-lg hover:opacity-90 flex items-center gap-2 text-xs font-bold transition-all shadow-sm active:scale-95">
+                    <label className="cursor-pointer bg-[var(--text-main)] text-[var(--bg-app)] px-4 py-2 rounded-lg hover:opacity-90 flex items-center gap-2 text-xs font-bold transition-all shadow-sm active:scale-95">
                       <Upload size={14} />
                       {cvData.personal.photo ? t.changePhoto : t.uploadPhoto}
                       <input 
@@ -166,7 +166,7 @@ const PersonalForm = () => {
                       <button
                         type="button"
                         onClick={() => updatePersonal({ photo: null })}
-                        className="text-xs text-red-500 hover:text-red-600 font-medium px-2 hover:bg-red-50 rounded-lg transition-colors"
+                        className="text-xs text-red-500 hover:text-red-600 font-medium px-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                       >
                         {t.deletePhoto}
                       </button>
@@ -282,43 +282,43 @@ const PersonalForm = () => {
               <div className="relative">
                 <select
                   {...register("documentType")}
-                  className="w-full pl-3 pr-8 py-3 text-sm border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white text-slate-700 hover-input"
+                  className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all appearance-none"
                 >
-                  <option value="">{t.select}</option>
-                  <option value="C.C.">Cédula (C.C.)</option>
-                  <option value="NIT">NIT</option>
-                  <option value="Pasaporte">Pasaporte</option>
-                  <option value="C.E.">Cédula Ext.</option>
+                  <option value="" className="bg-[var(--bg-input)] text-[var(--text-main)]">{t.select}</option>
+                  <option value="C.C." className="bg-[var(--bg-input)] text-[var(--text-main)]">Cédula (C.C.)</option>
+                  <option value="NIT" className="bg-[var(--bg-input)] text-[var(--text-main)]">NIT</option>
+                  <option value="Pasaporte" className="bg-[var(--bg-input)] text-[var(--text-main)]">Pasaporte</option>
+                  <option value="C.E." className="bg-[var(--bg-input)] text-[var(--text-main)]">Cédula Ext.</option>
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-500">
+                <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[var(--text-secondary)]">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">{t.idNumber}</label>
+              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">{t.idNumber}</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Fingerprint size={14} className="text-slate-400" />
+                  <Fingerprint size={14} className="text-[var(--text-secondary)]" />
                 </div>
                 <input
                   {...register("documentNumber")}
-                  className="w-full pl-9 pr-3 py-3 text-sm border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-slate-700 hover-input"
+                  className="w-full pl-9 pr-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all font-mono"
                   placeholder={t.idNumberPlaceholder}
                 />
               </div>
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-medium text-slate-600 mb-1">{t.expeditionPlace}</label>
+              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">{t.expeditionPlace}</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MapPin size={14} className="text-slate-400" />
+                  <MapPin size={14} className="text-[var(--text-secondary)]" />
                 </div>
                 <input
                   {...register("expeditionPlace")}
-                  className="w-full pl-9 pr-3 py-3 text-sm border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 hover-input"
+                  className="w-full pl-9 pr-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
                   placeholder={t.expeditionPlaceholder}
                 />
               </div>
@@ -327,11 +327,11 @@ const PersonalForm = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t.summary}</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.summary}</label>
           <textarea
             {...register("summary")}
             rows={4}
-            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+            className="w-full px-4 py-3 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all resize-y"
             placeholder={t.summaryPlaceholder}
           />
         </div>

@@ -146,8 +146,12 @@ const SAMPLE_DATA = {
       date: "2023"
     }
   ],
-  hardSkills: ["Frontend Architecture", "CI/CD Pipelines", "Database Design"],
-  softSkills: ["Liderazgo de equipos", "Comunicación efectiva", "Resolución de problemas"],
+  hardSkills: [
+    { category: "Frontend", items: "React, Vue.js, Tailwind CSS, TypeScript" },
+    { category: "Backend", items: "Node.js, Express, MongoDB, PostgreSQL" },
+    { category: "DevOps", items: "Docker, AWS, CI/CD Pipelines" }
+  ],
+  softSkills: ["Liderazgo de equipos", "Comunicación efectiva", "Resolución de problemas", "Gestión del tiempo"],
   references: [],
   referencesAvailableOnRequest: true
 };

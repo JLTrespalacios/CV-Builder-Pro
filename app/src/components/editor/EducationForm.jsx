@@ -115,18 +115,18 @@ const EducationForm = () => {
             <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.degree}</label>
             <input
               {...register("degree", { required: true })}
-              className="modern-input"
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
               placeholder={t.degreePlaceholder}
               autoFocus
             />
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.school}</label>
               <input
                 {...register("school", { required: true })}
-                className="modern-input"
+                className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
                 placeholder={t.schoolPlaceholder}
               />
             </div>
@@ -165,7 +165,7 @@ const EducationForm = () => {
             <textarea
               {...register("description")}
               rows={4}
-              className="modern-input min-h-[100px]"
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all min-h-[100px]"
               placeholder={t.descriptionPlaceholder}
             />
           </div>

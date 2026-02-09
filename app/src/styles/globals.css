@@ -37,6 +37,7 @@
     --bg-app: #0B0F19; /* Deep Space Black */
     --bg-panel: rgba(255, 255, 255, 0.03); /* Ultra Glass */
     --bg-muted: rgba(255, 255, 255, 0.05);
+    --bg-input: #0B0F19; /* Solid dark color for inputs/options to prevent transparency issues */
     --primary: #818cf8; /* Indigo 400 */
     --primary-light: #312e81; /* Indigo 900 */
     --text-main: #f8fafc; /* Slate 50 */
@@ -51,6 +52,7 @@
     --bg-app: #f8fafc; /* Slate 50 */
     --bg-panel: #ffffff;
     --bg-muted: #f1f5f9; /* Slate 100 */
+    --bg-input: #ffffff;
     --primary: #4f46e5; /* Indigo 600 */
     --primary-light: #e0e7ff; /* Indigo 100 */
     --text-main: #0f172a; /* Slate 900 */
@@ -65,6 +67,7 @@
     --bg-app: #0B0F19;
     --bg-panel: rgba(255, 255, 255, 0.03);
     --bg-muted: rgba(255, 255, 255, 0.05);
+    --bg-input: #0B0F19;
     --primary: #818cf8;
     --primary-light: #312e81;
     --text-main: #f8fafc;
@@ -79,6 +82,7 @@
     --bg-app: #0B0F19; /* Deep Space Black */
     --bg-panel: rgba(255, 255, 255, 0.03); /* Ultra Glass */
     --bg-muted: rgba(255, 255, 255, 0.05);
+    --bg-input: #0B0F19;
     --primary: #818cf8; /* Indigo 400 */
     --primary-light: #312e81; /* Indigo 900 */
     --text-main: #f8fafc; /* Slate 50 */
@@ -95,6 +99,15 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Force color-scheme to ensure form controls match theme */
+  :root, [data-theme="dark"], [data-theme="hybrid"] {
+    color-scheme: dark;
+  }
+
+  [data-theme="light"] {
+    color-scheme: light;
   }
 }
 
@@ -116,7 +129,7 @@
 
   /* Inputs Modernos */
   .modern-input {
-    @apply w-full px-4 py-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-panel)] text-[var(--text-main)] transition-all duration-200 outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)];
+    @apply w-full px-4 py-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] text-[var(--text-main)] transition-all duration-200 outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)];
   }
 
   /* Botones Modernos */
@@ -134,19 +147,27 @@
   
   /* Scrollbar estético */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.02);
   }
   ::-webkit-scrollbar-thumb {
     background: var(--text-secondary);
     border-radius: 10px;
-    opacity: 0.2;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    opacity: 0.5;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
+    background-color: var(--primary);
+  }
+  
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-secondary) transparent;
   }
 }
 

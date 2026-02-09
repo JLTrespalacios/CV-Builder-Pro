@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useCVStore } from '../store/cvStore';
 import { useUIStore } from '../store/uiStore';
 import { TRANSLATIONS } from '../constants/translations';
-import { User, Briefcase, GraduationCap, Code, Globe, Award, Users, FolderOpen, Layout, GripVertical, Eye, Edit3 } from 'lucide-react';
+import { User, Briefcase, GraduationCap, Code, Globe, Award, Users, FolderOpen, Layout, GripVertical, Eye, Edit3, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
@@ -13,7 +13,8 @@ import SectionAccordion from '../components/ui/SectionAccordion';
 import PersonalForm from '../components/editor/PersonalForm';
 import EducationForm from '../components/editor/EducationForm';
 import ExperienceForm from '../components/editor/ExperienceForm';
-import SkillsForm from '../components/editor/SkillsForm';
+import HardSkillsForm from '../components/editor/HardSkillsForm';
+import SoftSkillsForm from '../components/editor/SoftSkillsForm';
 import ProjectsForm from '../components/editor/ProjectsForm';
 import LanguagesForm from '../components/editor/LanguagesForm';
 import CertificationsForm from '../components/editor/CertificationsForm';
@@ -27,6 +28,7 @@ const EditorView = () => {
   
   // Accordion state
   const [openSection, setOpenSection] = useState('personal');
+  const [isEditorOpen, setIsEditorOpen] = useState(true);
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
@@ -92,7 +94,7 @@ const EditorView = () => {
       </div>
       
       {/* Main Content with Padding for Fixed Header */}
-      <main className="flex-1 flex flex-col h-full transition-all duration-300 relative z-10 overflow-hidden pt-[72px]">
+      <main className="flex-1 flex flex-col h-full transition-all duration-300 relative z-10 overflow-hidden pt-[72px] lg:pt-0">
          <div className="print:hidden">
             <Header onDownload={handlePrint} />
          </div>
@@ -129,14 +131,25 @@ const EditorView = () => {
          <div ref={containerRef} className="flex-1 overflow-hidden relative flex flex-col lg:flex-row pt-0 print:pt-0">
             {/* Editor Section */}
             <div 
-              className={`h-full overflow-y-auto custom-scrollbar p-6 pb-24 lg:pb-6 border-r border-[var(--border-subtle)] bg-[var(--bg-panel)]/30 backdrop-blur-sm print:hidden 
-                ${isResizing ? 'transition-none' : 'transition-all duration-300'}
+              className={`relative z-20 h-full border-r border-[var(--border-subtle)] bg-[var(--bg-panel)]/30 backdrop-blur-sm print:hidden overflow-hidden
+                ${isResizing ? 'transition-none' : 'transition-all duration-300 ease-in-out'}
                 ${activeMobileTab === 'editor' ? 'block w-full' : 'hidden'} 
-                lg:block lg:w-[var(--editor-width)]`}
-              style={{ '--editor-width': `${editorWidth}%` }}
+                lg:block lg:w-[var(--editor-dynamic-width)] lg:min-w-[var(--editor-min-width)]
+                ${!isEditorOpen ? 'lg:border-none' : ''}`}
+              style={{ 
+                '--editor-dynamic-width': isEditorOpen ? `${editorWidth}%` : '0px',
+                '--editor-min-width': isEditorOpen ? '280px' : '0px'
+              }}
             >
-               <div className="max-w-3xl mx-auto space-y-6">
+               <div className={`h-full overflow-y-auto custom-scrollbar p-6 pb-24 lg:pb-6 lg:pt-[96px] ${!isEditorOpen && activeMobileTab !== 'editor' ? 'hidden' : ''}`}>
+                   <div className="max-w-3xl mx-auto space-y-6">
                  
+                 {/* Header */}
+                 <div className="mb-2">
+                    <h1 className="text-3xl font-bold text-[var(--text-main)] mb-2 tracking-tight">{t.editorTitle}</h1>
+                    <p className="text-[var(--text-secondary)]">{t.editorSubtitle}</p>
+                 </div>
+
                  {/* Templates & Design */}
                  <SectionAccordion 
                     title={t.templatesAndDesign} 
@@ -184,7 +197,12 @@ const EditorView = () => {
                     isOpen={openSection === 'skills'} 
                     onToggle={() => toggleSection('skills')}
                  >
-                    <SkillsForm />
+                    <div className="space-y-8">
+                      <HardSkillsForm />
+                      <div className="border-t border-[var(--border-subtle)] pt-6">
+                        <SoftSkillsForm />
+                      </div>
+                    </div>
                  </SectionAccordion>
 
                   {/* Languages */}
@@ -227,16 +245,18 @@ const EditorView = () => {
                     <ReferencesForm />
                  </SectionAccordion>
                </div>
+               </div>
             </div>
 
             {/* Resizer Handle */}
             <div
-              className={`hidden lg:flex w-1.5 cursor-col-resize items-center justify-center hover:bg-indigo-500/50 transition-colors z-30 group relative
-                 ${isResizing ? 'bg-indigo-500' : 'bg-transparent'}
+              className={`hidden lg:flex w-4 -ml-2 z-50 cursor-col-resize items-center justify-center transition-colors group relative
+                 ${isResizing ? 'bg-indigo-500/10' : 'hover:bg-indigo-500/10'}
+                 ${!isEditorOpen ? 'pointer-events-none opacity-0' : ''}
               `}
-              onMouseDown={startResizing}
+              onMouseDown={isEditorOpen ? startResizing : undefined}
             >
-               <div className={`w-0.5 h-8 rounded-full transition-all duration-300 ${isResizing ? 'bg-white h-12' : 'bg-[var(--border-subtle)] group-hover:bg-indigo-400'}`}></div>
+               <div className={`w-0.5 h-8 rounded-full transition-all duration-300 ${isResizing ? 'bg-indigo-500 h-12 shadow-[0_0_10px_rgba(99,102,241,0.5)]' : 'bg-[var(--border-subtle)] group-hover:bg-indigo-400'}`}></div>
             </div>
 
             {/* Preview Section */}
@@ -246,10 +266,26 @@ const EditorView = () => {
                   lg:block lg:flex-1
                `}
             >
-               <div className="flex-1 overflow-y-auto custom-scrollbar p-4 lg:p-8 flex items-start justify-center">
+               <div className="flex-1 overflow-auto custom-scrollbar p-4 lg:p-8 lg:pt-[104px]">
                   <CVPreview />
                </div>
             </div>
+
+            {/* Global Toggle Button - Moved outside to prevent z-index/overflow issues */}
+            <button 
+               onClick={() => setIsEditorOpen(!isEditorOpen)}
+               className={`hidden lg:flex absolute top-24 z-[60] items-center justify-center w-6 h-6 rounded-full shadow-lg border border-white/10 transition-all duration-300 hover:scale-110
+                  bg-indigo-600 text-white
+                  ${isEditorOpen ? '-ml-3' : 'ml-0'}
+               `}
+               style={{ 
+                  left: isEditorOpen ? `${editorWidth}%` : '0%',
+                  transform: isEditorOpen ? 'none' : 'translateX(50%)' 
+               }}
+               title={isEditorOpen ? "Ocultar Editor" : "Mostrar Editor"}
+            >
+               {isEditorOpen ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
+            </button>
          </div>
       </main>
     </div>

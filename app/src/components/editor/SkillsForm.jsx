@@ -43,7 +43,7 @@ const SkillsForm = () => {
         <input
           value={newSkill}
           onChange={(e) => setNewSkill(e.target.value)}
-          className="modern-input pr-24"
+          className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all pr-24"
           placeholder={t.skillPlaceholder}
           autoFocus={editingIndex !== null}
         />

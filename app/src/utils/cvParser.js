@@ -328,7 +328,11 @@ export const parseCVText = (rawText) => {
 
   // 4. Smart Skill Extraction (Global Scan)
   const detectedSkills = extractSkills(rawText);
-  cvData.hardSkills = detectedSkills;
+  if (detectedSkills.length > 0) {
+    cvData.hardSkills = [
+      { category: "Competencias Técnicas", items: detectedSkills.join(', ') }
+    ];
+  }
   
   // 5. Languages (Basic list split)
   if (sections.languages) {

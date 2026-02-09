@@ -42,9 +42,12 @@ const ReferencesForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm hover-card">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-slate-800">{t.references}</h3>
+    <div className="bg-[var(--bg-panel)] p-6 rounded-2xl shadow-sm border border-[var(--border-subtle)] transition-all hover:shadow-md">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-lg font-bold text-[var(--text-main)] flex items-center gap-2">
+          <div className="w-1 h-6 bg-[var(--primary)] rounded-full"></div>
+          {t.references}
+        </h3>
         <button 
           onClick={() => {
             if (isAdding) {
@@ -62,51 +65,51 @@ const ReferencesForm = () => {
               });
             }
           }}
-          className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-sm font-medium hover-btn"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-bold rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white transition-all hover:shadow-md active:scale-95"
         >
           {isAdding ? 'Cancelar' : <><Plus size={16} /> {t.add}</>}
         </button>
       </div>
 
-      <div className="mb-4 flex items-center gap-2 bg-blue-50 p-3 rounded-md border border-blue-100 hover-list-item">
+      <div className="mb-6 flex items-center gap-2 bg-[var(--bg-muted)] p-3 rounded-xl border border-[var(--border-subtle)]">
         <input 
           type="checkbox" 
           id="refsOnRequest"
           checked={cvData.referencesAvailableOnRequest || false}
           onChange={toggleReferencesOnRequest}
-          className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          className="rounded border-[var(--border-input)] text-[var(--primary)] shadow-sm focus:border-[var(--primary)] focus:ring focus:ring-[var(--primary)]/50 focus:ring-opacity-50"
         />
-        <label htmlFor="refsOnRequest" className="text-sm text-slate-700 font-medium cursor-pointer select-none">
+        <label htmlFor="refsOnRequest" className="text-sm text-[var(--text-main)] font-medium cursor-pointer select-none">
           {t.availableOnRequest}
         </label>
       </div>
 
       {!isAdding && (
-        <div className="space-y-4 mb-4">
+        <div className="space-y-3 mb-4">
           {cvData.references.map((ref, index) => (
-            <div key={index} className="bg-slate-50 p-4 rounded border border-slate-200 relative group hover-list-item">
-              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div key={index} className="bg-[var(--bg-muted)]/50 p-4 rounded-xl border border-[var(--border-subtle)] relative group hover:border-[var(--primary)]/30 transition-all hover:shadow-sm hover:-translate-y-0.5">
+              <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button 
                   onClick={() => handleEdit(index)}
-                  className="text-blue-400 hover:text-blue-600 hover-btn"
+                  className="p-1.5 text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
                   title="Editar"
                 >
                   <Pencil size={16} />
                 </button>
                 <button 
                   onClick={() => removeReference(index)}
-                  className="text-red-400 hover:text-red-600 hover-btn"
+                  className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                   title="Eliminar"
                 >
                   <Trash2 size={16} />
                 </button>
               </div>
-              <h4 className="font-bold text-slate-800">{ref.name}</h4>
-              <p className="text-sm font-medium text-slate-700">{ref.profession}</p>
-              <p className="text-sm text-slate-600">{ref.role} {ref.company && `at ${ref.company}`}</p>
-              <div className="text-xs text-slate-500 mt-1 flex gap-2">
-                {ref.phone && <span className="flex items-center gap-1"><Phone size={10} /> {ref.phone}</span>}
-                {ref.email && <span className="flex items-center gap-1"><Mail size={10} /> {ref.email}</span>}
+              <h4 className="font-bold text-[var(--text-main)] text-base mb-1">{ref.name}</h4>
+              <p className="text-sm font-medium text-[var(--text-secondary)]">{ref.profession}</p>
+              <p className="text-sm text-[var(--text-secondary)]/80">{ref.role} {ref.company && `at ${ref.company}`}</p>
+              <div className="text-xs text-[var(--text-secondary)] mt-2 flex gap-3">
+                {ref.phone && <span className="flex items-center gap-1.5"><Phone size={12} /> {ref.phone}</span>}
+                {ref.email && <span className="flex items-center gap-1.5"><Mail size={12} /> {ref.email}</span>}
               </div>
             </div>
           ))}
@@ -114,94 +117,94 @@ const ReferencesForm = () => {
       )}
 
       {isAdding && (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-slate-50 p-4 rounded border border-blue-100">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 bg-[var(--bg-muted)]/30 p-5 rounded-xl border border-[var(--border-subtle)] animate-fade">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">{t.refName}</label>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.refName}</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <User size={14} className="text-slate-400" />
+                <User size={16} className="text-[var(--text-secondary)]/50" />
               </div>
               <input
                 {...register("name", { required: true })}
-                className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+                className="w-full pl-10 pr-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
                 placeholder={t.refNamePlaceholder}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">{t.refProfession}</label>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.refProfession}</label>
             <input
               {...register("profession")}
-              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+              className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
               placeholder={t.refProfessionPlaceholder}
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">{t.refRole}</label>
+              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.refRole}</label>
               <input
                 {...register("role")}
-                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+                className="w-full px-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
                 placeholder={t.refRolePlaceholder}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">{t.refCompany}</label>
+              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.refCompany}</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Building size={14} className="text-slate-400" />
+                  <Building size={16} className="text-[var(--text-secondary)]/50" />
                 </div>
                 <input
                   {...register("company")}
-                  className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+                  className="w-full pl-10 pr-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
                   placeholder={t.refCompanyPlaceholder}
                 />
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">{t.refPhone}</label>
+              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.refPhone}</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone size={14} className="text-slate-400" />
+                  <Phone size={16} className="text-[var(--text-secondary)]/50" />
                 </div>
                 <input
                   {...register("phone")}
-                  className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+                  className="w-full pl-10 pr-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
                   placeholder={t.refPhonePlaceholder}
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">{t.refEmail}</label>
+              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">{t.refEmail}</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail size={14} className="text-slate-400" />
+                  <Mail size={16} className="text-[var(--text-secondary)]/50" />
                 </div>
                 <input
                   {...register("email")}
-                  className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover-input"
+                  className="w-full pl-10 pr-4 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg text-[var(--text-main)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] transition-all"
                   placeholder={t.refEmailPlaceholder}
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-3 pt-2">
             <button 
               type="button" 
               onClick={handleCancel}
-              className="px-3 py-1 text-slate-600 hover:text-slate-800 text-sm"
+              className="px-4 py-2 text-[var(--text-secondary)] hover:bg-[var(--bg-muted)] hover:text-[var(--text-main)] rounded-xl text-sm font-medium transition-colors"
             >
               {t.cancel}
             </button>
             <button 
               type="submit"
-              className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+              className="px-5 py-2 bg-[var(--primary)] text-white rounded-xl text-sm font-bold hover:bg-[var(--primary)]/90 shadow-lg shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/40 hover:-translate-y-0.5 transition-all active:scale-95"
             >
               {editingIndex !== null ? 'Actualizar' : t.save}
             </button>

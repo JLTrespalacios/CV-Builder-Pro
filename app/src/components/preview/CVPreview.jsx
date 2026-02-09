@@ -63,28 +63,32 @@ const CVPreview = forwardRef((props, ref) => {
   }, [cvData, selectedTemplate, pages.length]); // Re-calculate when data changes
 
   return (
-    <div className="w-full h-full bg-transparent overflow-auto flex justify-center p-8 print:p-0 print:bg-white print:overflow-visible relative">
-      {/* Page Guidelines Overlay */}
-      <div className="absolute top-8 pointer-events-none z-10 print:hidden" style={{ width: '210mm' }}>
-         {pages.map((page) => (
-             <div 
-               key={page} 
-               className="border-b-2 border-dashed border-red-400/30 opacity-50 w-full relative"
-               style={{ height: '297mm' }}
-             >
-                 <span className="absolute bottom-0 right-0 bg-red-400/80 text-white text-xs px-2 py-1 rounded-tl backdrop-blur-sm">
-                    Fin de Página {page}
-                 </span>
-             </div>
-         ))}
-      </div>
+    <div className="w-full min-h-full bg-transparent print:overflow-visible relative">
+      <div className="min-w-fit min-h-full flex flex-col items-center py-8 print:p-0">
+        <div className="relative shadow-[0_0_50px_rgba(0,0,0,0.3)] print:shadow-none">
+          {/* Page Guidelines Overlay */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 print:hidden">
+             {pages.map((page) => (
+                 <div 
+                   key={page} 
+                   className="border-b-2 border-dashed border-red-400/30 opacity-50 w-full relative"
+                   style={{ height: '297mm' }}
+                 >
+                     <span className="absolute bottom-0 right-0 bg-red-400/80 text-white text-xs px-2 py-1 rounded-tl backdrop-blur-sm">
+                        Fin de Página {page}
+                     </span>
+                 </div>
+             ))}
+          </div>
 
-      <div 
-        ref={ref}
-        className="bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:shadow-none print:w-[210mm] print:min-h-[297mm] print:scale-100 relative z-0"
-      >
-        <div ref={containerRef}>
-             <TemplateComponent data={cvData} color={themeColor} />
+          <div 
+            ref={ref}
+            className="bg-white w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:w-[210mm] print:min-h-[297mm] print:scale-100 relative z-0"
+          >
+            <div ref={containerRef}>
+                 <TemplateComponent data={cvData} color={themeColor} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
