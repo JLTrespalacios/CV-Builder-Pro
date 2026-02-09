@@ -63,19 +63,22 @@ const CVPreview = forwardRef((props, ref) => {
   }, [cvData, selectedTemplate, pages.length]); // Re-calculate when data changes
 
   return (
-    <div id="cv-print-content" className="w-full min-h-full bg-transparent print:overflow-visible relative">
+    <div id="cv-print-content" className="w-full min-h-full relative print:overflow-visible">
       <div className="min-w-fit min-h-full flex flex-col items-center py-8 print:p-0">
-        <div className="relative shadow-[0_0_50px_rgba(0,0,0,0.3)] print:shadow-none">
-          {/* Page Guidelines Overlay */}
+        <div className="relative print:shadow-none">
+          {/* Page Guidelines Overlay - Now styled as visual gaps */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 print:hidden">
              {pages.map((page) => (
                  <div 
                    key={page} 
-                   className="border-b-2 border-dashed border-red-400/30 opacity-50 w-full relative"
-                   style={{ height: '297mm' }}
+                   className="absolute left-0 w-full border-b border-dashed border-slate-700/50"
+                   style={{ 
+                     top: `${page * 297}mm`,
+                     height: '1px'
+                   }}
                  >
-                     <span className="absolute bottom-0 right-0 bg-red-400/80 text-white text-xs px-2 py-1 rounded-tl backdrop-blur-sm">
-                        Fin de Página {page}
+                     <span className="absolute -top-3 -right-24 bg-slate-800 text-slate-400 text-[10px] px-2 py-1 rounded shadow-sm border border-slate-700">
+                        Página {page}
                      </span>
                  </div>
              ))}
@@ -83,7 +86,11 @@ const CVPreview = forwardRef((props, ref) => {
 
           <div 
             ref={ref}
-            className="bg-white w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:w-[210mm] print:min-h-[297mm] print:scale-100 relative z-0"
+            className="w-[210mm] min-h-[297mm] origin-top scale-100 transition-transform duration-200 print:w-[210mm] print:min-h-[297mm] print:scale-100 relative z-0"
+            style={{
+                background: 'repeating-linear-gradient(to bottom, #ffffff 0mm, #ffffff 297mm, transparent 297mm, transparent calc(297mm + 1px))',
+                boxShadow: '0 0 50px rgba(0,0,0,0.5)',
+            }}
           >
             <div ref={containerRef}>
                  <TemplateComponent data={cvData} color={themeColor} />

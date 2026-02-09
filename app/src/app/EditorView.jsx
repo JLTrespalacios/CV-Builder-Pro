@@ -261,7 +261,7 @@ const EditorView = () => {
 
             {/* Preview Section */}
             <div 
-               className={`h-full bg-[var(--bg-canvas)] overflow-hidden relative flex flex-col z-0 pt-0 lg:pt-[72px]
+               className={`h-full bg-gradient-to-br from-slate-900 to-slate-950 overflow-hidden relative flex flex-col z-0 pt-0 lg:pt-[72px]
                   ${activeMobileTab === 'preview' ? 'block w-full' : 'hidden'} 
                   lg:block lg:flex-1
                `}
