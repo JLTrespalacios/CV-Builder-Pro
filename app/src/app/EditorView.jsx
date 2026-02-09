@@ -141,7 +141,7 @@ const EditorView = () => {
                 '--editor-min-width': isEditorOpen ? '280px' : '0px'
               }}
             >
-               <div className={`h-full overflow-y-auto custom-scrollbar p-6 pb-24 lg:pb-6 lg:mt-[72px] ${!isEditorOpen && activeMobileTab !== 'editor' ? 'hidden' : ''}`}>
+               <div className={`h-full overflow-y-auto custom-scrollbar p-6 pb-40 lg:pb-40 lg:pt-[96px] ${!isEditorOpen && activeMobileTab !== 'editor' ? 'hidden' : ''}`}>
                    <div className="max-w-3xl mx-auto space-y-6">
                  
                  {/* Header */}
@@ -266,7 +266,7 @@ const EditorView = () => {
                   lg:block lg:flex-1
                `}
             >
-               <div className="flex-1 overflow-auto custom-scrollbar p-4 lg:p-8 lg:mt-[72px]">
+               <div className="flex-1 overflow-auto custom-scrollbar p-4 pb-40 lg:p-8 lg:pb-40 lg:pt-[104px]">
                   <CVPreview />
                </div>
             </div>
