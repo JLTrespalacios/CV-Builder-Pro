@@ -115,7 +115,7 @@ const ModernDark = ({ data, color }) => {
         <div className="text-center break-inside-avoid" style={sectionStyle}>
           {/* Photo */}
           {personal.showPhoto && (
-            <div className="w-32 h-32 mx-auto mb-4 bg-slate-700 rounded-full overflow-hidden flex items-center justify-center border-4" style={{ borderColor: accentColor }}>
+            <div className="w-32 h-32 mx-auto mb-4 bg-slate-700 rounded-full overflow-hidden flex items-center justify-center border-4 print:w-[32mm] print:h-[32mm] shrink-0" style={{ borderColor: accentColor }}>
               {personal.photo ? (
                 <img src={personal.photo} alt={personal.name} className="w-full h-full object-cover" />
               ) : (
